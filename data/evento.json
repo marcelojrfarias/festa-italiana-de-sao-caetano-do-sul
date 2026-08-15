@@ -1,0 +1,84 @@
+{
+  "nome": "33ª Festa Italiana",
+  "edicao": 33,
+  "ano": 2026,
+  "local": {
+    "nome": "Bairro Fundação — entorno da Paróquia São Caetano e Parque Província de Treviso",
+    "endereco": "Praça Comendador Ermelino Matarazzo, 81",
+    "bairro": "Fundação",
+    "cidade": "São Caetano do Sul",
+    "uf": "SP"
+  },
+  "entrada": { "gratuita": true },
+  "horarios": { "sabado": ["18:00", "23:00"], "domingo": ["18:00", "22:00"] },
+  "dias": [
+    "2026-08-08", "2026-08-09", "2026-08-15", "2026-08-16",
+    "2026-08-22", "2026-08-23", "2026-08-29", "2026-08-30"
+  ],
+  "realizacao": [
+    "Prefeitura de São Caetano do Sul",
+    "Fundo Social de Solidariedade de São Caetano do Sul"
+  ],
+  "permanente": [
+    {
+      "titulo": "Instalação artística “Imigrantes Italianos”",
+      "descricao": "Personagens para fotografia com o público."
+    }
+  ],
+  "programacao": [
+    {
+      "data": "2026-08-08",
+      "atracoes": [
+        { "hora": "18:00", "titulo": "Intervenção circulante Maria Jazz Band e os Colonos Italianos",
+          "descricao": "Atração itinerante que reúne uma banda e um grupo de atores caracterizados como colonos italianos. A proposta leva música e intervenções cênicas para espaços abertos, tendo como referência o universo da imigração italiana." },
+        { "hora": "19:00", "titulo": "Coral da Sociedade Cultural Ítalo-Brasileira de Santo André e soprano Solange Gonçalves",
+          "descricao": "O coral foi fundado em 1º de junho de 1999 e seu repertório segue o cancioneiro italiano. Ele será acompanhado pela bacharel em Canto Lírico Solange Gonçalves." },
+        { "hora": "19:45", "titulo": "Abertura oficial",
+          "descricao": "Execução do hino italiano com o Coral da Sociedade Cultural Ítalo-brasileiro de Santo André, sob a regência de Reinaldo Sanches, a soprano Solange Gonçalves e alunos da EMEF Senador Fláquer." },
+        { "hora": "20:00", "titulo": "Fred Rovella e Convidados",
+          "descricao": "Considerado o “embaixador da Festa Italiana de São Caetano”, Fred Rovella alegra mais uma edição da festa, com a parceria de músicos e dançarinos." },
+        { "hora": "21:30", "titulo": "Banda Finestra del Cuore",
+          "descricao": "Grupo de música italiana que desde 1999 leva alegria, romance e tradição a eventos culturais." }
+      ]
+    },
+    {
+      "data": "2026-08-09",
+      "atracoes": [
+        { "hora": "18:00", "titulo": "Abertura", "descricao": null },
+        { "hora": "18:30", "titulo": "Intervenção circulante La Pizzaria!, com NEx.Arte",
+          "descricao": "Intervenção artística itinerante criada pelo Coletivo NEx.Arte, que transforma os corredores do evento em um grande palco de improvisação, humor e interação com o público. Inspirada na tradição das cantinas italianas e na linguagem da palhaçaria, acompanha dois simpáticos e atrapalhados pizzaiolos que percorrem o espaço envolvendo crianças, jovens e adultos em situações inesperadas." },
+        { "hora": "19:00", "hora_fim": "22:00", "titulo": "Fred Rovella e Convidados", "descricao": null },
+        { "hora": "20:30", "titulo": "Intervenção Realejo de Histórias, com Cia. Doispralá Doispracá",
+          "descricao": "Leva para a Festa Italiana a magia da contação de histórias inspirada na tradição do realejo. Contadores brincantes, caracterizados como músicos andantes, convidam o público a “tirar a sorte” de uma história, resgatando de forma lúdica e poética a memória dos antigos realejos que distribuíam bilhetes da sorte pelas ruas das grandes cidades." }
+      ]
+    },
+    {
+      "data": "2026-08-15",
+      "atracoes": [
+        { "hora": "18:00", "titulo": "Abertura", "descricao": null },
+        { "hora": "18:30", "titulo": "Intervenção circulante Máfia do Jazz",
+          "descricao": "Banda instrumental brasileira com atuação reconhecida por sua originalidade, versatilidade e excelência musical desde 2004. Originária de Piracicaba (SP), é formada por músicos experientes e apaixonados pela arte de reviver e reinventar estilos musicais através de uma performance vibrante, acessível e interativa." },
+        { "hora": "19:00", "titulo": "Banda Ece Som Itália",
+          "descricao": "Leva emoção, alegria e autenticidade à festa por meio da interpretação de clássicos da música italiana. Seu repertório reúne canções tradicionais e sucessos consagrados, resgatando a cultura e as raízes da imigração italiana no Brasil." },
+        { "hora": "20:30", "titulo": "Intervenção circulante O Anagrama de Leonardo, com Cia Prana Teatro",
+          "descricao": "Um pequeno boneco de Leonardo da Vinci, em sua mala-atelier, interage com o público pintando obras e apresentando invenções. Com acompanhamento de violino ao vivo, curiosidades sobre Leonardo são distribuídas em pergaminhos ao público." },
+        { "hora": "21:00", "titulo": "Fred Rovella e Convidados", "descricao": null }
+      ]
+    },
+    {
+      "data": "2026-08-16",
+      "atracoes": [
+        { "hora": "18:00", "titulo": "Abertura", "descricao": null },
+        { "hora": "18:30", "titulo": "Intervenção circulante La Pizzaria!, com NEx.Arte", "descricao": null },
+        { "hora": "19:00", "titulo": "Fred Rovella e Convidados", "descricao": null },
+        { "hora": "20:30", "titulo": "Intervenção circulante Realejo de Histórias, com Cia. Doispralá Doispracá",
+          "descricao": null, "_incompleto": "título cortado na captura; completado pelo padrão dos outros domingos — conferir" }
+      ]
+    }
+  ],
+  "_fonte": "saocaetanodosul.sp.gov.br/paginasweb/114 (página oficial da Prefeitura)",
+  "_pendencias": [
+    "Programação dos dias 22, 23, 29 e 30 de agosto não capturada",
+    "Confirmar o título da atração de 20h30 do dia 16/08"
+  ]
+}
