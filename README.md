@@ -12,6 +12,8 @@ São Caetano do Sul**, extraídos do PDF oficial do menu (58 páginas).
 | `assets/` | Logo com transparência, texturas de fundo, faixa de patrocinadores, selos institucionais e capa |
 | `docs/cardapio-33a-festa-italiana.pdf` | PDF de origem |
 | `scripts/` | Extratores e validador (reprodutíveis) |
+| `data/mapa.json` | Geometria das 35 barracas — **posições ainda aproximadas** |
+| `mapa/` | Croqui em SVG e o editor de planta ([detalhes](mapa/README.md)) |
 
 ## Como regerar
 
@@ -21,6 +23,7 @@ python3 scripts/extract_menu.py       # -> data/cardapio.json
 python3 scripts/extract_identity.py   # -> data/identidade-visual.json
 python3 scripts/extract_assets.py     # -> assets/
 python3 scripts/validate_menu.py      # confere o JSON contra o PDF
+python3 scripts/gerar_mapa.py         # -> data/mapa.json
 ```
 
 A extração não usa heurística de texto: ela lê a semântica visual de cada span
