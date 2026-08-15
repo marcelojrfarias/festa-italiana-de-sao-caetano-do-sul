@@ -1,0 +1,14 @@
+{
+  "$schema": "../schemas/index.schema.json",
+  "versaoDados": 1,
+  "edicaoAtual": "2026",
+  "edicoes": [
+    {
+      "id": "2026",
+      "ano": 2026,
+      "rotulo": "Festa Italiana 2026",
+      "caminho": "edicoes/2026",
+      "status": "rascunho"
+    }
+  ]
+}

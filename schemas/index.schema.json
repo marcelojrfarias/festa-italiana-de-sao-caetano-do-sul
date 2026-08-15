@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://festa-italiana/schemas/index.schema.json",
+  "title": "Indice de edicoes da festa",
+  "type": "object",
+  "required": ["versaoDados", "edicaoAtual", "edicoes"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "versaoDados": { "type": "integer", "minimum": 1 },
+    "edicaoAtual": { "type": "string" },
+    "edicoes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "ano", "rotulo", "caminho", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "ano": { "type": "integer", "minimum": 2000, "maximum": 2100 },
+          "rotulo": { "type": "string", "minLength": 1 },
+          "caminho": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["rascunho", "publicada", "arquivada"] }
+        }
+      }
+    }
+  }
+}

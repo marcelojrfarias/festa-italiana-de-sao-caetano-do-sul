@@ -1,0 +1,15 @@
+{
+  "$schema": "../../schemas/categorias.schema.json",
+  "descricao": "Categorias de prato compartilhadas por todas as edicoes da festa. Alterar aqui muda o agrupamento do cardapio inteiro.",
+  "categorias": [
+    { "id": "entradas",    "rotulo": "Entradas",           "icone": "🥖", "ordem": 1 },
+    { "id": "massas",      "rotulo": "Massas",             "icone": "🍝", "ordem": 2 },
+    { "id": "pizzas",      "rotulo": "Pizzas e Salgados",  "icone": "🍕", "ordem": 3 },
+    { "id": "carnes",      "rotulo": "Carnes e Assados",   "icone": "🍖", "ordem": 4 },
+    { "id": "sopas",       "rotulo": "Sopas e Caldos",     "icone": "🍲", "ordem": 5 },
+    { "id": "sobremesas",  "rotulo": "Sobremesas",         "icone": "🍰", "ordem": 6 },
+    { "id": "bebidas",     "rotulo": "Bebidas",            "icone": "🥤", "ordem": 7 },
+    { "id": "vinhos",      "rotulo": "Vinhos e Drinks",    "icone": "🍷", "ordem": 8 },
+    { "id": "cafeteria",   "rotulo": "Cafeteria",          "icone": "☕", "ordem": 9 }
+  ]
+}

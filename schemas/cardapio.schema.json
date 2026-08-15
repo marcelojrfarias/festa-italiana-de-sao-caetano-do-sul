@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://festa-italiana/schemas/cardapio.schema.json",
+  "title": "Cardapio de uma edicao da festa",
+  "type": "object",
+  "required": ["edicaoId", "moeda", "barracas"],
+  "additionalProperties": false,
+  "$defs": {
+    "dinheiro": { "type": ["number", "null"], "minimum": 0 },
+    "listaDeIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9-]+$" }
+    },
+    "prato": {
+      "type": "object",
+      "required": ["id", "nome", "categoria", "restricoes"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "nome": { "type": "string", "minLength": 1 },
+        "descricao": { "type": "string" },
+        "categoria": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "preco": { "$ref": "#/$defs/dinheiro" },
+        "variacoes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "nome", "preco"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+              "nome": { "type": "string", "minLength": 1 },
+              "preco": { "$ref": "#/$defs/dinheiro" }
+            }
+          }
+        },
+        "restricoes": {
+          "type": "object",
+          "required": ["contem", "adequadoPara"],
+          "additionalProperties": false,
+          "properties": {
+            "contem": { "$ref": "#/$defs/listaDeIds" },
+            "podeConter": { "$ref": "#/$defs/listaDeIds" },
+            "adequadoPara": { "$ref": "#/$defs/listaDeIds" }
+          }
+        },
+        "destaque": { "type": "boolean" },
+        "imagem": { "type": ["string", "null"] },
+        "ordem": { "type": "integer", "minimum": 0 },
+        "ativo": { "type": "boolean" }
+      }
+    }
+  },
+  "properties": {
+    "$schema": { "type": "string" },
+    "edicaoId": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "moeda": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "atualizadoEm": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "observacao": { "type": "string" },
+    "barracas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "numero", "titulo", "pratos"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "numero": { "type": "integer", "minimum": 0 },
+          "titulo": { "type": "string", "minLength": 1 },
+          "descricao": { "type": "string" },
+          "responsavel": { "type": "string" },
+          "localizacao": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "setor": { "type": "string" },
+              "referencia": { "type": "string" },
+              "coordenadas": {
+                "type": ["object", "null"],
+                "required": ["x", "y"],
+                "additionalProperties": false,
+                "properties": {
+                  "x": { "type": "number", "minimum": 0, "maximum": 1 },
+                  "y": { "type": "number", "minimum": 0, "maximum": 1 }
+                }
+              }
+            }
+          },
+          "ativa": { "type": "boolean" },
+          "ordem": { "type": "integer", "minimum": 0 },
+          "pratos": { "type": "array", "items": { "$ref": "#/$defs/prato" } }
+        }
+      }
+    }
+  }
+}

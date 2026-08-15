@@ -1,0 +1,23 @@
+{
+  "$schema": "../../schemas/restricoes.schema.json",
+  "descricao": "Vocabulario de alergenos e dietas. 'alergenos' descrevem o que o prato CONTEM (filtro de exclusao). 'dietas' descrevem o que o prato ATENDE (filtro de inclusao). Os dois sao declarados explicitamente no prato - nunca deduza um a partir do outro.",
+  "alergenos": [
+    { "id": "gluten",       "rotulo": "Glúten",            "icone": "🌾", "descricao": "Contém trigo, centeio, cevada ou aveia." },
+    { "id": "leite",        "rotulo": "Leite e derivados", "icone": "🥛", "descricao": "Contém leite, queijo, manteiga ou creme." },
+    { "id": "ovo",          "rotulo": "Ovo",               "icone": "🥚", "descricao": "Contém ovo ou derivados." },
+    { "id": "castanhas",    "rotulo": "Castanhas e nozes", "icone": "🌰", "descricao": "Contém oleaginosas como nozes, castanhas, amêndoas ou avelãs." },
+    { "id": "amendoim",     "rotulo": "Amendoim",          "icone": "🥜", "descricao": "Contém amendoim ou derivados." },
+    { "id": "soja",         "rotulo": "Soja",              "icone": "🫘", "descricao": "Contém soja ou derivados." },
+    { "id": "peixe",        "rotulo": "Peixe",             "icone": "🐟", "descricao": "Contém peixe ou derivados." },
+    { "id": "frutos-do-mar","rotulo": "Frutos do mar",     "icone": "🦐", "descricao": "Contém crustáceos ou moluscos." },
+    { "id": "alcool",       "rotulo": "Álcool",            "icone": "🍸", "descricao": "Contém bebida alcoólica na receita ou na composição." }
+  ],
+  "dietas": [
+    { "id": "vegetariano",  "rotulo": "Vegetariano",   "icone": "🥬", "descricao": "Sem carne, peixe ou frutos do mar." },
+    { "id": "vegano",       "rotulo": "Vegano",        "icone": "🌱", "descricao": "Sem nenhum ingrediente de origem animal." },
+    { "id": "sem-gluten",   "rotulo": "Sem glúten",    "icone": "🚫🌾", "descricao": "Preparado sem ingredientes com glúten." },
+    { "id": "sem-lactose",  "rotulo": "Sem lactose",   "icone": "🚫🥛", "descricao": "Preparado sem leite ou derivados." },
+    { "id": "sem-acucar",   "rotulo": "Sem açúcar",    "icone": "🚫🍬", "descricao": "Preparado sem adição de açúcar." },
+    { "id": "infantil",     "rotulo": "Agrada crianças","icone": "🧒", "descricao": "Sabor suave, sem pimenta, boa opção para crianças." }
+  ]
+}

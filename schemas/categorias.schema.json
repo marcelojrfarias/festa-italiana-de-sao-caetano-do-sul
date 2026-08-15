@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://festa-italiana/schemas/categorias.schema.json",
+  "title": "Categorias de prato",
+  "type": "object",
+  "required": ["categorias"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "descricao": { "type": "string" },
+    "categorias": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "rotulo", "ordem"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "rotulo": { "type": "string", "minLength": 1 },
+          "icone": { "type": "string" },
+          "ordem": { "type": "integer", "minimum": 0 }
+        }
+      }
+    }
+  }
+}

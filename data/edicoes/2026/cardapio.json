@@ -1,0 +1,128 @@
+{
+  "$schema": "../../../schemas/cardapio.schema.json",
+
+  "edicaoId": "2026",
+  "moeda": "BRL",
+  "atualizadoEm": "2026-08-15",
+  "observacao": "EXEMPLO DE ESTRUTURA. Barracas, pratos e preços abaixo são fictícios e servem só para demonstrar o formato — substituir pelos dados reais antes de publicar.",
+
+  "barracas": [
+    {
+      "id": "b01",
+      "numero": 1,
+      "titulo": "Cantina da Nonna",
+      "descricao": "Massas frescas feitas na hora.",
+      "responsavel": "",
+      "localizacao": { "setor": "A", "referencia": "logo na entrada, à direita", "coordenadas": null },
+      "ativa": true,
+      "ordem": 1,
+      "pratos": [
+        {
+          "id": "b01-nhoque",
+          "nome": "Nhoque ao Sugo",
+          "descricao": "Nhoque de batata com molho de tomate e manjericão fresco.",
+          "categoria": "massas",
+          "preco": 32.0,
+          "variacoes": [],
+          "restricoes": { "contem": ["gluten", "ovo"], "podeConter": ["leite"], "adequadoPara": ["vegetariano"] },
+          "destaque": true,
+          "imagem": null,
+          "ordem": 1,
+          "ativo": true
+        },
+        {
+          "id": "b01-lasanha",
+          "nome": "Lasanha à Bolonhesa",
+          "descricao": "Camadas de massa, ragu de carne e molho branco gratinado.",
+          "categoria": "massas",
+          "preco": null,
+          "variacoes": [
+            { "id": "meia", "nome": "Meia porção", "preco": 26.0 },
+            { "id": "inteira", "nome": "Porção inteira", "preco": 45.0 }
+          ],
+          "restricoes": { "contem": ["gluten", "leite", "ovo"], "podeConter": [], "adequadoPara": [] },
+          "destaque": false,
+          "imagem": null,
+          "ordem": 2,
+          "ativo": true
+        }
+      ]
+    },
+    {
+      "id": "b02",
+      "numero": 2,
+      "titulo": "Forno a Lenha",
+      "descricao": "Pizzas assadas em forno a lenha.",
+      "responsavel": "",
+      "localizacao": { "setor": "B", "referencia": "ao lado do palco principal", "coordenadas": null },
+      "ativa": true,
+      "ordem": 2,
+      "pratos": [
+        {
+          "id": "b02-margherita",
+          "nome": "Pizza Margherita (fatia)",
+          "descricao": "Molho de tomate, mussarela e manjericão.",
+          "categoria": "pizzas",
+          "preco": 15.0,
+          "variacoes": [],
+          "restricoes": { "contem": ["gluten", "leite"], "podeConter": [], "adequadoPara": ["vegetariano", "infantil"] },
+          "destaque": false,
+          "imagem": null,
+          "ordem": 1,
+          "ativo": true
+        },
+        {
+          "id": "b02-polenta",
+          "nome": "Polenta Frita",
+          "descricao": "Bastões de polenta fritos, servidos com sal grosso.",
+          "categoria": "entradas",
+          "preco": 22.0,
+          "variacoes": [],
+          "restricoes": { "contem": [], "podeConter": ["gluten"], "adequadoPara": ["vegetariano", "vegano", "sem-gluten", "sem-lactose"] },
+          "destaque": true,
+          "imagem": null,
+          "ordem": 2,
+          "ativo": true
+        }
+      ]
+    },
+    {
+      "id": "b03",
+      "numero": 3,
+      "titulo": "Doceria Bella Vita",
+      "descricao": "Doces e cafés da tradição italiana.",
+      "responsavel": "",
+      "localizacao": { "setor": "C", "referencia": "próximo à praça de alimentação", "coordenadas": null },
+      "ativa": true,
+      "ordem": 3,
+      "pratos": [
+        {
+          "id": "b03-cannoli",
+          "nome": "Cannoli Siciliano",
+          "descricao": "Massa crocante recheada com creme de ricota e gotas de chocolate.",
+          "categoria": "sobremesas",
+          "preco": 18.0,
+          "variacoes": [],
+          "restricoes": { "contem": ["gluten", "leite", "ovo"], "podeConter": ["castanhas"], "adequadoPara": ["vegetariano"] },
+          "destaque": true,
+          "imagem": null,
+          "ordem": 1,
+          "ativo": true
+        },
+        {
+          "id": "b03-affogato",
+          "nome": "Affogato",
+          "descricao": "Sorvete de creme com espresso quente por cima.",
+          "categoria": "cafeteria",
+          "preco": 20.0,
+          "variacoes": [],
+          "restricoes": { "contem": ["leite"], "podeConter": [], "adequadoPara": ["vegetariano", "sem-gluten"] },
+          "destaque": false,
+          "imagem": null,
+          "ordem": 2,
+          "ativo": true
+        }
+      ]
+    }
+  ]
+}

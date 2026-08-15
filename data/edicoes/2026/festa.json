@@ -1,0 +1,72 @@
+{
+  "$schema": "../../../schemas/festa.schema.json",
+
+  "id": "2026",
+  "ano": 2026,
+  "nome": "Festa Italiana de São Caetano do Sul",
+  "subtitulo": "A confirmar — ex.: 28ª edição",
+  "descricao": "PREENCHER: um parágrafo curto de apresentação da festa, usado na abertura do app e na prévia de compartilhamento.",
+
+  "local": {
+    "nome": "PREENCHER: nome do local (ex.: Praça da Matriz)",
+    "endereco": {
+      "logradouro": "PREENCHER: rua/avenida",
+      "numero": "s/n",
+      "complemento": "",
+      "bairro": "PREENCHER: bairro",
+      "cidade": "São Caetano do Sul",
+      "estado": "SP",
+      "cep": ""
+    },
+    "coordenadas": null,
+    "comoChegar": "PREENCHER (texto livre, aceita Markdown): linhas de ônibus, estacionamento, acessibilidade."
+  },
+
+  "funcionamento": {
+    "fusoHorario": "America/Sao_Paulo",
+    "inicio": "2026-09-04",
+    "fim": "2026-09-13",
+    "observacao": "Datas e horários provisórios — confirmar com a organização antes de publicar.",
+    "dias": [
+      { "data": "2026-09-04", "abertura": "18:00", "fechamento": "23:00", "observacao": "Abertura oficial" },
+      { "data": "2026-09-05", "abertura": "12:00", "fechamento": "23:00", "observacao": "" },
+      { "data": "2026-09-06", "abertura": "12:00", "fechamento": "22:00", "observacao": "" },
+      { "data": "2026-09-11", "abertura": "18:00", "fechamento": "23:00", "observacao": "" },
+      { "data": "2026-09-12", "abertura": "12:00", "fechamento": "23:00", "observacao": "" },
+      { "data": "2026-09-13", "abertura": "12:00", "fechamento": "22:00", "observacao": "Encerramento" }
+    ]
+  },
+
+  "informacoes": [
+    {
+      "id": "programacao",
+      "titulo": "Programação dos shows",
+      "icone": "🎤",
+      "ordem": 1,
+      "conteudo": "PREENCHER (Markdown livre).\n\n**Sábado 05/09**\n- 19h — Grupo Folclórico\n- 21h — Banda X\n\n**Domingo 06/09**\n- 13h — Missa italiana\n- 20h — Tarantella"
+    },
+    {
+      "id": "o-que-levar",
+      "titulo": "O que levar",
+      "icone": "🎒",
+      "ordem": 2,
+      "conteudo": "PREENCHER (Markdown livre): formas de pagamento aceitas, se pode levar cadeira, política de bebidas e itens proibidos."
+    },
+    {
+      "id": "acessibilidade",
+      "titulo": "Acessibilidade e estrutura",
+      "icone": "♿",
+      "ordem": 3,
+      "conteudo": "PREENCHER (Markdown livre): banheiros, rampas, área infantil, ponto de encontro, achados e perdidos."
+    }
+  ],
+
+  "contato": {
+    "site": "",
+    "instagram": "",
+    "facebook": "",
+    "whatsapp": "",
+    "telefone": "",
+    "email": ""
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://festa-italiana/schemas/restricoes.schema.json",
+  "title": "Vocabulario de alergenos e dietas",
+  "type": "object",
+  "required": ["alergenos", "dietas"],
+  "additionalProperties": false,
+  "$defs": {
+    "termo": {
+      "type": "object",
+      "required": ["id", "rotulo"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "rotulo": { "type": "string", "minLength": 1 },
+        "icone": { "type": "string" },
+        "descricao": { "type": "string" }
+      }
+    }
+  },
+  "properties": {
+    "$schema": { "type": "string" },
+    "descricao": { "type": "string" },
+    "alergenos": { "type": "array", "items": { "$ref": "#/$defs/termo" } },
+    "dietas": { "type": "array", "items": { "$ref": "#/$defs/termo" } }
+  }
+}
