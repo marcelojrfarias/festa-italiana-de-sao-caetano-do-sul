@@ -14,7 +14,10 @@ RAIZ = pathlib.Path(__file__).resolve().parent.parent
 DADOS = RAIZ / "data"
 DIST = RAIZ / "dist"
 
-SITE = "https://marcelojrfarias.github.io/festa-italiana/"
+# Fallback para quem está sem JavaScript; com JS o app.js reescreve os links
+# de compartilhamento a partir da URL real da página, o que sobrevive a
+# renomeação do repositório (que já aconteceu uma vez).
+SITE = "https://marcelojrfarias.github.io/festa-italiana-de-sao-caetano-do-sul/"
 UTM = "?utm_source=whatsapp&utm_medium=share&utm_campaign=cardapio-33a"
 LINKEDIN = "https://www.linkedin.com/in/marcelojrfarias/"
 
@@ -598,6 +601,18 @@ JS = r"""(function () {
       aplicar();
     }, 120);
   });
+
+  /* Reescreve os links de compartilhamento com a URL real desta página. O
+     endereço fica codificado no HTML como fallback sem JS, e já ficou errado
+     uma vez quando o repositório foi renomeado. */
+  (function share() {
+    var base = location.origin + location.pathname;
+    var msg = 'Achei um cardápio digital da Festa Italiana de SCS — dá pra procurar ' +
+              'prato e ver preço de todas as barracas. Tá me ajudando a decidir o que ' +
+              'comer: ' + base + '?utm_source=whatsapp&utm_medium=share&utm_campaign=cardapio-33a';
+    var href = 'https://wa.me/?text=' + encodeURIComponent(msg);
+    document.querySelectorAll('.botao-share').forEach(function (a) { a.href = href; });
+  })();
 
   /* ---- status: aberta agora / próxima abertura ---- */
   (function status() {
