@@ -80,7 +80,9 @@ def agrupar_pratos(cardapio, categorias):
             "ofertas": g["ofertas"],
             "min": min(precos), "max": max(precos),
             "descricao": collections.Counter(g["descricoes"]).most_common(1)[0][0],
-            "busca": sem_acento(g["titulo"] + " " + " ".join(set(g["descricoes"]))),
+            # sorted(): a ordem de iteração de um set de strings muda entre
+            # processos (PYTHONHASHSEED), e sem isso o build não é reprodutível
+            "busca": sem_acento(g["titulo"] + " " + " ".join(sorted(set(g["descricoes"])))),
         })
     pratos.sort(key=lambda p: sem_acento(p["titulo"]))
     return pratos
