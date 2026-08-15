@@ -1,0 +1,349 @@
+{
+  "nome": "33ª Festa Italiana",
+  "edicao": 33,
+  "ano": 2026,
+  "local": {
+    "nome": "Bairro Fundação — entorno da Paróquia São Caetano e Parque Província de Treviso",
+    "endereco": "Praça Comendador Ermelino Matarazzo, 81",
+    "bairro": "Fundação",
+    "cidade": "São Caetano do Sul",
+    "uf": "SP"
+  },
+  "entrada": {
+    "gratuita": true
+  },
+  "horarios": {
+    "sabado": [
+      "18:00",
+      "23:00"
+    ],
+    "domingo": [
+      "18:00",
+      "22:00"
+    ]
+  },
+  "dias": [
+    "2026-08-08",
+    "2026-08-09",
+    "2026-08-15",
+    "2026-08-16",
+    "2026-08-22",
+    "2026-08-23",
+    "2026-08-29",
+    "2026-08-30"
+  ],
+  "realizacao": [
+    "Prefeitura de São Caetano do Sul",
+    "Fundo Social de Solidariedade de São Caetano do Sul"
+  ],
+  "permanente": [
+    {
+      "titulo": "Instalação artística “Imigrantes Italianos”",
+      "descricao": "Personagens para fotografia com o público."
+    }
+  ],
+  "atracoes": [
+    {
+      "id": "abertura",
+      "titulo": "Abertura",
+      "descricao": null
+    },
+    {
+      "id": "abertura-oficial",
+      "titulo": "Abertura oficial",
+      "descricao": "Execução do hino italiano com o Coral da Sociedade Cultural Ítalo-brasileiro de Santo André, sob a regência de Reinaldo Sanches, a soprano Solange Gonçalves e alunos da EMEF Senador Fláquer."
+    },
+    {
+      "id": "encerramento-oficial",
+      "titulo": "Encerramento oficial",
+      "descricao": null
+    },
+    {
+      "id": "maria-jazz-band",
+      "titulo": "Intervenção circulante Maria Jazz Band e os Colonos Italianos",
+      "descricao": "Atração itinerante que reúne uma banda e um grupo de atores caracterizados como colonos italianos. A proposta leva música e intervenções cênicas para espaços abertos, tendo como referência o universo da imigração italiana."
+    },
+    {
+      "id": "coral-italo-brasileira",
+      "titulo": "Coral da Sociedade Cultural Ítalo-Brasileira de Santo André e soprano Solange Gonçalves",
+      "descricao": "O coral da Sociedade Cultural Ítalo-Brasileira de Santo André foi fundado em 1º de junho de 1999 com repertório que segue o cancioneiro italiano. Ele será acompanhado pela bacharel em Canto Lírico Solange Gonçalves."
+    },
+    {
+      "id": "fred-rovella",
+      "titulo": "Fred Rovella e Convidados",
+      "descricao": "Considerado o “embaixador da Festa Italiana de São Caetano”, Fred Rovella alegra mais uma edição da festa, com a parceria de músicos e dançarinos."
+    },
+    {
+      "id": "finestra-del-cuore",
+      "titulo": "Banda Finestra del Cuore",
+      "descricao": "Finestra del Cuore é um grupo de música italiana que desde 1999 leva alegria, romance e tradição a eventos culturais."
+    },
+    {
+      "id": "la-pizzaria",
+      "titulo": "Intervenção circulante La Pizzaria!, com NEx.Arte",
+      "descricao": "La Pizzaria! é uma intervenção artística itinerante criada pelo Coletivo NEx.Arte, que transforma os corredores do evento em um grande palco de improvisação, humor e interação com o público. Inspirada na tradição das cantinas italianas e na linguagem da palhaçaria, a intervenção acompanha dois simpáticos e atrapalhados pizzaiolos que percorrem o espaço envolvendo crianças, jovens e adultos em situações inesperadas. Entre receitas improváveis, confusões divertidas e muito improviso, os personagens convidam o público a fazer parte da história, criando encontros leves, afetivos e cheios de riso."
+    },
+    {
+      "id": "realejo-de-historias",
+      "titulo": "Intervenção circulante Realejo de Histórias, com Cia. Doispralá Doispracá",
+      "descricao": "Realejo de Histórias leva para a Festa Italiana a magia da contação de histórias inspirada na tradição do realejo. Contadores brincantes, caracterizados como músicos andantes, convidam o público a “tirar a sorte” de uma história, resgatando de forma lúdica e poética a memória dos antigos realejos que distribuíam bilhetes da sorte pelas ruas das grandes cidades."
+    },
+    {
+      "id": "mafia-do-jazz",
+      "titulo": "Intervenção circulante Máfia do Jazz",
+      "descricao": "Máfia do Jazz é uma banda instrumental brasileira com atuação reconhecida por sua originalidade, versatilidade e excelência musical desde 2004. Originária de Piracicaba (SP), a banda é formada por músicos experientes e apaixonados pela arte de reviver e reinventar estilos musicais através de uma performance vibrante, acessível e interativa."
+    },
+    {
+      "id": "ece-som-italia",
+      "titulo": "Banda Ece Som Itália",
+      "descricao": "A Banda Ece Som Itália leva emoção, alegria e autenticidade à festa por meio da interpretação de clássicos da música italiana. Seu repertório reúne canções tradicionais e sucessos consagrados, resgatando a cultura e as raízes da imigração italiana no Brasil."
+    },
+    {
+      "id": "anagrama-de-leonardo",
+      "titulo": "Intervenção circulante O Anagrama de Leonardo, com Cia. Prana Teatro",
+      "descricao": "Um pequeno boneco de Leonardo da Vinci, em sua mala-atelier, interage com o público pintando obras e apresentando invenções. Com acompanhamento de violino ao vivo, curiosidades sobre Leonardo são distribuídas em pergaminhos ao público."
+    },
+    {
+      "id": "italia-brasil",
+      "titulo": "Banda Itália Brasil",
+      "descricao": "A banda Itália Brasil é composta por músicos que atuam ou já atuaram nas grandes Festas Italianas do calendário da cidade e do estado de São Paulo e Brasil. Sua proposta é ser diferente e moderna, interagindo com o público, sem perder a tradição e o respeito pela cultura dos antepassados e o amor pela querida Itália e ao mesmo tempo homenageando a acolhida que o Brasil deu aos imigrantes, formando assim a grande parceria que contribuiu para o progresso do Brasil."
+    },
+    {
+      "id": "ricetta-della-confusione",
+      "titulo": "Intervenção circulante Ricetta della Confusione, com Cia. Popular de Circo e Teatro",
+      "descricao": "Os palhaços Pira e Ossildo descobrem que a grande Festa Italiana de São Caetano está prestes a começar e decidem preparar uma receita típica para garantir sua participação na celebração. Munidos de uma cozinha ambulante e uma sanfona, mas pouquíssima habilidade culinária, eles tentam fazer uma receita durante o percurso. Entre ingredientes perdidos, receitas confusas e situações cômicas, convidam o público a ajudá-los nessa missão, participando do preparo da receita."
+    },
+    {
+      "id": "commedia-arlequim",
+      "titulo": "Commedia Dell’Arte “Arlequim, Servidor de Dois Amos”, com Fundação das Artes",
+      "descricao": "Na cidade de Veneza, tudo está acertado para o casamento entre Clarisse, filha do rico senhor Pantaleão, e Silvio, filho do digníssimo Doutor Lombardi. No entanto, a chegada de um nobre forasteiro e de seu astuto criado acaba alterando os planos e afeta a vida de todos os moradores. Entre disfarces, segredos e juras de amor, alunos da Fundação das Artes interpretam a comédia clássica de Carlo Goldoni, inspirada no maravilhoso universo da Commedia dell’Arte."
+    },
+    {
+      "id": "danca-la-bella-italia",
+      "titulo": "Dança La Bella Itália, com alunas da Escola Municipal de Bailado Laura Thomé",
+      "descricao": null
+    },
+    {
+      "id": "jazz-e-risos",
+      "titulo": "Intervenção circulante Jazz e Risos",
+      "descricao": "O projeto “Jazz e Risos Itinerante: Música e Humor na Festa Italiana” leva à Festa Italiana uma intervenção artística em formato de cortejo, circulando pelas ruas da festa e unindo música ao vivo, humor e interação com o público. Inspirado no repertório italiano e do jazz tradicional, o grupo apresenta releituras instrumentais, criando uma atmosfera festiva e acessível. A performance é conduzida por músicos e por um personagem cênico que promove intervenções de comicidade e aproximação com o público."
+    },
+    {
+      "id": "viva-italia",
+      "titulo": "Banda Viva Itália",
+      "descricao": "Criada em 1993, a Banda Viva Itália vem emocionando a todos com seu amplo repertório, que resgata os principais momentos da música da Itália. A banda revive os grandes sucessos românticos dos anos 60 e 70, diverte com as contagiantes tarantelas e surpreende com os destaques da música italiana atual."
+    },
+    {
+      "id": "coral-infantojuvenil",
+      "titulo": "Coral Infantojuvenil e Cameratas do Espaço Cultural de Artes (Centro de Educação Musical), sob a regência de Tania Bertassoli, com participação de alunos da EMEFM Oscar Niemeyer",
+      "descricao": null
+    }
+  ],
+  "programacao": [
+    {
+      "data": "2026-08-08",
+      "atracoes": [
+        {
+          "hora": "18:00",
+          "atracao_id": "maria-jazz-band"
+        },
+        {
+          "hora": "19:00",
+          "atracao_id": "coral-italo-brasileira"
+        },
+        {
+          "hora": "19:45",
+          "atracao_id": "abertura-oficial"
+        },
+        {
+          "hora": "20:00",
+          "atracao_id": "fred-rovella"
+        },
+        {
+          "hora": "21:30",
+          "atracao_id": "finestra-del-cuore"
+        }
+      ]
+    },
+    {
+      "data": "2026-08-09",
+      "atracoes": [
+        {
+          "hora": "18:00",
+          "atracao_id": "abertura"
+        },
+        {
+          "hora": "18:30",
+          "atracao_id": "la-pizzaria"
+        },
+        {
+          "hora": "19:00",
+          "atracao_id": "fred-rovella",
+          "hora_fim": "22:00"
+        },
+        {
+          "hora": "20:30",
+          "atracao_id": "realejo-de-historias"
+        }
+      ]
+    },
+    {
+      "data": "2026-08-15",
+      "atracoes": [
+        {
+          "hora": "18:00",
+          "atracao_id": "abertura"
+        },
+        {
+          "hora": "18:30",
+          "atracao_id": "mafia-do-jazz"
+        },
+        {
+          "hora": "19:00",
+          "atracao_id": "ece-som-italia"
+        },
+        {
+          "hora": "20:30",
+          "atracao_id": "anagrama-de-leonardo"
+        },
+        {
+          "hora": "21:00",
+          "atracao_id": "fred-rovella"
+        }
+      ]
+    },
+    {
+      "data": "2026-08-16",
+      "atracoes": [
+        {
+          "hora": "18:00",
+          "atracao_id": "abertura"
+        },
+        {
+          "hora": "18:30",
+          "atracao_id": "la-pizzaria"
+        },
+        {
+          "hora": "19:00",
+          "atracao_id": "fred-rovella"
+        },
+        {
+          "hora": "20:30",
+          "atracao_id": "realejo-de-historias"
+        }
+      ]
+    },
+    {
+      "data": "2026-08-22",
+      "atracoes": [
+        {
+          "hora": "18:00",
+          "atracao_id": "abertura"
+        },
+        {
+          "hora": "18:30",
+          "atracao_id": "maria-jazz-band"
+        },
+        {
+          "hora": "19:00",
+          "atracao_id": "italia-brasil"
+        },
+        {
+          "hora": "20:30",
+          "atracao_id": "ricetta-della-confusione"
+        },
+        {
+          "hora": "20:40",
+          "atracao_id": "commedia-arlequim"
+        },
+        {
+          "hora": "21:00",
+          "atracao_id": "fred-rovella"
+        }
+      ]
+    },
+    {
+      "data": "2026-08-23",
+      "atracoes": [
+        {
+          "hora": "18:00",
+          "atracao_id": "abertura"
+        },
+        {
+          "hora": "18:30",
+          "atracao_id": "anagrama-de-leonardo"
+        },
+        {
+          "hora": "19:00",
+          "atracao_id": "fred-rovella"
+        },
+        {
+          "hora": "20:30",
+          "atracao_id": "danca-la-bella-italia"
+        },
+        {
+          "hora": "21:00",
+          "atracao_id": "fred-rovella"
+        }
+      ]
+    },
+    {
+      "data": "2026-08-29",
+      "atracoes": [
+        {
+          "hora": "18:00",
+          "atracao_id": "abertura"
+        },
+        {
+          "hora": "18:30",
+          "atracao_id": "jazz-e-risos"
+        },
+        {
+          "hora": "19:00",
+          "atracao_id": "viva-italia"
+        },
+        {
+          "hora": "20:30",
+          "atracao_id": "ricetta-della-confusione",
+          "titulo_na_pagina": "Intervenção circulante La Ricetta della Confusione"
+        },
+        {
+          "hora": "21:00",
+          "atracao_id": "fred-rovella"
+        }
+      ]
+    },
+    {
+      "data": "2026-08-30",
+      "atracoes": [
+        {
+          "hora": "18:00",
+          "atracao_id": "abertura"
+        },
+        {
+          "hora": "18:30",
+          "atracao_id": "realejo-de-historias",
+          "titulo_na_pagina": "Intervenção circulante Realejo de Histórias"
+        },
+        {
+          "hora": "19:00",
+          "atracao_id": "coral-infantojuvenil"
+        },
+        {
+          "hora": "20:00",
+          "atracao_id": "encerramento-oficial"
+        },
+        {
+          "hora": "20:30",
+          "atracao_id": "fred-rovella"
+        }
+      ]
+    }
+  ],
+  "_fonte": "saocaetanodosul.sp.gov.br/paginasweb/114 (página oficial da Prefeitura)",
+  "_notas": [
+    "As descrições ficam no catálogo `atracoes`; a página oficial só as imprime na primeira ocorrência de cada atração.",
+    "`titulo_na_pagina` registra quando o rótulo impresso naquele dia difere do título do catálogo.",
+    "Em 23/08 Fred Rovella e Convidados aparece duas vezes (19h e 21h), conforme a página."
+  ]
+}
