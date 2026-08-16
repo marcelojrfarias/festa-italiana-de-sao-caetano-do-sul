@@ -24,15 +24,16 @@ const SVG = 'http://www.w3.org/2000/svg';
   const ESTILO = `
   .croqui { background:var(--papel,#EFE4D4); touch-action:none;
     display:block; width:100%; height:100%; }
-  .croqui .via { fill:none; stroke:var(--papel-linha,#DFCEB4);
-    stroke-linecap:round; stroke-linejoin:round; }
+  /* o asfalto e o unico cinza do projeto: a paleta do app e toda quente e a rua
+     precisa se separar do papel e do largo sem virar mais um tom de bege */
+  .croqui .via { fill:none; stroke:#CFCBC5; stroke-linecap:round; stroke-linejoin:round; }
   .croqui .via-nome { fill:var(--tinta-fraca,#7B6E5D); font:600 3px var(--corpo,system-ui),sans-serif;
     letter-spacing:.12px; text-anchor:middle;
-    stroke:var(--papel-linha,#DFCEB4); stroke-width:.9; paint-order:stroke; }
+    stroke:#CFCBC5; stroke-width:.9; paint-order:stroke; }
   .croqui .area { stroke:none; }
   .croqui .area.edificado { fill:var(--cartao,#FFFFFF); }
-  .croqui .area.verde { fill:var(--verde-suave,#E7EFE6); }
-  .croqui .area.pavimento { fill:var(--papel-linha,#DFCEB4); opacity:.55; }
+  .croqui .area.verde { fill:#CFE0C4; }
+  .croqui .area.pavimento { fill:#F6EDD0; }
   .croqui .area-nome { fill:var(--tinta-fraca,#7B6E5D); font:600 3.2px var(--corpo,system-ui),sans-serif;
     text-anchor:middle; stroke:var(--papel,#EFE4D4); stroke-width:1.1; paint-order:stroke; }
   /* mesma pilula dourada do .card__numero das listas */
@@ -100,13 +101,16 @@ const SVG = 'http://www.w3.org/2000/svg';
       }
       for (const via of mapa.vias || []) {
         if (!via.nome) continue;
+        // meio do trecho central, nao o vertice: numa rua de dois pontos o
+        // vertice do meio E o ponto final, e o nome saia cortado na borda
         const eixo = via.eixo;
-        const i = Math.floor(eixo.length / 2);
-        const [a, b] = [eixo[Math.max(0, i - 1)], eixo[Math.min(eixo.length - 1, i)]];
+        const i = Math.max(1, Math.floor(eixo.length / 2));
+        const [a, b] = [eixo[i - 1], eixo[i]];
+        const meio = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
         const ang = (Math.atan2(-(b[1] - a[1]), b[0] - a[0]) * 180) / Math.PI;
         const t = el('text', {
           class: 'via-nome', x: 0, y: 1.1,
-          transform: `translate(${P(eixo[i])}) rotate(${((ang + 90) % 180) - 90})`,
+          transform: `translate(${P(meio)}) rotate(${((ang + 90) % 180) - 90})`,
         });
         t.textContent = via.nome;
         g.append(t);
@@ -133,9 +137,13 @@ const SVG = 'http://www.w3.org/2000/svg';
           t.textContent = a.nome;
           g.append(t);
         } else if (a.rotulo && a.poligono) {
+          // `rotulo_ponto` existe para tirar o nome de cima das barracas: no
+          // parque o centroide cai exatamente sobre a fila 23-35
           const n = a.poligono.length;
-          const cx = a.poligono.reduce((s, q) => s + q[0], 0) / n;
-          const cy = a.poligono.reduce((s, q) => s + q[1], 0) / n;
+          const [cx, cy] = a.rotulo_ponto || [
+            a.poligono.reduce((s, q) => s + q[0], 0) / n,
+            a.poligono.reduce((s, q) => s + q[1], 0) / n,
+          ];
           const t = el('text', { class: 'area-nome', x: cx, y: -cy });
           t.textContent = a.nome;
           g.append(t);

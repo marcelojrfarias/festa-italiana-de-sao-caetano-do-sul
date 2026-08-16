@@ -58,10 +58,30 @@ arranjo relativo — que é o oficial e está exato. **Só atrapalha o ponto azu
 georreferência, trate a posição como orientação grosseira e não como precisão de
 GPS.
 
+### As ruas mandam na posição das barracas
+
+As duas vias são **retas e contínuas**, atravessando o quadro de ponta a ponta.
+O traçado curvo tirado da foto era fiel ao desenho e ruim de ler: num croqui a
+rua é eixo de orientação, e eixo torto não orienta.
+
+As barracas que pertencem a uma via não ficam onde a foto as mostrava — são
+encostadas na calçada por cálculo, em `encostar()`: metade do leito, mais metade
+da profundidade, mais 1,5 m de folga, na direção oposta à frente (que olha para
+a rua). O resultado é que duas filas que se encaram deixam os 9 m de asfalto
+livres entre elas, com 2,8 m de sobra além da guia — antes elas cavalgavam o
+leito, porque a posição vinha só da medida em pixel.
+
+Nas zonas sem via — a praça e o parque — as barracas ficam onde foram medidas.
+As alamedas internas do parque não são desenhadas: no croqui elas só somavam
+traço sem ajudar ninguém a se achar.
+
 ### O entorno é desenho próprio
 
-`areas` traz os quarteirões, o largo e o parque como polígonos simplificados,
-traçados a olho sobre a foto do banner e marcados `aproximado: true`. Servem para
+`areas` traz três polígonos simplificados, marcados `aproximado: true`: a igreja
+(um retângulo — não vale detalhar planta de edifício num croqui de festa), o
+largo e o parque. Os quarteirões a leste, o pátio ao sul e o quarteirão a oeste
+saíram: não têm barraca e só enchiam o quadro de retângulo. `rotulo_ponto` tira
+o nome do parque de cima da fila 23-35, onde o centroide o colocava. Servem para
 a pessoa se situar — "estou do lado da igreja", "isso aqui é o parque" — e não
 como levantamento. A ilustração do banner é dos organizadores; o que está aqui é
 redesenho simplificado.
