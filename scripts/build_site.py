@@ -60,6 +60,27 @@ def svg(inner, tam=24, classe="icone"):
 CHEVRON = '<path d="M9 5l7 7-7 7"/>'
 ALFINETE = ('<path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11Z"/>'
             '<circle cx="12" cy="10" r="2.5"/>')
+
+
+# O alfinete aparece uma vez por oferta: eram 974 cópias do mesmo desenho,
+# 267 KB dos 749 KB do HTML. Como <symbol> ele é escrito uma vez só e cada
+# ponto de uso vira uma referência de ~90 bytes. Os atributos de traço ficam
+# no <svg> que referencia, e não no <symbol>, para herdarem currentColor.
+SPRITE = {"pin": ALFINETE, "seta": CHEVRON}
+
+
+def usar(nome, tam=24, classe="icone"):
+    # Sem os atributos de traço: eles vivem na regra .icone do CSS. Repetidos
+    # 1018 vezes no HTML custavam mais que o próprio desenho.
+    return (f'<svg class="{classe}" width="{tam}" height="{tam}" aria-hidden="true">'
+            f'<use href="#i-{nome}"/></svg>')
+
+
+def sprite_html():
+    simbolos = "".join(f'<symbol id="i-{k}" viewBox="0 0 24 24">{v}</symbol>'
+                       for k, v in SPRITE.items())
+    return f'<svg class="sprite" aria-hidden="true">{simbolos}</svg>'
+
 # Ordem de navegação: comida primeiro, bebida por último. A ordem do arquivo de
 # categorias é por volume, o que jogaria bebida para o topo do índice.
 ORDEM = ["massas", "pizzas-e-fogazza", "lanches", "carnes-e-polenta",
@@ -123,7 +144,7 @@ def agrupar_pratos(cardapio, categorias):
     grupos = {}
     for barraca in cardapio["barracas"]:
         for item in barraca["itens"]:
-          for titulo_expandido in expandir_titulo(item):
+          for titulo_expandido, desc_expandida in expandir_titulo(item):
             chave = sem_acento(titulo_expandido)
             g = grupos.setdefault(chave, {
                 "titulo": titulo_expandido, "cats": collections.Counter(),
@@ -136,7 +157,7 @@ def agrupar_pratos(cardapio, categorias):
                 "num": barraca["numero"], "nome": barraca["nome"],
                 "preco": item["preco"], "descricao": item["descricao"],
             })
-            g["descricoes"].append(item["descricao"])
+            g["descricoes"].append(desc_expandida)
 
     pratos = []
     for g in grupos.values():
@@ -199,6 +220,32 @@ EXPANSAO_MANUAL = {
 }
 
 
+def descricao_por_variacao(descricao, n):
+    """Reparte a descrição entre as n variações, quando ela as enumera.
+
+    "Massa Crocante recheada com Creme, Doce de Leite ou Nutella" descreve as
+    três variações de "Cannoli Alla Crema / Dolce di Latte / Nutella", na mesma
+    ordem. Sem repartir, os três pratos expandidos herdam a descrição inteira e
+    "Cannoli Alla Crema" alega ter Doce de Leite e Nutella dentro.
+
+    Só reparte quando a conta fecha: a enumeração precisa ter exatamente n itens
+    e vir depois de um "com". Nas descrições de massa a enumeração está no meio
+    da frase ("Macarrão Tipo Espaguete, Penne ou Gravatinha ao Molho de Tomate")
+    e a função devolve None, mantendo a descrição original.
+    """
+    if " ou " not in descricao:
+        return None
+    cabeca, ultimo = descricao.rsplit(" ou ", 1)
+    partes = [x.strip() for x in cabeca.split(",")]
+    if " com " not in partes[0]:
+        return None
+    prefixo, primeiro = partes[0].rsplit(" com ", 1)
+    itens = [primeiro] + partes[1:] + [ultimo]
+    if len(itens) != n:
+        return None
+    return [f"{prefixo} com {x}" for x in itens]
+
+
 def expandir_titulo(item):
     """Um item por sabor ou formato de massa.
 
@@ -215,23 +262,30 @@ def expandir_titulo(item):
     O que separa os dois é o tamanho: no formato de massa o primeiro segmento
     tem menos palavras que o último, porque o último carrega o molho.
     """
+    # "recheada com Creme – sabores" está assim no PDF: a barraca não listou
+    # quais. O traço pendurado não informa nada.
+    desc = re.sub(r"\s*[–-]\s*sabores\s*$", "", item["descricao"])
+
     if item["id"] in EXPANSAO_MANUAL:
-        return EXPANSAO_MANUAL[item["id"]]
+        return [(t, desc) for t in EXPANSAO_MANUAL[item["id"]]]
     v = item.get("variacoes") or []
     if len(v) < 2:
-        return [item["titulo"]]
+        return [(item["titulo"], desc)]
 
     primeiro, ultimo = v[0].split(), v[-1].split()
     if len(primeiro) < len(ultimo):
         sufixo = " ".join(ultimo[1:])
-        return [f"{x} {sufixo}" for x in v[:-1]] + [f"{ultimo[0]} {sufixo}"]
+        titulos = [f"{x} {sufixo}" for x in v[:-1]] + [f"{ultimo[0]} {sufixo}"]
+    else:
+        base = ""
+        for i, palavra in enumerate(primeiro):
+            if palavra.lower() in PREPOSICOES:
+                base = " ".join(primeiro[:i])
+                break
+        titulos = [v[0]] + [f"{base} {x}".strip() for x in v[1:]]
 
-    base = ""
-    for i, palavra in enumerate(primeiro):
-        if palavra.lower() in PREPOSICOES:
-            base = " ".join(primeiro[:i])
-            break
-    return [v[0]] + [f"{base} {x}".strip() for x in v[1:]]
+    descs = descricao_por_variacao(desc, len(titulos))
+    return list(zip(titulos, descs if descs else [desc] * len(titulos)))
 
 
 def render_prato(p):
@@ -250,7 +304,7 @@ def render_prato(p):
         f'<span class="oferta__num">{e(o["num"])}</span>'
         f'<span class="oferta__nome">{e(o["nome"])}</span>'
         f'<span class="oferta__preco">{e(moeda(o["preco"]))}</span>'
-        f'<span class="oferta__pin">{svg(ALFINETE, 15)}</span></a></li>'
+        f'<span class="oferta__pin">{usar("pin", 15)}</span></a></li>'
         for o in p["ofertas"])
     n = len(p["ofertas"])
     # Com uma barraca só não há o que expandir, mas "onde encontro isto" é a
@@ -263,7 +317,7 @@ def render_prato(p):
                 f'href="?modo=mapa&amp;barraca={e(chave_barraca(o["num"]))}">'
                 f'<span class="oferta__num">{e(o["num"])}</span>'
                 f'<span class="oferta__nome">{e(o["nome"])}</span>'
-                f'<span class="oferta__pin">{svg(ALFINETE, 15)}</span></a>')
+                f'<span class="oferta__pin">{usar("pin", 15)}</span></a>')
     else:
         onde = (f'<button class="prato__toggle" type="button" aria-expanded="false">'
                 f'em {n} barracas</button>')
@@ -287,7 +341,7 @@ def render_indices(cardapio, categorias, pratos):
         f'<span class="card__icone">{svg(ICONES[cid], 26)}</span>'
         f'<span class="card__nome">{e(nomes[cid])}</span>'
         f'<span class="card__contagem">{por_cat[cid]}</span>'
-        f'<span class="card__chevron">{svg(CHEVRON, 18)}</span></a>'
+        f'<span class="card__chevron">{usar("seta", 18)}</span></a>'
         for cid in ORDEM if por_cat[cid])
 
     cards_bar = "".join(
@@ -296,7 +350,7 @@ def render_indices(cardapio, categorias, pratos):
         f'<span class="card__numero">{e(b["numero"])}</span>'
         f'<span class="card__nome">{e(b["nome"])}</span>'
         f'<span class="card__contagem">{b["total_itens"]}</span>'
-        f'<span class="card__chevron">{svg(CHEVRON, 18)}</span></a>'
+        f'<span class="card__chevron">{usar("seta", 18)}</span></a>'
         for b in sorted(cardapio["barracas"], key=lambda x: x["numeros"][0]))
     return cards_cat, cards_bar
 
@@ -356,6 +410,7 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🍝</text></svg>">
 </head>
 <body data-modo="categoria">
+{sprite_html()}
 
 <header class="marca">
   <div class="marca__linha">
@@ -388,9 +443,9 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
 
 <main>
   <div class="trilha" id="trilha" hidden>
-    <button class="voltar" type="button" aria-label="Voltar">{svg(CHEVRON, 18, "icone voltar__seta")}</button>
+    <button class="voltar" type="button" aria-label="Voltar">{usar("seta", 18, "icone voltar__seta")}</button>
     <h2 class="trilha__titulo" id="trilha-titulo"></h2>
-    <button class="trilha__mapa" type="button" id="ver-no-mapa" hidden>{svg(ALFINETE, 15)}ver no mapa</button>
+    <button class="trilha__mapa" type="button" id="ver-no-mapa" hidden>{usar("pin", 15)}ver no mapa</button>
   </div>
 
   <section class="indice" id="idx-categoria" aria-label="Categorias">{cards_cat}</section>
@@ -517,7 +572,9 @@ body {
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 a { color: var(--verde); }
 :focus-visible { outline: 3px solid var(--verde); outline-offset: 2px; border-radius: 4px; }
-.icone { flex: 0 0 auto; }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.icone { flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.7;
+         stroke-linecap: round; stroke-linejoin: round; }
 
 /* ---- faixa de marca: rola embora ---- */
 .marca { padding: var(--e3) var(--e4) var(--e2); }
