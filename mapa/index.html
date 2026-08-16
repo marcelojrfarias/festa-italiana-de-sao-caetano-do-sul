@@ -23,10 +23,14 @@ const [mapa, cardapio] = await Promise.all([
   fetch('../data/mapa.json').then((r) => r.json()),
   fetch('../data/cardapio.json').then((r) => r.json()),
 ]);
-if (mapa._status !== 'conferido') {
+const RECADO = {
+  aproximado: 'Posições aproximadas — aguardando a planta oficial da festa.',
+  parcial: 'Arranjo conforme o mapa oficial da festa; a escala ainda é estimada.',
+};
+if (RECADO[mapa._status]) {
   const a = document.getElementById('aviso');
   a.hidden = false;
-  a.textContent = 'Posições aproximadas — aguardando a planta oficial da festa.';
+  a.textContent = RECADO[mapa._status];
 }
 const porNumero = new Map(cardapio.barracas.map((b) => [b.numero, b]));
 criarCroqui(document.getElementById('croqui'), mapa, {

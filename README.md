@@ -12,7 +12,7 @@ São Caetano do Sul**, extraídos do PDF oficial do menu (58 páginas).
 | `assets/` | Logo com transparência, texturas de fundo, faixa de patrocinadores, selos institucionais e capa |
 | `docs/cardapio-33a-festa-italiana.pdf` | PDF de origem |
 | `scripts/` | Extratores e validador (reprodutíveis) |
-| `data/mapa.json` | Geometria das 35 barracas — **posições ainda aproximadas** |
+| `data/mapa.json` | Geometria das 35 barracas, conforme o mapa oficial das entidades |
 | `mapa/` | Croqui em SVG e o editor de planta ([detalhes](mapa/README.md)) |
 
 ## Como regerar

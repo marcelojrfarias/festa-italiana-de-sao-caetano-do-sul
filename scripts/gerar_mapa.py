@@ -1,24 +1,29 @@
 #!/usr/bin/env python3
 """Gera data/mapa.json — a geometria da festa, separada do cardápio.
 
-O traçado aqui é APROXIMADO: veio do croqui de memória, medido em pixels sobre
-uma captura do Google Maps (escala 50 m). Quando o mapa oficial chegar, remeça
-os pixels sobre ele, troque as constantes abaixo e rode de novo — o formato de
-saída e o resto do app não mudam.
+O traçado vem do "MAPA DAS ENTIDADES" oficial da 33ª Festa Italiana, medido em
+pixels sobre uma foto do banner montado na festa. O arranjo das barracas é o
+oficial; a escala e a orientação ainda são estimadas (a foto tem perspectiva e
+o banner não traz barra de escala), então `_status` continua "parcial" até
+alguém passar o editor por cima.
+
+Atenção: a numeração NÃO acompanha o percurso. Ela é por entidade, e os números
+aparecem espalhados pelo mapa — 17 no topo, 01 no meio, 31 isolado na praça.
 
 Sistema de coordenadas: métrico local, x = leste, y = norte, em metros, com
-origem no cruzamento R. Mariano Pamplona x R. Ceara. Nao ha lat/lng aqui de
-proposito: chutar coordenada geografica seria inventar dado. Georreferenciar
-depois e preencher um ponto e um azimute em `frame.origem`.
+origem no cruzamento R. Mariano Pamplona x R. Vinte e Oito de Julho. Não há
+lat/lng aqui de propósito: chutar coordenada geográfica seria inventar dado.
 """
 import json
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 
-# --- calibração da captura -------------------------------------------------
-M_POR_PX = 0.45          # barra de escala: ~110 px para 50 m
-ORIGEM_PX = (800, 408)   # cruzamento Mariano Pamplona x Ceara
+# --- calibração da foto do banner ------------------------------------------
+# 0,105 m/px vem do espaçamento da fila 12-28-27-22: quatro barracas vizinhas
+# em 222 px, com ~7 m de passo entre tendas.
+M_POR_PX = 0.105
+ORIGEM_PX = (1100, 960)   # cruzamento Mariano Pamplona x Vinte e Oito de Julho
 
 
 def m(px, py):
@@ -31,65 +36,57 @@ def linha(*pts):
     return [m(*p) for p in pts]
 
 
-# --- vias -------------------------------------------------------------------
+# --- vias, traçadas sobre o mapa oficial ------------------------------------
 VIAS = [
     {"id": "mariano-pamplona", "nome": "R. Mariano Pamplona", "largura_m": 9,
-     "eixo": linha((770, 60), (795, 300), (800, 408), (838, 560), (870, 700), (884, 830))},
-    {"id": "ceara", "nome": "R. Ceará", "largura_m": 9,
-     "eixo": linha((744, 411), (900, 407), (1060, 403))},
+     "eixo": linha((855, 200), (920, 500), (990, 800), (1075, 955), (1105, 1250))},
     {"id": "vinte-e-oito-de-julho", "nome": "R. Vinte e Oito de Julho", "largura_m": 9,
-     "eixo": linha((820, 702), (960, 698), (1090, 694))},
-    {"id": "acesso-parque", "nome": "Acesso ao Parque Província de Treviso", "largura_m": 6,
-     "eixo": linha((866, 760), (800, 775), (700, 800), (665, 820))},
-    # as duas filas de barracas do parque se olham por cima destes caminhos
-    {"id": "alameda-oeste", "nome": None, "largura_m": 5,
-     "eixo": linha((665, 826), (560, 834), (430, 838))},
-    {"id": "alameda-treviso", "nome": None, "largura_m": 5,
-     "eixo": linha((700, 900), (712, 1000), (726, 1100), (734, 1175))},
+     "eixo": linha((1085, 952), (1250, 938), (1460, 925))},
+    {"id": "alameda-norte", "nome": None, "largura_m": 6,
+     "eixo": linha((150, 1196), (400, 1193), (610, 1190))},
+    {"id": "alameda-travessa", "nome": None, "largura_m": 5,
+     "eixo": linha((270, 1252), (400, 1248))},
+    {"id": "alameda-parque", "nome": None, "largura_m": 6,
+     "eixo": linha((648, 1300), (652, 1600), (658, 1920))},
 ]
 
-# --- áreas de referência ----------------------------------------------------
 AREAS = [
     {"id": "paroquia", "nome": "Paróquia São Caetano", "tipo": "referencia",
-     "ponto": m(823, 632)},
+     "ponto": m(650, 720)},
     {"id": "parque-treviso", "nome": "Parque Província de Treviso", "tipo": "referencia",
-     "ponto": m(700, 915)},
-    {"id": "praca-matarazzo", "nome": "Praça Com. Ermelino Matarazzo", "tipo": "referencia",
-     "ponto": m(990, 1000)},
+     "ponto": m(300, 1520)},
 ]
 
-# --- zonas e barracas -------------------------------------------------------
+# --- zonas e barracas, lidas do mapa oficial --------------------------------
 # (id, nome, via, azimute_frente, [(numero, px, py)])
-# azimute = direcao para onde a barraca esta virada, graus no sentido horario a
-# partir do norte. 90 = de frente para o leste.
 ZONAS = [
-    ("mariano-norte", "R. Mariano Pamplona — norte da R. Ceará", "mariano-pamplona", 90, [
-        ("1", 733, 175), ("2", 748, 232), ("3", 757, 285), ("4", 770, 330),
-        ("5", 775, 375), ("6", 782, 440), ("7", 798, 510), ("8", 806, 570),
-        ("9", 818, 625),
+    ("mariano-oeste", "R. Mariano Pamplona — lado oeste", "mariano-pamplona", 90, [
+        ("15", 825, 318), ("10", 840, 395), ("19", 855, 465), ("8", 875, 543),
+        ("7", 890, 615), ("32", 925, 775), ("13", 938, 850),
     ]),
-    ("mariano-sul-oeste", "R. Mariano Pamplona — trecho da Paróquia, lado oeste",
-     "mariano-pamplona", 90, [
-        ("10", 852, 458), ("11", 858, 512), ("12", 866, 570), ("13", 876, 620),
-        ("14", 884, 655),
+    ("mariano-leste", "R. Mariano Pamplona — lado leste", "mariano-pamplona", 270, [
+        ("17", 868, 258), ("18", 900, 320), ("5", 962, 508), ("25", 972, 590),
+        ("20/21", 1025, 802),   # duas tendas vizinhas: ponto médio de 21 e 20
     ]),
-    ("mariano-sul-leste", "R. Mariano Pamplona — trecho da Paróquia, lado leste",
-     "mariano-pamplona", 270, [
-        ("15", 928, 662), ("16", 962, 665), ("17", 995, 662), ("18", 880, 718),
-        ("19", 884, 748),
+    ("vinte-e-oito", "R. Vinte e Oito de Julho — lado norte", "vinte-e-oito-de-julho", 180, [
+        ("12", 1198, 930), ("28", 1272, 930), ("27", 1345, 930), ("22", 1420, 930),
     ]),
-    ("vinte-e-oito", "R. Vinte e Oito de Julho", "vinte-e-oito-de-julho", 180, [
-        ("20/21", 878, 782), ("22", 848, 812), ("23", 792, 808),
+    ("mariano-sul", "R. Mariano Pamplona — abaixo do cruzamento", "mariano-pamplona", 270, [
+        ("16", 1048, 1040), ("2", 1055, 1105), ("4", 1058, 1170), ("1", 1015, 1230),
     ]),
-    ("acesso-parque-norte", "Acesso ao parque — fila norte", "acesso-parque", 180, [
-        ("24", 447, 793), ("25", 495, 790), ("26", 552, 793), ("27", 610, 790),
+    ("praca", "Praça, a oeste da via", None, 90, [
+        ("31", 915, 1090),
     ]),
-    ("acesso-parque-sul", "Acesso ao parque — fila sul", "acesso-parque", 0, [
-        ("28", 440, 878), ("29", 487, 880), ("30", 535, 882),
+    ("parque-norte", "Parque — alameda norte", "alameda-norte", 180, [
+        ("3", 200, 1190), ("11", 268, 1190), ("29", 360, 1190),
+        ("9", 428, 1190), ("24", 495, 1190), ("6", 565, 1190),
     ]),
-    ("parque", "Dentro do Parque Província de Treviso", None, 90, [
-        ("31", 712, 962), ("32", 718, 1002), ("33", 722, 1042), ("34", 730, 1082),
-        ("35", 738, 1118), ("36", 745, 1152),
+    ("parque-travessa", "Parque — travessa", "alameda-travessa", 0, [
+        ("30", 310, 1245), ("14", 378, 1245),
+    ]),
+    ("parque-alameda", "Parque — alameda sul", "alameda-parque", 90, [
+        ("23", 628, 1560), ("26", 628, 1622), ("33", 628, 1685),
+        ("36", 628, 1745), ("34", 628, 1805), ("35", 628, 1865),
     ]),
 ]
 
@@ -107,6 +104,7 @@ def main():
             largura = LARGURA_PADRAO_M * len(numeros)  # a barraca dupla 20/21 é maior
             barracas.append({
                 "numero": numero,
+                "rotulo": "/".join(f"{int(n):02d}" for n in numero.split("/")),
                 "numeros": numeros,
                 "zona": zid,
                 "centro": list(m(px, py)),
@@ -118,14 +116,14 @@ def main():
 
     mapa = {
         "_schema": "festa-italiana/mapa@1",
-        "_status": "aproximado",
-        "_fonte": "croqui de memória sobre captura do Google Maps; substituir pelo mapa oficial",
+        "_status": "parcial",
+        "_fonte": "MAPA DAS ENTIDADES oficial da 33ª Festa Italiana, medido sobre foto do banner",
         "_chave_de_juncao": "`numero` casa com barracas[].numero de data/cardapio.json",
         "frame": {
             "descricao": "Métrico local: x = leste, y = norte, em metros.",
             "unidade": "m",
             "origem": {
-                "referencia": "Cruzamento R. Mariano Pamplona x R. Ceará",
+                "referencia": "Cruzamento R. Mariano Pamplona x R. Vinte e Oito de Julho",
                 "latlng": None,
                 "azimute_do_eixo_y": 0,
             },

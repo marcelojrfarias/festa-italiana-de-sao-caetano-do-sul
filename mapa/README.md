@@ -21,25 +21,34 @@ python3 -m http.server 8000
 # http://localhost:8000/mapa/editor.html
 ```
 
-## Estado atual: aproximado
+## Estado atual: parcial
 
-**As posições ainda não são as reais.** Elas vieram de um croqui de memória
-medido em pixels sobre uma captura do Google Maps, e `data/mapa.json` traz
-`_status: "aproximado"` e `aproximado: true` em cada barraca. A página de
-demonstração mostra um aviso enquanto isso for verdade. O que já está certo é a
-**estrutura** — sete zonas, a ordem 1→36 ao longo do percurso e a junção com o
-cardápio — e é isso que não muda quando a planta oficial chegar.
+O arranjo das barracas é o do **"MAPA DAS ENTIDADES" oficial** da 33ª Festa
+Italiana, medido em pixels sobre uma foto do banner montado na festa. As oito
+zonas, quem é vizinho de quem e de que lado da rua cada barraca fica: tudo isso
+é o oficial.
 
-## Quando a planta oficial chegar
+O que ainda não é exato é a **escala e a orientação**. A foto tem perspectiva e
+o banner não traz barra de escala, então os 0,105 m/px saíram do espaçamento da
+fila 12-28-27-22 — quatro tendas vizinhas, ~7 m de passo. Daí `_status:
+"parcial"` e o aviso na página de demonstração.
 
-Abra `mapa/editor.html`, carregue a imagem da planta como fundo, alinhe-a pelas
-ruas (escala, giro, e botão direito para arrastar) e mova cada barraca para o
-lugar. Cada uma que você tocar perde o `aproximado`. No fim, "Exportar" baixa o
-`mapa.json` para substituir o do repositório; quando não sobrar nenhuma
-aproximada, o `_status` vira `conferido` e o aviso some sozinho.
+> A numeração **não acompanha o percurso**. Ela é por entidade e aparece
+> espalhada pelo mapa: 17 no topo, 01 no meio, 31 sozinha na praça, 35 e 36 no
+> fundo do parque. Não dá para inferir vizinhança a partir do número.
 
-Se a planta vier como uma lista ("barraca 12 na esquina da Ceará com a
-Pamplona") em vez de desenho, o caminho é o mesmo, só sem imagem de fundo.
+## Para fechar a escala
+
+Abra `mapa/editor.html`, carregue a foto do banner (ou a arte original) como
+fundo, alinhe-a pelas ruas (escala, giro, e botão direito para arrastar) e
+ajuste as barracas. Cada uma que você tocar perde o `aproximado`; quando não
+sobrar nenhuma, o `_status` exportado vira `conferido` e o aviso some sozinho.
+
+O que mais ajudaria aqui é **o arquivo original da arte do banner** (PDF ou PNG,
+com os organizadores). Com ele dá para largar o traçado vetorial e usar a
+própria ilustração oficial como fundo do mapa, com as barracas viradas áreas
+clicáveis por cima — mais bonito, já familiar para quem viu o banner na rua, e
+sem nenhum palpite de escala.
 
 ## O contrato com o app do cardápio
 
@@ -47,6 +56,9 @@ O mapa **não duplica** dado do cardápio. `data/mapa.json` só tem geometria e 
 junta a `data/cardapio.json` pelo campo `numero`, que é 1:1 nos dois arquivos —
 incluindo a barraca dupla, que é `"20/21"` nos dois lados. Quem mexe no cardápio
 não precisa tocar no mapa, e vice-versa.
+
+Há também `rotulo`, que é como o número aparece impresso no banner oficial
+(`"01"`, `"08"`, `"20/21"`). Use `rotulo` para mostrar e `numero` para juntar.
 
 ```js
 import { criarCroqui } from './mapa/croqui.js';

@@ -121,7 +121,7 @@ export function criarCroqui(hospedeiro, mapa, opcoes = {}) {
 
   // Um retangulo de 4 m tem ~6 px quando o quadro inteiro cabe na tela. Abaixo
   // desse zoom a barraca vira pino numerado; ao aproximar, volta a escala real.
-  const LIMIAR_PINO_M = 190;
+  const LIMIAR_PINO_M = 90;
 
   function desenharBarracas() {
     const g = camadas.barracas;
@@ -136,9 +136,16 @@ export function criarCroqui(hospedeiro, mapa, opcoes = {}) {
       const apagada = filtro && !b.numeros.some((n) => filtro.has(String(n))) && !filtro.has(b.numero);
       const classe = `barraca${b.numero === selecionada ? ' selecionada' : ''}${apagada ? ' apagada' : ''}`;
       if (pino) {
-        grupo.append(el('circle', { class: classe, r: 4.2 }));
-        const rot = el('text', { class: 'barraca-num pino', transform: `rotate(${90 - (b.azimute || 0)})` });
-        rot.textContent = b.numero;
+        // a barraca dupla tem rotulo "20/21": o pino cresce com o texto, senao corta
+        const texto = b.rotulo || b.numero;
+        const larg = Math.max(8.4, 2.5 * texto.length + 3);
+        grupo.append(el('rect', { class: classe, x: -larg / 2, y: -4.2,
+                                  width: larg, height: 8.4, rx: 4.2 }));
+        const rot = el('text', {
+          class: 'barraca-num pino', 'font-size': texto.length > 2 ? 3.4 : 4,
+          transform: `rotate(${90 - (b.azimute || 0)})`,
+        });
+        rot.textContent = texto;
         grupo.append(rot);
         ligarPonteiro(grupo, b);
         g.append(grupo);
@@ -150,7 +157,7 @@ export function criarCroqui(hospedeiro, mapa, opcoes = {}) {
         width: b.profundidade_m || 3, height: b.largura_m || 4, rx: 0.4,
       }));
       const t = el('text', { class: 'barraca-num', transform: `rotate(${90 - (b.azimute || 0)})` });
-      t.textContent = b.numero;
+      t.textContent = b.rotulo || b.numero;
       grupo.append(t);
       ligarPonteiro(grupo, b);
       g.append(grupo);
