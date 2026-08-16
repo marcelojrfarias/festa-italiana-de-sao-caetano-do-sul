@@ -423,6 +423,89 @@ def descricao_por_variacao(descricao, n):
     return [f"{prefixo} com {x}" for x in itens]
 
 
+# Preposição que abre um sabor. É ela que separa "Gelato Al Cioccolato, Alla
+# Fragola e Alla Crema" — três sorvetes — de "Pizza Alla Salsiccia Calabrese,
+# Cipolle e Catupiry", que é uma pizza com três ingredientes. No primeiro cada
+# trecho depois da vírgula abre com preposição; no segundo são substantivos
+# soltos, porque a lista é de recheio e não de sabor.
+ABRE_SABOR = ("al ", "alla ", "ai ", "alle ", "allo ", "agli ", "all'", "con ", "di ")
+
+
+def _abre_sabor(txt):
+    t = sem_acento(txt).strip()
+    return any(t.startswith(p) for p in ABRE_SABOR)
+
+
+def _quebra_e(partes):
+    """'a, b e c' chega como ['a', 'b e c']; devolve ['a', 'b', 'c']."""
+    if partes and " e " in partes[-1]:
+        cabeca, _, ultimo = partes[-1].rpartition(" e ")
+        return partes[:-1] + [cabeca.strip(), ultimo.strip()]
+    return partes
+
+
+def _virgulas(txt):
+    return [x.strip() for x in txt.split(",") if x.strip()]
+
+
+def variacoes_por_virgula(titulo, descricao):
+    """Sabores enumerados por vírgula, que o extrator não separa (ele corta em
+    "/"). Devolve (titulos, descricoes) ou None.
+
+    Duas formas, e a diferença importa:
+
+      travessão  "Pizza Tradizionale 18 cm – Al Formaggio, Alla Salsiccia
+                 Calabrese, ..." — o traço anuncia a lista, então basta a
+                 descrição enumerar a mesma quantidade. Aqui um sabor pode não
+                 abrir com preposição ("Margherita Ai Due Formaggi").
+
+      só vírgula "Gelato Al Cioccolato, Alla Fragola e Alla Crema" — sem
+                 anúncio, o único sinal de que são sabores e não ingredientes é
+                 cada trecho abrir com preposição. Sem essa exigência, a pizza
+                 de calabresa com cebola e catupiry viraria três pizzas.
+
+    Nos dois casos a contagem da descrição tem de bater. Quando não bate, o
+    texto não está descrevendo os sabores um a um e separar inventaria conteúdo.
+    """
+    if "," not in titulo:
+        return None
+
+    if "–" in titulo and "–" in (descricao or ""):
+        cabeca, _, cauda = titulo.partition("–")
+        d_cabeca, _, d_cauda = descricao.partition("–")
+        sabores = _virgulas(cauda)
+        if len(sabores) < 2:
+            return None
+        for sep in (",", "/"):
+            partes = [x.strip() for x in d_cauda.split(sep) if x.strip()]
+            if len(partes) == len(sabores):
+                return ([f"{cabeca.strip()} {x}" for x in sabores],
+                        [f"{d_cabeca.strip()} – {x}" for x in partes])
+        return None
+
+    sabores = _quebra_e(_virgulas(titulo))
+    if len(sabores) < 2 or not all(_abre_sabor(x) for x in sabores[1:]):
+        return None
+    # o prato está grudado no primeiro sabor: "Gelato Al Cioccolato"
+    palavras = sabores[0].split()
+    corte = next((i for i, p in enumerate(palavras)
+                  if sem_acento(p) in PREPOSICOES and i > 0), 0)
+    if not corte:
+        return None
+    prato, sabores[0] = " ".join(palavras[:corte]), " ".join(palavras[corte:])
+
+    partes = _quebra_e(_virgulas(descricao or ""))
+    if len(partes) != len(sabores):
+        return None
+    # "Sorvete Italiano nos sabores Chocolate" não é português; o próprio
+    # cardápio escreve "sabor Chocolate" em outras barracas
+    d_cabeca, _, primeiro = partes[0].rpartition(" ")
+    d_cabeca = re.sub(r"\s*(nos\s+)?sabores$", " sabor", d_cabeca).strip()
+    partes[0] = primeiro
+    return ([f"{prato} {x}" for x in sabores],
+            [f"{d_cabeca} {x}".strip() for x in partes])
+
+
 def expandir_titulo(item):
     """Um item por sabor ou formato de massa.
 
@@ -443,10 +526,18 @@ def expandir_titulo(item):
     # quais. O traço pendurado não informa nada.
     desc = re.sub(r"\s*[–-]\s*sabores\s*$", "", item["descricao"])
 
+    # "Sabores" sozinho, sem dizer quais: ocupa a linha da descrição sem
+    # informar nada. Melhor o card não ter descrição.
+    if sem_acento(desc).strip() in ("sabores", "sabor"):
+        desc = ""
+
     if item["id"] in EXPANSAO_MANUAL:
         return [(t, desc) for t in EXPANSAO_MANUAL[item["id"]]]
     v = item.get("variacoes") or []
     if len(v) < 2:
+        por_virgula = variacoes_por_virgula(item["titulo"], desc)
+        if por_virgula:
+            return list(zip(*por_virgula))
         return [(item["titulo"], desc)]
 
     primeiro, ultimo = v[0].split(), v[-1].split()
