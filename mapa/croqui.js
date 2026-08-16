@@ -92,22 +92,47 @@ const SVG = 'http://www.w3.org/2000/svg';
     }
   
     // --- desenho --------------------------------------------------------------
-    /** Ponto da via, dentro do quadro, mais longe de qualquer barraca. */
+    /**
+     * Onde pousar o nome da via.
+     *
+     * Nao basta olhar o ponto de ancoragem: o texto se estende ao longo da rua e
+     * atropela as barracas mesmo com a ancora caindo num vao. Aqui cada candidato
+     * e julgado pela faixa inteira que o texto vai ocupar.
+     */
     function pousoDoNome(via) {
-      const cx = via.eixo, q = limites(), folga = 12;
+      const cx = via.eixo, q = limites(), folga = 5;
+      // o rotulo tem tamanho de tela; em metros ele mede isto no zoom atual
+      const meia = (via.nome.length * 3 * 0.55 * fatorPino()) / 2;
       let melhor = null, maiorDist = -1;
       for (let i = 1; i < cx.length; i++) {
         const [a, b] = [cx[i - 1], cx[i]];
-        for (let k = 0; k <= 40; k++) {
-          const u = k / 40;
-          const pt = [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u];
-          if (pt[0] < q.x + folga || pt[0] > q.x + q.w - folga) continue;
-          if (-pt[1] < q.y + folga || -pt[1] > q.y + q.h - folga) continue;
-          let d = Infinity;
-          for (const bar of mapa.barracas) d = Math.min(d, Math.hypot(pt[0] - bar.centro[0], pt[1] - bar.centro[1]));
-          if (d > maiorDist) {
-            maiorDist = d;
-            melhor = { meio: pt, ang: (Math.atan2(-(b[1] - a[1]), b[0] - a[0]) * 180) / Math.PI };
+        const L = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+        const u = [(b[0] - a[0]) / L, (b[1] - a[1]) / L];
+        const n = [-u[1], u[0]];                    // normal da via
+        for (let k = 0; k <= 60; k++) {
+          const base = [a[0] + (b[0] - a[0]) * k / 60, a[1] + (b[1] - a[1]) * k / 60];
+          // rua cheia de barraca dos dois lados nao tem onde caber o nome; entao
+          // ele pode sair do leito e deitar ao lado, como em mapa impresso
+          for (const lado of [0, -14, 14, -22, 22]) {
+            const pt = [base[0] + n[0] * lado, base[1] + n[1] * lado];
+            let d = Infinity, cabe = true;
+            for (let j = -2; j <= 2 && cabe; j++) {
+              const amostra = [pt[0] + u[0] * meia * j / 2, pt[1] + u[1] * meia * j / 2];
+              // o texto inteiro precisa caber, nao so a ancora: era o que fazia
+              // "R. Vinte e Oito de Julho" sair cortado na borda do quadro
+              cabe = amostra[0] >= q.x + folga && amostra[0] <= q.x + q.w - folga
+                  && -amostra[1] >= q.y + folga && -amostra[1] <= q.y + q.h - folga;
+              for (const bar of mapa.barracas) {
+                d = Math.min(d, Math.hypot(amostra[0] - bar.centro[0], amostra[1] - bar.centro[1]));
+              }
+            }
+            if (!cabe) continue;
+            // empate vai para o leito: fora dele o nome custa um passo de leitura
+            const nota = d - Math.abs(lado) * 0.15;
+            if (nota > maiorDist) {
+              maiorDist = nota;
+              melhor = { meio: pt, ang: (Math.atan2(-(b[1] - a[1]), b[0] - a[0]) * 180) / Math.PI };
+            }
           }
         }
       }

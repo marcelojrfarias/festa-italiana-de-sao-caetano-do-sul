@@ -47,6 +47,7 @@ def retangulo(x0, y0, x1, y1):
 # serve de eixo de orientação, e eixo torto não orienta.
 VIAS = [
     {"id": "mariano-pamplona", "nome": "R. Mariano Pamplona", "largura_m": 9,
+     # a ponta sul e aparada depois, na barraca que fecha a rua
      "eixo": [[-32.0, 110.0], [21.3, -125.0]]},
     {"id": "vinte-e-oito-de-julho", "nome": "R. Vinte e Oito de Julho", "largura_m": 9,
      "eixo": [[-11.0, 0.0], [60.0, 0.0]]},
@@ -130,6 +131,9 @@ FOLGA_CALCADA_M = 1.5
 # a rua.
 NO_EIXO = {"1"}
 
+# barraca que marca o fim da via: o traco da rua para nela
+FIM_DE_VIA = {"1": "mariano-pamplona"}
+
 
 def encostar(centro, azimute, via, profundidade):
     """Empurra a barraca para fora do leito, ate a calcada.
@@ -192,6 +196,14 @@ def main():
         "zonas": zonas,
         "barracas": barracas,
     }
+
+    # A rua nao segue depois da barraca que a fecha: 01 esta plantada no fim da
+    # R. Mariano Pamplona, e o asfalto ao sul dela nao existe. Aparar aqui, e nao
+    # na constante, mantem a ponta grudada na barraca se ela se mexer.
+    for numero, via_id in FIM_DE_VIA.items():
+        b = next(x for x in barracas if x["numero"] == numero)
+        via = next(v for v in VIAS if v["id"] == via_id)
+        via["eixo"][-1] = [round(c, 1) for c in b["centro"]]
 
     xs = [b["centro"][0] for b in barracas]
     ys = [b["centro"][1] for b in barracas]
