@@ -624,6 +624,12 @@ JS = r"""(function () {
   'use strict';
   document.documentElement.classList.add('js');
 
+  /* Com scrollRestoration em 'auto' o navegador devolve, ao voltar, a posição
+     de rolagem que ele guardou — que pode ser maior que o documento novo,
+     porque aqui todas as telas são o mesmo documento com conteúdo trocado. O
+     resultado é papel em branco abaixo do rodapé. Assumimos o controle. */
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
   var body = document.body,
       lista = document.getElementById('lista'),
       pratos = Array.prototype.slice.call(lista.children),
@@ -739,18 +745,36 @@ JS = r"""(function () {
       b.setAttribute('aria-pressed', String(b.dataset.preco === estado.preco));
     });
     if (busca.value !== estado.q) busca.value = estado.q;
+
+    // se o conteúdo encolheu e a rolagem ficou além do fim, puxa de volta
+    var limite = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    if (window.scrollY > limite) window.scrollTo(0, limite);
+  }
+
+  function guardarRolagem() {
+    var atual = history.state || {};
+    atual.y = window.scrollY;
+    history.replaceState(atual, '', location.href);
   }
 
   function navegar(push) {
-    if (push !== false) history.pushState(estado, '', montarURL());
+    if (push !== false) {
+      var novo = {}; for (var k in estado) novo[k] = estado[k]; novo.y = 0;
+      history.pushState(novo, '', montarURL());
+    }
     aplicar();
   }
 
   /* voltar do sistema (Android) e do navegador devolvem ao nível anterior */
-  window.addEventListener('popstate', function () { lerURL(); aplicar(); });
+  window.addEventListener('popstate', function (ev) {
+    lerURL();
+    aplicar();
+    window.scrollTo(0, (ev.state && ev.state.y) || 0);
+  });
 
   document.querySelectorAll('.modos button').forEach(function (b) {
     b.addEventListener('click', function () {
+      guardarRolagem();
       estado.modo = b.dataset.modo;
       estado.cat = estado.barraca = estado.preco = '';
       navegar();
@@ -762,6 +786,7 @@ JS = r"""(function () {
     var card = ev.target.closest('.indice .card');
     if (card) {
       ev.preventDefault();
+      guardarRolagem();
       if (card.dataset.cat) { estado.cat = card.dataset.cat; estado.modo = 'categoria'; }
       else { estado.barraca = card.dataset.barraca; estado.modo = 'barraca'; }
       navegar();
