@@ -90,8 +90,23 @@ junta a `data/cardapio.json` pelo campo `numero`, que é 1:1 nos dois arquivos �
 incluindo a barraca dupla, que é `"20/21"` nos dois lados. Quem mexe no cardápio
 não precisa tocar no mapa, e vice-versa.
 
-Há também `rotulo`, que é como o número aparece impresso no banner oficial
-(`"01"`, `"08"`, `"20/21"`). Use `rotulo` para mostrar e `numero` para juntar.
+São **três** campos, e cada um serve a uma coisa:
+
+| campo | para quê | barraca dupla |
+| --- | --- | --- |
+| `numero` | juntar com `data/cardapio.json` | `"20/21"` |
+| `rotulo` | mostrar (é como sai impresso no banner) | `"20/21"` |
+| `chave` | URL e `data-barraca` do site | `"20-21"` |
+
+`chave` **não** está no arquivo: `build_site.py` a calcula na hora, com o mesmo
+`chave_barraca()` que o resto do site usa. A barra não pode ir para a URL nem
+para a lista separada por espaço em `data-barracas`. O croqui aceita qualquer um
+dos três ao destacar ou selecionar, então quem consome não precisa saber a
+diferença.
+
+`conferir_juncao()` derruba o build se o mapa e o cardápio deixarem de casar.
+Não é zelo excessivo: já quebrou calado uma vez, quando o formato da chave mudou
+no site e a barraca dupla sumiu do mapa sem nenhum erro.
 
 ```js
 import { criarCroqui } from './mapa/croqui.js';

@@ -163,8 +163,13 @@ const SVG = 'http://www.w3.org/2000/svg';
           transform: `translate(${cx},${-cy}) rotate(${(b.azimute || 0) - 90})`,
           'data-numero': b.numero,
         });
-        const apagada = filtro && !b.numeros.some((n) => filtro.has(String(n))) && !filtro.has(b.numero);
-        const classe = `barraca${b.numero === selecionada ? ' selecionada' : ''}${apagada ? ' apagada' : ''}`;
+        const apagada = filtro && !filtro.has(b.numero) &&
+          !(b.chave && filtro.has(b.chave)) &&
+          !b.numeros.some((n) => filtro.has(String(n)));
+        const eSelecionada = selecionada != null &&
+          (selecionada === b.numero || selecionada === b.chave ||
+           b.numeros.some((n) => String(n) === String(selecionada)));
+        const classe = `barraca${eSelecionada ? ' selecionada' : ''}${apagada ? ' apagada' : ''}`;
         if (pino) {
           // a barraca dupla tem rotulo "20/21": o pino cresce com o texto, senao corta
           const texto = b.rotulo || b.numero;

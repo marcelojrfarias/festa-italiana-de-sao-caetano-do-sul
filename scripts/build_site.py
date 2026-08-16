@@ -95,6 +95,11 @@ def ler_mapa():
     lotada, cada ida a rede a mais e uma chance de o mapa nao abrir.
     """
     mapa = json.loads((DADOS / "mapa.json").read_text(encoding="utf-8"))
+    # `numero` e a chave de juncao com o cardapio; `chave` e a mesma barraca no
+    # formato que vai para a URL e para os data-attributes. A regra e uma so,
+    # chave_barraca(), para o mapa nao redescobrir que "20/21" vira "20-21".
+    for b in mapa["barracas"]:
+        b["chave"] = chave_barraca(b["numero"])
     fontes = "".join((RAIZ / "mapa" / n).read_text(encoding="utf-8")
                      for n in ("geo.js", "croqui.js"))
     return mapa, fontes
@@ -950,10 +955,10 @@ JS_MAPA = r"""
              q: p.get('q') || '', preco: p.get('preco') || '' };
   }
 
-  function irPara(numero) {
+  function irPara(numero, barraca) {
     var p = new URLSearchParams(location.search);
     p.delete('modo'); p.delete('cat');
-    p.set('barraca', numero);
+    p.set('barraca', (barraca && barraca.chave) || numero);
     history.pushState(null, '', '?' + p.toString());
     window.dispatchEvent(new PopStateEvent('popstate'));
     window.scrollTo(0, 0);
@@ -980,12 +985,22 @@ JS_MAPA = r"""
         if (!vistas[b]) { vistas[b] = 1; n++; }
       });
     });
-    var filtrando = !!(st.q || st.preco || st.barraca);
-    croqui.destacar(filtrando ? Object.keys(vistas) : null);
-    if (st.barraca) croqui.selecionar(st.barraca);
-
-    filtros.hidden = false;
     contador.hidden = false;
+    if (st.barraca) {
+      // olhando UMA barraca: acende so ela. Nao da para usar as barracas dos
+      // pratos visiveis — o mesmo prato e vendido em varias, e o mapa acenderia
+      // quase todas.
+      var b = null;
+      window.FESTA_MAPA.barracas.forEach(function (x) { if (x.chave === st.barraca) b = x; });
+      croqui.destacar([st.barraca]);
+      croqui.selecionar(st.barraca);
+      filtros.hidden = true;
+      contador.textContent = 'barraca ' + ((b && (b.rotulo || b.numero)) || st.barraca);
+      return;
+    }
+    filtros.hidden = false;
+    var filtrando = !!(st.q || st.preco);
+    croqui.destacar(filtrando ? Object.keys(vistas) : null);
     contador.textContent = filtrando
       ? n + (n === 1 ? ' barraca' : ' barracas')
       : window.FESTA_MAPA.barracas.length + ' barracas no mapa';
@@ -1006,6 +1021,22 @@ JS_MAPA = r"""
   sincronizar();
 })();
 """
+
+
+def conferir_juncao(cardapio, mapa):
+    """O mapa e o cardapio sao mantidos separados e so se encontram pela chave.
+
+    Ja quebrou uma vez sem ninguem notar: mudou o formato da chave no site e a
+    barraca dupla sumiu do mapa. Aqui o build para, em vez de publicar torto.
+    """
+    site = {chave_barraca(b["numero"]) for b in cardapio["barracas"]}
+    geo = {b["chave"] for b in mapa["barracas"]}
+    if site != geo:
+        so_site, so_mapa = sorted(site - geo), sorted(geo - site)
+        raise SystemExit(
+            "data/mapa.json e data/cardapio.json nao se juntam mais.\n"
+            f"  so no cardapio: {so_site or 'nenhuma'}\n"
+            f"  so no mapa:     {so_mapa or 'nenhuma'}")
 
 
 def otimizar_assets():
@@ -1048,6 +1079,7 @@ def main():
         raise SystemExit(f"EXPANSAO_MANUAL aponta para id inexistente: {sorted(orfas)}")
     mapa, fontes_mapa = ler_mapa()
     pratos = agrupar_pratos(cardapio, categorias)
+    conferir_juncao(cardapio, mapa)
 
     if DIST.exists():
         shutil.rmtree(DIST)
