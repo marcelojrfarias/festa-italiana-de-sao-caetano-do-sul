@@ -242,7 +242,7 @@ def render_html(cardapio, categorias, evento, pratos):
 <div class="ferramentas">
   <form class="busca" role="search" onsubmit="return false">
     <label class="sr" for="q">Buscar prato</label>
-    <input id="q" type="search" placeholder="buscar prato, ex: tiramisù" autocomplete="off">
+    <input id="q" type="search" placeholder="Buscar…" autocomplete="off">
   </form>
   <nav class="modos" aria-label="Modo de visualização">
     <button type="button" data-modo="categoria" aria-pressed="true">Categorias</button>
@@ -397,7 +397,7 @@ main { padding: var(--e4) var(--e4) 0; }
 /* ---- índices ---- */
 .indice { display: grid; gap: var(--e2); }
 .card {
-  display: grid; grid-template-columns: 44px 1fr auto 18px; align-items: center;
+  display: grid; grid-template-columns: auto 1fr auto 18px; align-items: center;
   gap: var(--e3); padding: var(--e3) var(--e4); background: var(--cartao);
   border-radius: var(--raio); box-shadow: var(--sombra-2);
   text-decoration: none; color: var(--tinta);
@@ -409,7 +409,9 @@ main { padding: var(--e4) var(--e4) 0; }
   border-radius: 50%; background: var(--verde-suave); color: var(--verde);
 }
 .card__numero {
-  display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+  /* pílula, não círculo: a barraca dupla imprime "20/21" e estourava o círculo */
+  display: grid; place-items: center; min-width: 40px; height: 40px;
+  padding: 0 9px; border-radius: 999px;
   background: var(--dourado); color: #3A2A12;
   font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums;
 }
@@ -455,7 +457,7 @@ main { padding: var(--e4) var(--e4) 0; }
 }
 .prato__desc { margin: var(--e1) 0 0; font-size: 14px; color: var(--tinta-fraca); }
 .prato__onde {
-  display: grid; grid-template-columns: 26px 1fr; align-items: center; gap: var(--e2);
+  display: grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--e2);
   margin: var(--e3) 0 0; padding-top: var(--e2);
   border-top: 1px solid var(--papel); font-size: 13px;
 }
@@ -467,11 +469,12 @@ main { padding: var(--e4) var(--e4) 0; }
 .ofertas { display: none; margin: var(--e3) 0 0; padding: 0; list-style: none; }
 .prato__toggle[aria-expanded="true"] + .ofertas { display: block; }
 .oferta {
-  display: grid; grid-template-columns: 26px 1fr auto; align-items: center; gap: var(--e2);
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--e2);
   padding: var(--e2) 0; border-top: 1px solid var(--papel); font-size: 14px;
 }
 .oferta__num, .prato__onde .oferta__num {
-  display: grid; place-items: center; width: 26px; height: 22px; border-radius: 999px;
+  display: grid; place-items: center; min-width: 26px; height: 22px;
+  padding: 0 6px; border-radius: 999px;
   background: var(--dourado); color: #3A2A12;
   font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums;
 }
