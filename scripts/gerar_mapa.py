@@ -54,8 +54,10 @@ def poli(*pts):
     return [m(*p) for p in pts]
 
 
-# Massas do entorno, tracadas a olho sobre a foto do banner. Sao contexto para a
-# pessoa se localizar — "estou do lado da igreja", "isso aqui e o parque" — e nao
+# Massas do entorno, tracadas a olho sobre a foto do banner. So as que ajudam a
+# se localizar: os quarteiroes a leste da via e o patio ao sul foram tirados de
+# proposito — nao tem barraca neles e so enchiam o mapa de retangulo. Sao contexto
+# para a pessoa se localizar — "estou do lado da igreja", "isso aqui e o parque" — e nao
 # levantamento. Desenho proprio, simplificado; a arte do banner e dos organizadores.
 AREAS = [
     {"id": "quadra-paroquia", "nome": "Paróquia São Caetano", "tipo": "edificado",
@@ -63,12 +65,6 @@ AREAS = [
      "poligono": poli((495, 635), (700, 610), (875, 650), (880, 870), (600, 885), (490, 835))},
     {"id": "quadra-oeste", "nome": None, "tipo": "edificado", "aproximado": True,
      "poligono": poli((185, 790), (420, 760), (430, 1040), (195, 1060))},
-    {"id": "quadra-nordeste", "nome": None, "tipo": "edificado", "aproximado": True,
-     "poligono": poli((1145, 610), (1500, 600), (1505, 900), (1150, 910))},
-    {"id": "quadra-sudeste", "nome": None, "tipo": "edificado", "aproximado": True,
-     "poligono": poli((1130, 985), (1500, 975), (1505, 1310), (1135, 1320))},
-    {"id": "patio-sudeste", "nome": None, "tipo": "pavimento", "aproximado": True,
-     "poligono": poli((950, 1350), (1460, 1345), (1465, 1800), (955, 1805))},
     {"id": "largo", "nome": None, "tipo": "pavimento", "aproximado": True,
      "poligono": poli((150, 880), (905, 875), (910, 1225), (155, 1230))},
     {"id": "parque-treviso", "nome": "Parque Província de Treviso", "tipo": "verde",
