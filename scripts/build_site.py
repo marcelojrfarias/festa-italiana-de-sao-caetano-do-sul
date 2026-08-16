@@ -1503,6 +1503,9 @@ JS_MAPA = r"""
     if (!a || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return;
     ev.preventDefault();
     var p = new URLSearchParams(location.search);
+    // categoria e tipo não vão junto: no mapa eles não aparecem em lugar nenhum
+    // e voltariam a filtrar a lista sem nada na tela dizendo por quê. A busca
+    // fica, porque essa continua visível na caixa
     p.delete('cat'); p.delete('fam');
     p.set('modo', 'mapa');
     p.set('barraca', a.dataset.irMapa);
