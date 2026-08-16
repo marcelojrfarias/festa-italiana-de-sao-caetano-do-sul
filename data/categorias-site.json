@@ -30,13 +30,13 @@
       "id": "pizzas-e-fogazza",
       "nome": "Pizzas e Fogazza",
       "ordem": 4,
-      "total": 55
+      "total": 52
     },
     {
       "id": "lanches",
       "nome": "Lanches",
       "ordem": 5,
-      "total": 35
+      "total": 38
     },
     {
       "id": "petiscos-e-porcoes",
@@ -89,9 +89,9 @@
     "1-23-suco-de-uva-natural-copo": "bebidas-sem-alcool",
     "1-24-vinho-tinto-copo": "bebidas-com-alcool",
     "1-25-vinho-quente-copo": "bebidas-com-alcool",
-    "10-01-focaccia-caprese": "pizzas-e-fogazza",
-    "10-02-focaccia-alla-mortadella": "pizzas-e-fogazza",
-    "10-03-focaccia-de-porchetta": "pizzas-e-fogazza",
+    "10-01-focaccia-caprese": "lanches",
+    "10-02-focaccia-alla-mortadella": "lanches",
+    "10-03-focaccia-de-porchetta": "lanches",
     "10-04-polenta-con-ragu-di-costine-e-pane-italiano": "carnes-e-polenta",
     "10-05-porzioni-porchetta-delle-marche": "petiscos-e-porcoes",
     "10-06-agua": "bebidas-sem-alcool",

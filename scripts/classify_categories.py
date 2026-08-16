@@ -59,10 +59,12 @@ def classificar(item):
         return "bebidas-com-alcool" if re.search(ALCOOL, texto) else "bebidas-sem-alcool"
     if cid in ("dolci", "gelato"):
         return "doces"
-    # Focaccia fica com Fogazza por decisão de produto, não por técnica. As
-    # descrições as separam — fogazza é "Massa Frita recheada", focaccia é
-    # "Lanche preparado com Focaccia", e o preço vai de R$ 18–22 para R$ 35–50 —
-    # mas as palavras são primas e o público as trata como a mesma família.
+    # Focaccia aqui é sanduíche, não fogazza. As palavras são primas — vêm as
+    # duas do latim focacia — mas os produtos não: as 28 fogazzas são "Massa
+    # Frita recheada com", enquanto a focaccia é pão assado aberto ao meio e
+    # recheado, a R$ 35–50 contra R$ 18–22. Confirmado em foto do produto.
+    if "focaccia" in titulo:
+        return "lanches"
     # Antes de panini: o PDF lista fatia de pizza salgada dentro de "Panini"
     # (Fetta di Pizza, Trancio di Pizza di Sfoglia), e a regra de panini vindo
     # primeiro mandava pizza para Lanches.
