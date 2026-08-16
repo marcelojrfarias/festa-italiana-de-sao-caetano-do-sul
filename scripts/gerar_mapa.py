@@ -15,6 +15,7 @@ origem no cruzamento R. Mariano Pamplona x R. Vinte e Oito de Julho. Não há
 lat/lng aqui de propósito: chutar coordenada geográfica seria inventar dado.
 """
 import json
+import math
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -36,48 +37,41 @@ def linha(*pts):
     return [m(*p) for p in pts]
 
 
-# --- vias, traçadas sobre o mapa oficial ------------------------------------
+def retangulo(x0, y0, x1, y1):
+    return [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]
+
+
+# --- vias -------------------------------------------------------------------
+# Retas e contínuas, atravessando o quadro de ponta a ponta. O traçado curvo que
+# saiu da foto do banner era fiel ao desenho e ruim de ler: num croqui a rua
+# serve de eixo de orientação, e eixo torto não orienta.
 VIAS = [
     {"id": "mariano-pamplona", "nome": "R. Mariano Pamplona", "largura_m": 9,
-     "eixo": linha((855, 200), (920, 500), (990, 800), (1075, 955), (1105, 1250))},
+     "eixo": [[-27.0, 88.0], [2.5, -42.0]]},
     {"id": "vinte-e-oito-de-julho", "nome": "R. Vinte e Oito de Julho", "largura_m": 9,
-     "eixo": linha((1085, 952), (1250, 938), (1460, 925))},
-    {"id": "alameda-norte", "nome": None, "largura_m": 6,
-     "eixo": linha((150, 1196), (400, 1193), (610, 1190))},
-    {"id": "alameda-travessa", "nome": None, "largura_m": 5,
-     "eixo": linha((270, 1252), (400, 1248))},
-    {"id": "alameda-parque", "nome": None, "largura_m": 6,
-     "eixo": linha((648, 1300), (652, 1600), (658, 1920))},
+     "eixo": [[-26.0, 0.0], [52.0, 0.0]]},
 ]
 
-def poli(*pts):
-    return [m(*p) for p in pts]
-
-
-# Massas do entorno, tracadas a olho sobre a foto do banner. Sao contexto para a
-# pessoa se localizar — "estou do lado da igreja", "isso aqui e o parque" — e nao
-# levantamento. Desenho proprio, simplificado; a arte do banner e dos organizadores.
+# --- áreas de contexto ------------------------------------------------------
+# Só o que ajuda a se localizar. Os quarteirões a leste da via, o pátio ao sul e
+# o quarteirão a oeste da igreja saíram de propósito: não têm barraca e só
+# enchiam o quadro de retângulo.
 AREAS = [
-    {"id": "quadra-paroquia", "nome": "Paróquia São Caetano", "tipo": "edificado",
+    {"id": "igreja", "nome": "Paróquia São Caetano", "tipo": "edificado",
      "rotulo": True, "aproximado": True,
-     "poligono": poli((495, 635), (700, 610), (875, 650), (880, 870), (600, 885), (490, 835))},
-    {"id": "quadra-oeste", "nome": None, "tipo": "edificado", "aproximado": True,
-     "poligono": poli((185, 790), (420, 760), (430, 1040), (195, 1060))},
-    {"id": "quadra-nordeste", "nome": None, "tipo": "edificado", "aproximado": True,
-     "poligono": poli((1145, 610), (1500, 600), (1505, 900), (1150, 910))},
-    {"id": "quadra-sudeste", "nome": None, "tipo": "edificado", "aproximado": True,
-     "poligono": poli((1130, 985), (1500, 975), (1505, 1310), (1135, 1320))},
-    {"id": "patio-sudeste", "nome": None, "tipo": "pavimento", "aproximado": True,
-     "poligono": poli((950, 1350), (1460, 1345), (1465, 1800), (955, 1805))},
+     "poligono": retangulo(-62.0, 10.0, -26.0, 38.0)},
     {"id": "largo", "nome": None, "tipo": "pavimento", "aproximado": True,
-     "poligono": poli((150, 880), (905, 875), (910, 1225), (155, 1230))},
+     "poligono": retangulo(-100.0, -28.0, -20.0, 9.0)},
     {"id": "parque-treviso", "nome": "Parque Província de Treviso", "tipo": "verde",
      "rotulo": True, "aproximado": True,
-     "poligono": poli((95, 1230), (910, 1225), (915, 1950), (100, 1955))},
+     "rotulo_ponto": [-82.0, -38.0],   # canto livre: a fila 23-35 ocupa o meio
+     "poligono": retangulo(-106.0, -105.0, -19.0, -28.0)},
 ]
 
 # --- zonas e barracas, lidas do mapa oficial --------------------------------
 # (id, nome, via, azimute_frente, [(numero, px, py)])
+# O azimute e a direcao da frente. Quem tem via e encostado na calcada por
+# calculo; quem nao tem (praca e parque) fica onde foi medido na foto.
 ZONAS = [
     ("mariano-oeste", "R. Mariano Pamplona — lado oeste", "mariano-pamplona", 90, [
         ("15", 825, 318), ("10", 840, 395), ("19", 855, 465), ("8", 875, 543),
@@ -96,14 +90,14 @@ ZONAS = [
     ("praca", "Praça, a oeste da via", None, 90, [
         ("31", 915, 1090),
     ]),
-    ("parque-norte", "Parque — alameda norte", "alameda-norte", 180, [
+    ("parque-norte", "Parque — fila norte", None, 180, [
         ("3", 200, 1190), ("11", 268, 1190), ("29", 360, 1190),
         ("9", 428, 1190), ("24", 495, 1190), ("6", 565, 1190),
     ]),
-    ("parque-travessa", "Parque — travessa", "alameda-travessa", 0, [
+    ("parque-travessa", "Parque — travessa", None, 0, [
         ("30", 310, 1245), ("14", 378, 1245),
     ]),
-    ("parque-alameda", "Parque — alameda sul", "alameda-parque", 90, [
+    ("parque-alameda", "Parque — fila sul", None, 90, [
         ("23", 628, 1560), ("26", 628, 1622), ("33", 628, 1685),
         ("36", 628, 1745), ("34", 628, 1805), ("35", 628, 1865),
     ]),
@@ -113,20 +107,56 @@ LARGURA_PADRAO_M = 4.0    # frente da barraca
 PROFUNDIDADE_PADRAO_M = 3.0
 
 
+def projetar(eixo, ponto):
+    """Ponto mais proximo sobre a polilinha, e a distancia ate ele."""
+    melhor, menor = eixo[0], float("inf")
+    for a, b in zip(eixo, eixo[1:]):
+        dx, dy = b[0] - a[0], b[1] - a[1]
+        L2 = dx * dx + dy * dy
+        t = 0.0 if L2 == 0 else max(0.0, min(1.0, ((ponto[0] - a[0]) * dx + (ponto[1] - a[1]) * dy) / L2))
+        q = (a[0] + t * dx, a[1] + t * dy)
+        d = math.hypot(ponto[0] - q[0], ponto[1] - q[1])
+        if d < menor:
+            melhor, menor = q, d
+    return melhor, menor
+
+
+FOLGA_CALCADA_M = 1.5
+
+
+def encostar(centro, azimute, via, profundidade):
+    """Empurra a barraca para fora do leito, ate a calcada.
+
+    `azimute` e a direcao da frente, que olha para a rua; entao o lado de fora e
+    o oposto. Assim a rua fica limpa entre duas filas que se encaram, em vez de
+    as barracas cavalgarem o asfalto como ficava quando a posicao vinha so da
+    medida em pixel sobre a foto.
+    """
+    a = math.radians(azimute)
+    frente = (math.sin(a), math.cos(a))
+    base, _ = projetar(via["eixo"], centro)
+    d = via["largura_m"] / 2 + profundidade / 2 + FOLGA_CALCADA_M
+    return [round(base[0] - frente[0] * d, 1), round(base[1] - frente[1] * d, 1)]
+
+
 def main():
     zonas, barracas = [], []
-    for zid, znome, via, azimute, pontos in ZONAS:
-        zonas.append({"id": zid, "nome": znome, "via": via,
+    for zid, znome, via_id, azimute, pontos in ZONAS:
+        zonas.append({"id": zid, "nome": znome, "via": via_id,
                       "barracas": [n for n, _, _ in pontos]})
         for numero, px, py in pontos:
             numeros = [int(n) for n in numero.split("/")]
             largura = LARGURA_PADRAO_M * len(numeros)  # a barraca dupla 20/21 é maior
+            centro = list(m(px, py))
+            via = next((v for v in VIAS if v["id"] == via_id), None)
+            if via:
+                centro = encostar(centro, azimute, via, PROFUNDIDADE_PADRAO_M)
             barracas.append({
                 "numero": numero,
                 "rotulo": "/".join(f"{int(n):02d}" for n in numero.split("/")),
                 "numeros": numeros,
                 "zona": zid,
-                "centro": list(m(px, py)),
+                "centro": centro,
                 "largura_m": largura,
                 "profundidade_m": PROFUNDIDADE_PADRAO_M,
                 "azimute": azimute,

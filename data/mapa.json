@@ -20,24 +20,12 @@
       "largura_m": 9,
       "eixo": [
         [
-          -25.7,
-          79.8
+          -27.0,
+          88.0
         ],
         [
-          -18.9,
-          48.3
-        ],
-        [
-          -11.5,
-          16.8
-        ],
-        [
-          -2.6,
-          0.5
-        ],
-        [
-          0.5,
-          -30.4
+          2.5,
+          -42.0
         ]
       ]
     },
@@ -47,200 +35,39 @@
       "largura_m": 9,
       "eixo": [
         [
-          -1.6,
-          0.8
+          -26.0,
+          0.0
         ],
         [
-          15.8,
-          2.3
-        ],
-        [
-          37.8,
-          3.7
-        ]
-      ]
-    },
-    {
-      "id": "alameda-norte",
-      "nome": null,
-      "largura_m": 6,
-      "eixo": [
-        [
-          -99.8,
-          -24.8
-        ],
-        [
-          -73.5,
-          -24.5
-        ],
-        [
-          -51.4,
-          -24.1
-        ]
-      ]
-    },
-    {
-      "id": "alameda-travessa",
-      "nome": null,
-      "largura_m": 5,
-      "eixo": [
-        [
-          -87.1,
-          -30.7
-        ],
-        [
-          -73.5,
-          -30.2
-        ]
-      ]
-    },
-    {
-      "id": "alameda-parque",
-      "nome": null,
-      "largura_m": 6,
-      "eixo": [
-        [
-          -47.5,
-          -35.7
-        ],
-        [
-          -47.0,
-          -67.2
-        ],
-        [
-          -46.4,
-          -100.8
+          52.0,
+          0.0
         ]
       ]
     }
   ],
   "areas": [
     {
-      "id": "quadra-paroquia",
+      "id": "igreja",
       "nome": "Paróquia São Caetano",
       "tipo": "edificado",
       "rotulo": true,
       "aproximado": true,
       "poligono": [
         [
-          -63.5,
-          34.1
+          -62.0,
+          10.0
         ],
         [
-          -42.0,
-          36.8
+          -26.0,
+          10.0
         ],
         [
-          -23.6,
-          32.5
+          -26.0,
+          38.0
         ],
         [
-          -23.1,
-          9.4
-        ],
-        [
-          -52.5,
-          7.9
-        ],
-        [
-          -64.0,
-          13.1
-        ]
-      ]
-    },
-    {
-      "id": "quadra-oeste",
-      "nome": null,
-      "tipo": "edificado",
-      "aproximado": true,
-      "poligono": [
-        [
-          -96.1,
-          17.8
-        ],
-        [
-          -71.4,
-          21.0
-        ],
-        [
-          -70.3,
-          -8.4
-        ],
-        [
-          -95.0,
-          -10.5
-        ]
-      ]
-    },
-    {
-      "id": "quadra-nordeste",
-      "nome": null,
-      "tipo": "edificado",
-      "aproximado": true,
-      "poligono": [
-        [
-          4.7,
-          36.8
-        ],
-        [
-          42.0,
-          37.8
-        ],
-        [
-          42.5,
-          6.3
-        ],
-        [
-          5.2,
-          5.2
-        ]
-      ]
-    },
-    {
-      "id": "quadra-sudeste",
-      "nome": null,
-      "tipo": "edificado",
-      "aproximado": true,
-      "poligono": [
-        [
-          3.1,
-          -2.6
-        ],
-        [
-          42.0,
-          -1.6
-        ],
-        [
-          42.5,
-          -36.8
-        ],
-        [
-          3.7,
-          -37.8
-        ]
-      ]
-    },
-    {
-      "id": "patio-sudeste",
-      "nome": null,
-      "tipo": "pavimento",
-      "aproximado": true,
-      "poligono": [
-        [
-          -15.8,
-          -40.9
-        ],
-        [
-          37.8,
-          -40.4
-        ],
-        [
-          38.3,
-          -88.2
-        ],
-        [
-          -15.2,
-          -88.7
+          -62.0,
+          38.0
         ]
       ]
     },
@@ -251,20 +78,20 @@
       "aproximado": true,
       "poligono": [
         [
-          -99.8,
-          8.4
+          -100.0,
+          -28.0
         ],
         [
-          -20.5,
-          8.9
+          -20.0,
+          -28.0
         ],
         [
-          -19.9,
-          -27.8
+          -20.0,
+          9.0
         ],
         [
-          -99.2,
-          -28.3
+          -100.0,
+          9.0
         ]
       ]
     },
@@ -274,22 +101,26 @@
       "tipo": "verde",
       "rotulo": true,
       "aproximado": true,
+      "rotulo_ponto": [
+        -82.0,
+        -38.0
+      ],
       "poligono": [
         [
-          -105.5,
-          -28.3
+          -106.0,
+          -105.0
         ],
         [
-          -19.9,
-          -27.8
+          -19.0,
+          -105.0
         ],
         [
-          -19.4,
-          -104.0
+          -19.0,
+          -28.0
         ],
         [
-          -105.0,
-          -104.5
+          -106.0,
+          -28.0
         ]
       ]
     }
@@ -353,8 +184,8 @@
     },
     {
       "id": "parque-norte",
-      "nome": "Parque — alameda norte",
-      "via": "alameda-norte",
+      "nome": "Parque — fila norte",
+      "via": null,
       "barracas": [
         "3",
         "11",
@@ -367,7 +198,7 @@
     {
       "id": "parque-travessa",
       "nome": "Parque — travessa",
-      "via": "alameda-travessa",
+      "via": null,
       "barracas": [
         "30",
         "14"
@@ -375,8 +206,8 @@
     },
     {
       "id": "parque-alameda",
-      "nome": "Parque — alameda sul",
-      "via": "alameda-parque",
+      "nome": "Parque — fila sul",
+      "via": null,
       "barracas": [
         "23",
         "26",
@@ -396,8 +227,8 @@
       ],
       "zona": "mariano-oeste",
       "centro": [
-        -28.9,
-        67.4
+        -30.1,
+        68.8
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -412,8 +243,8 @@
       ],
       "zona": "mariano-oeste",
       "centro": [
-        -27.3,
-        59.3
+        -28.3,
+        60.8
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -428,8 +259,8 @@
       ],
       "zona": "mariano-oeste",
       "centro": [
-        -25.7,
-        52.0
+        -26.7,
+        53.5
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -444,8 +275,8 @@
       ],
       "zona": "mariano-oeste",
       "centro": [
-        -23.6,
-        43.8
+        -24.8,
+        45.2
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -460,8 +291,8 @@
       ],
       "zona": "mariano-oeste",
       "centro": [
-        -22.1,
-        36.2
+        -23.1,
+        37.7
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -476,8 +307,8 @@
       ],
       "zona": "mariano-oeste",
       "centro": [
-        -18.4,
-        19.4
+        -19.3,
+        20.9
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -492,8 +323,8 @@
       ],
       "zona": "mariano-oeste",
       "centro": [
-        -17.0,
-        11.5
+        -17.5,
+        13.1
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -508,8 +339,8 @@
       ],
       "zona": "mariano-leste",
       "centro": [
-        -24.4,
-        73.7
+        -16.3,
+        73.8
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -524,8 +355,8 @@
       ],
       "zona": "mariano-leste",
       "centro": [
-        -21.0,
-        67.2
+        -14.7,
+        66.9
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -540,8 +371,8 @@
       ],
       "zona": "mariano-leste",
       "centro": [
-        -14.5,
-        47.5
+        -10.1,
+        46.8
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -556,8 +387,8 @@
       ],
       "zona": "mariano-leste",
       "centro": [
-        -13.4,
-        38.9
+        -8.2,
+        38.4
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -573,8 +404,8 @@
       ],
       "zona": "mariano-leste",
       "centro": [
-        -7.9,
-        16.6
+        -3.2,
+        16.0
       ],
       "largura_m": 8.0,
       "profundidade_m": 3.0,
@@ -590,7 +421,7 @@
       "zona": "vinte-e-oito",
       "centro": [
         10.3,
-        3.1
+        7.5
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -606,7 +437,7 @@
       "zona": "vinte-e-oito",
       "centro": [
         18.1,
-        3.1
+        7.5
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -622,7 +453,7 @@
       "zona": "vinte-e-oito",
       "centro": [
         25.7,
-        3.1
+        7.5
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -638,7 +469,7 @@
       "zona": "vinte-e-oito",
       "centro": [
         33.6,
-        3.1
+        7.5
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -653,8 +484,8 @@
       ],
       "zona": "mariano-sul",
       "centro": [
-        -5.5,
-        -8.4
+        2.4,
+        -8.3
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -669,8 +500,8 @@
       ],
       "zona": "mariano-sul",
       "centro": [
-        -4.7,
-        -15.2
+        3.9,
+        -15.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -685,8 +516,8 @@
       ],
       "zona": "mariano-sul",
       "centro": [
-        -4.4,
-        -22.1
+        5.4,
+        -21.6
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -701,8 +532,8 @@
       ],
       "zona": "mariano-sul",
       "centro": [
-        -8.9,
-        -28.3
+        6.5,
+        -26.5
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -957,9 +788,9 @@
     ],
     "y": [
       -95.0,
-      73.7
+      73.8
     ],
     "largura_m": 128.1,
-    "altura_m": 168.7
+    "altura_m": 168.8
   }
 }
