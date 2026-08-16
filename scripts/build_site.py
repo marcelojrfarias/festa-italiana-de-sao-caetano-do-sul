@@ -82,7 +82,15 @@ def usar(nome, tam=24, classe="icone"):
 
 
 def sprite_html():
-    simbolos = "".join(f'<symbol id="i-{k}" viewBox="0 0 24 24">{v}</symbol>'
+    # O traço vai também no <symbol>, e não só na regra .icone: assim o desenho
+    # não depende de a herança de CSS atravessar a shadow tree do <use>. Pela
+    # especificação atravessa, mas 2 em cada 3 acessos vêm de iOS e não há
+    # WebKit aqui para conferir — se falhasse, o alfinete sumia de toda linha de
+    # barraca. Custa uma vez, não mil: currentColor continua resolvendo pela cor
+    # de quem referencia.
+    traco = ('fill="none" stroke="currentColor" stroke-width="1.7" '
+             'stroke-linecap="round" stroke-linejoin="round"')
+    simbolos = "".join(f'<symbol id="i-{k}" viewBox="0 0 24 24" {traco}>{v}</symbol>'
                        for k, v in SPRITE.items())
     return f'<svg class="sprite" aria-hidden="true">{simbolos}</svg>'
 
