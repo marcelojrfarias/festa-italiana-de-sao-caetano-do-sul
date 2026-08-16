@@ -153,6 +153,23 @@ def agrupar_pratos(cardapio, categorias):
             "busca": sem_acento(g["titulo"] + " " + " ".join(sorted(set(g["descricoes"])))),
         })
     pratos.sort(key=lambda p: sem_acento(p["titulo"]))
+
+    # Três ordens, gravadas como posição em cada card e aplicadas no cliente
+    # via CSS order — sem reordenar o DOM.
+    #
+    # "Popular" aqui é o número de barracas que vendem o prato. Não há dado de
+    # venda; o que existe é a aposta de 35 entidades sobre o que sai. Bebida vem
+    # depois da comida porque água está em 34 barracas por ser necessidade, não
+    # por ser o que a pessoa foi comer na festa — sem essa separação, o topo da
+    # lista volta a ser água.
+    for pos, pr in enumerate(pratos):
+        pr["ord_nome"] = pos
+    for pos, pr in enumerate(sorted(pratos, key=lambda x: (x["min"], sem_acento(x["titulo"])))):
+        pr["ord_preco"] = pos
+    for pos, pr in enumerate(sorted(pratos, key=lambda x: (x["categoria"].startswith("bebidas"),
+                                                           -len(x["ofertas"]),
+                                                           sem_acento(x["titulo"])))):
+        pr["ord_pop"] = pos
     return pratos
 
 
@@ -253,7 +270,9 @@ def render_prato(p):
     return (
         f'<article class="prato" data-cat="{e(p["categoria"])}" '
         f'data-barracas=" {e(nums)} " data-precos=" {e(buckets)} " '
-        f'data-busca="{e(p["busca"])}">'
+        f'data-busca="{e(p["busca"])}" '
+        f'data-ord-pop="{p["ord_pop"]}" data-ord-preco="{p["ord_preco"]}" '
+        f'data-ord-nome="{p["ord_nome"]}">'
         f'<div class="prato__topo"><h3 class="prato__titulo">{e(p["titulo"])}</h3>'
         f'<span class="prato__faixa">{e(faixa_preco(p))}</span></div>'
         f'<p class="prato__desc">{e(p["descricao"])}</p>'
@@ -377,6 +396,13 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
     <button type="button" data-preco="11a20">R$ 11–20</button>
     <button type="button" data-preco="21a30">R$ 21–30</button>
     <button type="button" data-preco="31mais">R$ 31+</button>
+  </div>
+
+  <div class="ordenacao" id="ordenacao" hidden>
+    <span class="ordenacao__rotulo">Ordenar</span>
+    <button type="button" data-ord="pop" aria-pressed="true">Populares</button>
+    <button type="button" data-ord="preco" aria-pressed="false">Preço</button>
+    <button type="button" data-ord="nome" aria-pressed="false">Nome</button>
   </div>
 
   <p class="contador" id="contador" hidden></p>
@@ -596,6 +622,24 @@ main { padding: var(--e4) var(--e4) 0; }
 .filtros button[aria-pressed="true"] {
   background: var(--vermelho); border-color: var(--vermelho); color: #fff;
 }
+.ordenacao {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  margin-bottom: var(--e3);
+}
+.ordenacao__rotulo {
+  font-size: 12px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--tinta-fraca); margin-right: 2px;
+}
+.ordenacao button {
+  flex: 0 0 auto; min-width: max-content;
+  padding: 12px var(--e3); font: inherit; font-size: 13px; font-weight: 600;
+  border: 1px solid var(--papel-linha); border-radius: 999px;
+  background: var(--cartao); color: var(--tinta-fraca); cursor: pointer;
+}
+.ordenacao button[aria-pressed="true"] {
+  background: var(--verde); border-color: var(--verde); color: #fff;
+}
+
 .contador {
   margin: 0 0 var(--e3); font-size: 12px; font-weight: 600; letter-spacing: .06em;
   text-transform: uppercase; color: var(--tinta-fraca);
@@ -725,6 +769,7 @@ JS = r"""(function () {
       trilha = document.getElementById('trilha'),
       trilhaTitulo = document.getElementById('trilha-titulo'),
       filtros = document.getElementById('filtros'),
+      ordenacao = document.getElementById('ordenacao'),
       contador = document.getElementById('contador'),
       vazio = document.getElementById('vazio'),
       convite = document.querySelector('.convite'),
@@ -740,7 +785,8 @@ JS = r"""(function () {
       c.querySelector('.card__nome').textContent;
   });
 
-  var estado = { modo: 'categoria', cat: '', barraca: '', q: '', preco: '' };
+  var estado = { modo: 'categoria', cat: '', barraca: '', q: '', preco: '', ord: 'pop' };
+  var ordAplicada = null;   // reordenar 376 cards só quando a ordem muda
 
   // faixa original ("R$ 20,00 a R$ 30,00") para restaurar ao sair da barraca
   var faixaOriginal = new Map();
@@ -759,6 +805,7 @@ JS = r"""(function () {
     estado.barraca = p.get('barraca') || '';
     estado.q = p.get('q') || '';
     estado.preco = p.get('preco') || '';
+    estado.ord = p.get('ord') || 'pop';
     if (p.get('modo') === 'tudo') estado.modo = 'tudo';
   }
 
@@ -769,6 +816,7 @@ JS = r"""(function () {
     if (estado.barraca) p.set('barraca', estado.barraca);
     if (estado.q) p.set('q', estado.q);
     if (estado.preco) p.set('preco', estado.preco);
+    if (estado.ord && estado.ord !== 'pop') p.set('ord', estado.ord);
     var s = p.toString();
     return s ? '?' + s : location.pathname;
   }
@@ -808,11 +856,19 @@ JS = r"""(function () {
     if (estado.barraca) body.dataset.barracaAtiva = estado.barraca;
     else delete body.dataset.barracaAtiva;
 
+    // a ordem é aplicada por CSS order, sem mexer no DOM
+    if (estado.ord !== ordAplicada) {
+      var campo = 'ord' + estado.ord.charAt(0).toUpperCase() + estado.ord.slice(1);
+      pratos.forEach(function (el) { el.style.order = el.dataset[campo]; });
+      ordAplicada = estado.ord;
+    }
+
     var listando = emLista();
     idx.categoria.hidden = listando || estado.modo !== 'categoria';
     idx.barraca.hidden = listando || estado.modo !== 'barraca';
     lista.hidden = !listando;
     filtros.hidden = !listando;
+    ordenacao.hidden = !listando;
     contador.hidden = !listando;
     vazio.hidden = !listando || visiveis > 0;
     convite.hidden = false;
@@ -830,6 +886,9 @@ JS = r"""(function () {
     });
     filtros.querySelectorAll('button').forEach(function (b) {
       b.setAttribute('aria-pressed', String(b.dataset.preco === estado.preco));
+    });
+    ordenacao.querySelectorAll('button').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.ord === estado.ord));
     });
     if (busca.value !== estado.q) busca.value = estado.q;
 
@@ -883,6 +942,13 @@ JS = r"""(function () {
     var t = ev.target.closest('.prato__toggle');
     if (t) {
       t.setAttribute('aria-expanded', t.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+      return;
+    }
+    var o = ev.target.closest('.ordenacao button');
+    if (o) {
+      estado.ord = o.dataset.ord;
+      navegar();
+      window.scrollTo(0, 0);
       return;
     }
     var f = ev.target.closest('.filtros button');
