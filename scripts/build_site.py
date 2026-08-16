@@ -58,6 +58,8 @@ def svg(inner, tam=24, classe="icone"):
             f'stroke-linejoin="round" aria-hidden="true">{inner}</svg>')
 
 CHEVRON = '<path d="M9 5l7 7-7 7"/>'
+ALFINETE = ('<path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11Z"/>'
+            '<circle cx="12" cy="10" r="2.5"/>')
 # Ordem de navegação: comida primeiro, bebida por último. A ordem do arquivo de
 # categorias é por volume, o que jogaria bebida para o topo do índice.
 ORDEM = ["massas", "pizzas-e-fogazza", "lanches", "carnes-e-polenta",
@@ -222,11 +224,16 @@ def render_prato(p):
 
     nums = " ".join(chave_barraca(o["num"]) for o in p["ofertas"])
     buckets = " ".join(sorted({bucket_preco(o["preco"]) for o in p["ofertas"]}))
+    # "onde fica isto" e a pergunta de quem esta de pe na festa, entao a linha da
+    # barraca leva direto ao mapa, com ela selecionada
     ofertas = "".join(
-        f'<li class="oferta" data-barraca="{e(chave_barraca(o["num"]))}">'
+        f'<li><a class="oferta" data-barraca="{e(chave_barraca(o["num"]))}" '
+        f'data-ir-mapa="{e(chave_barraca(o["num"]))}" '
+        f'href="?modo=mapa&amp;barraca={e(chave_barraca(o["num"]))}">'
         f'<span class="oferta__num">{e(o["num"])}</span>'
         f'<span class="oferta__nome">{e(o["nome"])}</span>'
-        f'<span class="oferta__preco">{e(moeda(o["preco"]))}</span></li>'
+        f'<span class="oferta__preco">{e(moeda(o["preco"]))}</span>'
+        f'<span class="oferta__pin">{svg(ALFINETE, 15)}</span></a></li>'
         for o in p["ofertas"])
     n = len(p["ofertas"])
     # Com uma barraca só não há o que expandir, mas "onde encontro isto" é a
@@ -235,9 +242,11 @@ def render_prato(p):
     # lista sem resposta.
     if n == 1:
         o = p["ofertas"][0]
-        onde = (f'<p class="prato__onde">'
+        onde = (f'<a class="prato__onde" data-ir-mapa="{e(chave_barraca(o["num"]))}" '
+                f'href="?modo=mapa&amp;barraca={e(chave_barraca(o["num"]))}">'
                 f'<span class="oferta__num">{e(o["num"])}</span>'
-                f'<span class="oferta__nome">{e(o["nome"])}</span></p>')
+                f'<span class="oferta__nome">{e(o["nome"])}</span>'
+                f'<span class="oferta__pin">{svg(ALFINETE, 15)}</span></a>')
     else:
         onde = (f'<button class="prato__toggle" type="button" aria-expanded="false">'
                 f'em {n} barracas</button>')
@@ -408,6 +417,14 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
 </html>
 """
 
+
+CSS_ONDE = """
+/* a linha da barraca leva ao mapa; o alfinete é o que avisa isso */
+.prato__onde, .oferta { color: inherit; text-decoration: none; }
+.oferta__pin { display: grid; place-items: center; color: var(--verde); opacity: .75; }
+.prato__onde:active .oferta__pin, .oferta:active .oferta__pin { opacity: 1; }
+.ofertas li { list-style: none; }
+"""
 
 CSS_MAPA = """
 /* --- mapa ---------------------------------------------------------------- */
@@ -586,7 +603,7 @@ main { padding: var(--e4) var(--e4) 0; }
 }
 .prato__desc { margin: var(--e1) 0 0; font-size: 14px; color: var(--tinta-fraca); }
 .prato__onde {
-  display: grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--e2);
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--e2);
   margin: var(--e3) 0 0; padding-top: var(--e2);
   border-top: 1px solid var(--papel); font-size: 13px;
 }
@@ -598,7 +615,7 @@ main { padding: var(--e4) var(--e4) 0; }
 .ofertas { display: none; margin: var(--e3) 0 0; padding: 0; list-style: none; }
 .prato__toggle[aria-expanded="true"] + .ofertas { display: block; }
 .oferta {
-  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--e2);
+  display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: var(--e2);
   padding: var(--e2) 0; border-top: 1px solid var(--papel); font-size: 14px;
 }
 .oferta__num, .prato__onde .oferta__num {
@@ -1029,6 +1046,21 @@ JS_MAPA = r"""
       : window.FESTA_MAPA.barracas.length + ' barracas no mapa';
   }
 
+  // do prato para o mapa: link de verdade (funciona colado, aberto em aba nova),
+  // mas interceptado para nao recarregar a pagina inteira no meio da festa
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest('a[data-ir-mapa]');
+    if (!a || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return;
+    ev.preventDefault();
+    var p = new URLSearchParams(location.search);
+    p.delete('cat');
+    p.set('modo', 'mapa');
+    p.set('barraca', a.dataset.irMapa);
+    history.pushState({ y: 0 }, '', '?' + p.toString());
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    window.scrollTo(0, 0);
+  });
+
   verNoMapa.addEventListener('click', function () {
     var p = new URLSearchParams(location.search);
     p.set('modo', 'mapa');
@@ -1110,7 +1142,7 @@ def main():
 
     mapa_js = ("window.FESTA_MAPA = "
                + json.dumps(mapa, ensure_ascii=False, separators=(",", ":")) + ";\n")
-    css_txt = CSS + CSS_MAPA
+    css_txt = CSS + CSS_ONDE + CSS_MAPA
     js_txt = JS + mapa_js + fontes_mapa + JS_MAPA
     # style.css e app.js tem nome fixo, entao quem ja visitou o site pode receber
     # o index.html novo com o app.js velho do cache — foi o que fez a aba Mapa
