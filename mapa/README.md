@@ -126,6 +126,24 @@ O caso de uso que fecha o ciclo é `destacar`: quem filtrou "sem glúten" ou
 "cannoli" na lista vê no mapa só as barracas que atendem, sem o mapa saber o que
 é glúten.
 
+### Cores: as do app, e só
+
+O croqui não tem paleta própria nem tema escuro. Ele lê os tokens do site —
+`--papel`, `--papel-linha`, `--cartao`, `--verde-suave`, `--dourado`,
+`--tinta-fraca` — e só cai no valor de reserva quando roda nas páginas avulsas
+do mapa, que não os definem.
+
+As barracas são a **mesma pílula dourada** do `.card__numero` das listas
+(`--dourado` sobre `#3A2A12`), pelo mesmo motivo que levou eles à pílula: um
+círculo não comporta `"20/21"`. Selecionada fica verde com texto branco, apagada
+fica na cor da linha do papel.
+
+**O projeto inteiro é claro, e só.** Não há `prefers-color-scheme` em lugar
+nenhum — nem no croqui, nem no site, nem nestas páginas avulsas, que declaram
+`color-scheme: light` e repetem os tokens do app. Ter tema próprio já custou
+caro uma vez: o croqui seguia o sistema e ficava preto no meio de uma página
+bege.
+
 ## O sistema de coordenadas
 
 Métrico local: `x` para o leste, `y` para o norte, em metros, com origem no

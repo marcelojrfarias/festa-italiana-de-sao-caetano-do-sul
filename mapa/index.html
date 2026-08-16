@@ -4,14 +4,18 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mapa — 33ª Festa Italiana</title>
 <style>
-  :root { color-scheme: light dark; }
+  :root { color-scheme: light; --papel:#EFE4D4; --papel-linha:#DFCEB4;
+          --cartao:#FFFFFF; --tinta:#1F1A14; --tinta-fraca:#7B6E5D;
+          --verde:#0F5F28; --verde-suave:#E7EFE6; --dourado:#D6A25E; }
   body { margin:0; height:100dvh; display:flex; flex-direction:column;
+         background:var(--papel); color:var(--tinta);
          font:15px/1.5 system-ui,sans-serif; }
-  header { padding:10px 14px; border-bottom:1px solid #0002; }
-  header b { color:#196B24; }
+  header { padding:10px 14px; border-bottom:1px solid var(--papel-linha); }
+  header b { color:var(--verde); }
   #croqui { flex:1; min-height:0; }
-  #ficha { padding:12px 14px; border-top:1px solid #0002; min-height:74px; }
-  .aviso { background:#EE00001a; color:#BB2121; padding:6px 14px; font-size:13px; }
+  #ficha { padding:12px 14px; border-top:1px solid var(--papel-linha);
+         background:var(--cartao); min-height:74px; }
+  .aviso { background:#B0202014; color:#B02020; padding:6px 14px; font-size:13px; }
 </style>
 <header><b>33ª Festa Italiana</b> — croqui das barracas</header>
 <div class="aviso" id="aviso" hidden></div>
