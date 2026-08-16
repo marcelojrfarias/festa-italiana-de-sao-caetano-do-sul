@@ -975,8 +975,12 @@ JS_MAPA = r"""
     // aba em branco e o pior desfecho: se o croqui nao subir, diz o que houve
     // em vez de mostrar nada e deixar a pessoa achando que o site quebrou
     try {
-      croqui = window.FestaMapa.criarCroqui(alvo, window.FESTA_MAPA,
-                                            { aoSelecionar: irPara });
+      // o site e sempre claro (color-scheme: light); sem isso o mapa virava
+      // sozinho no celular em modo escuro e ficava preto na pagina bege
+      croqui = window.FestaMapa.criarCroqui(alvo, window.FESTA_MAPA, {
+        aoSelecionar: irPara, tema: 'claro',
+        paleta: { papel: getComputedStyle(document.body).getPropertyValue('--papel').trim() || '#EFE4D4' },
+      });
     } catch (erro) {
       falhou = true;
       alvo.textContent = 'Não consegui desenhar o mapa neste navegador. '

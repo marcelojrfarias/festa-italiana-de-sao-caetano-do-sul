@@ -113,6 +113,8 @@ import { criarCroqui } from './mapa/croqui.js';
 
 const croqui = criarCroqui(elemento, mapa, {
   aoSelecionar: (numero) => irPara(`#/barraca/${numero}`),
+  tema: 'claro',                    // 'auto' (segue o sistema) | 'claro' | 'escuro'
+  paleta: { papel: '#EFE4D4' },     // sobrescreve variáveis da paleta
 });
 
 croqui.destacar(['3', '12', '27']);  // apaga o resto — amarra o mapa ao filtro de pratos
@@ -125,6 +127,14 @@ croqui.enquadrar();                  // reenquadra
 O caso de uso que fecha o ciclo é `destacar`: quem filtrou "sem glúten" ou
 "cannoli" na lista vê no mapa só as barracas que atendem, sem o mapa saber o que
 é glúten.
+
+### Quem manda no tema é a página, não o sistema
+
+`tema` existe porque o padrão errado é caro: embutido num site que declara
+`color-scheme: light`, um croqui que segue `prefers-color-scheme` fica preto no
+meio de uma página bege assim que o celular está em modo escuro. O site passa
+`tema: 'claro'` e o próprio `--papel`; as páginas avulsas ficam no `'auto'`, que
+é o certo para elas.
 
 ## O sistema de coordenadas
 

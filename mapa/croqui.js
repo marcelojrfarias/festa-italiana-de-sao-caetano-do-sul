@@ -17,16 +17,21 @@ const SVG = 'http://www.w3.org/2000/svg';
     return n;
   };
   
+  // A paleta escura fica separada porque quem manda no tema e a pagina que
+  // hospeda o croqui, nao o sistema operacional: embutido num site que e sempre
+  // claro, seguir `prefers-color-scheme` deixava o mapa preto no meio de uma
+  // pagina bege.
+  const ESCURO = `
+    --papel:#14100B; --tinta:#F3E7D4; --asfalto:#2A2318; --meio-fio:#3D3423;
+    --verde:#4CAF5B; --verde-escuro:#2E7D46; --vermelho:#FF5A4D; --bege:#4A3B27;
+    --edificado:#241D14; --verde-area:#1E2C1B; --pavimento:#1C1710;`;
+
   const ESTILO = `
   .croqui { --verde:#196B24; --verde-escuro:#095A34; --vermelho:#EE0000;
     --vermelho-logo:#BB2121; --bege:#E5B67E; --papel:#FFF8EE; --tinta:#2B1D10;
     --asfalto:#E8DCC8; --meio-fio:#CBB795;
     --edificado:#DCD3C6; --verde-area:#C3D6B0; --pavimento:#EDE1CD;
     background:var(--papel); touch-action:none; display:block; width:100%; height:100%; }
-  @media (prefers-color-scheme: dark) { .croqui {
-    --papel:#14100B; --tinta:#F3E7D4; --asfalto:#2A2318; --meio-fio:#3D3423;
-    --verde:#4CAF5B; --verde-escuro:#2E7D46; --vermelho:#FF5A4D; --bege:#4A3B27;
-    --edificado:#241D14; --verde-area:#1E2C1B; --pavimento:#1C1710; } }
   .croqui .via-base { stroke:var(--meio-fio); stroke-linecap:round; stroke-linejoin:round; fill:none; }
   .croqui .via { stroke:var(--asfalto); stroke-linecap:round; stroke-linejoin:round; fill:none; }
   .croqui .via-nome { fill:var(--tinta); opacity:.6; font:600 3px system-ui,sans-serif;
@@ -54,11 +59,18 @@ const SVG = 'http://www.w3.org/2000/svg';
   `;
   
   function criarCroqui(hospedeiro, mapa, opcoes = {}) {
-    const { aoSelecionar, aoArrastar, editavel = false, margem_m = 25 } = opcoes;
+    const { aoSelecionar, aoArrastar, editavel = false, margem_m = 25,
+            tema = 'auto', paleta } = opcoes;
   
     const svg = el('svg', { class: 'croqui', xmlns: SVG });
     const folha = el('style');
-    folha.textContent = ESTILO;
+    folha.textContent = ESTILO
+      + (tema === 'auto'
+          ? `@media (prefers-color-scheme: dark) { .croqui {${ESCURO}} }`
+          : tema === 'escuro' ? `.croqui {${ESCURO}}` : '')
+      + (paleta
+          ? `.croqui {${Object.entries(paleta).map(([k, v]) => `--${k}:${v};`).join('')}}`
+          : '');
     svg.append(folha);
     const camadas = {};
     for (const nome of ['areas', 'vias', 'referencias', 'barracas', 'voce']) {
