@@ -138,8 +138,11 @@ As barracas são a **mesma pílula dourada** do `.card__numero` das listas
 círculo não comporta `"20/21"`. Selecionada fica verde com texto branco, apagada
 fica na cor da linha do papel.
 
-Ter paleta própria já custou caro: o croqui seguia `prefers-color-scheme` e
-ficava preto no meio de uma página que declara `color-scheme: light`.
+**O projeto inteiro é claro, e só.** Não há `prefers-color-scheme` em lugar
+nenhum — nem no croqui, nem no site, nem nestas páginas avulsas, que declaram
+`color-scheme: light` e repetem os tokens do app. Ter tema próprio já custou
+caro uma vez: o croqui seguia o sistema e ficava preto no meio de uma página
+bege.
 
 ## O sistema de coordenadas
 

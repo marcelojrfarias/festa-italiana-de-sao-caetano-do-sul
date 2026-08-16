@@ -4,9 +4,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Editor de planta — Festa Italiana</title>
 <style>
-  :root { color-scheme: light dark; --borda:#0002; }
+  :root { color-scheme: light; --borda:#DFCEB4; --papel:#EFE4D4;
+          --papel-linha:#DFCEB4; --cartao:#FFFFFF; --tinta:#1F1A14;
+          --tinta-fraca:#7B6E5D; --verde:#0F5F28; --verde-suave:#E7EFE6;
+          --dourado:#D6A25E; }
   * { box-sizing:border-box; }
   body { margin:0; height:100dvh; display:grid; grid-template-columns:1fr 320px;
+         background:var(--papel); color:var(--tinta);
          font:14px/1.45 system-ui,sans-serif; }
   #palco { position:relative; overflow:hidden; }
   #painel { border-left:1px solid var(--borda); padding:14px; overflow:auto; }
@@ -20,7 +24,7 @@
   input[type=range] { width:100%; }
   button { padding:7px 10px; border:1px solid var(--borda); border-radius:7px;
        background:transparent; color:inherit; cursor:pointer; font:inherit; }
-  button.primario { background:#196B24; color:#fff; border-color:#196B24; }
+  button.primario { background:var(--verde); color:#fff; border-color:var(--verde); }
   .linha { display:flex; gap:6px; }
   .linha > * { flex:1; }
   #status { font-size:12px; opacity:.7; margin-top:10px; min-height:1.2em; }
