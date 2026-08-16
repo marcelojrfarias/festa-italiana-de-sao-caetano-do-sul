@@ -8,6 +8,7 @@ JavaScript a página continua sendo o cardápio inteiro, rolável.
 
     python3 scripts/build_site.py
 """
+import hashlib
 import json, re, shutil, unicodedata, pathlib, html, collections
 
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
@@ -272,7 +273,7 @@ def render_indices(cardapio, categorias, pratos):
     return cards_cat, cards_bar
 
 
-def render_html(cardapio, categorias, evento, pratos, geo):
+def render_html(cardapio, categorias, evento, pratos, geo, versao):
     cards_cat, cards_bar = render_indices(cardapio, categorias, pratos)
     lista = "".join(render_prato(p) for p in pratos)
     ev = evento["local"]
@@ -318,7 +319,7 @@ def render_html(cardapio, categorias, evento, pratos, geo):
 <meta property="og:image:alt" content="Logo da 33ª Festa Italiana de São Caetano do Sul">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="{e(SITE)}">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v={versao["css"]}">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🍝</text></svg>">
 </head>
 <body data-modo="categoria">
@@ -396,7 +397,7 @@ def render_html(cardapio, categorias, evento, pratos, geo):
     extraídos do material oficial; preços e atrações podem mudar.<br>Medimos acessos de forma anônima, sem cookies.</p>
 </footer>
 
-<script src="app.js"></script>
+<script src="app.js?v={versao["js"]}"></script>
 <!-- Cloudflare Web Analytics: sem cookie e sem dado pessoal, então não exige
      banner de consentimento. type=module já adia a execução. O beacon rastreia
      pushState sozinho, que é como toda a navegação interna funciona aqui. -->
@@ -412,6 +413,8 @@ CSS_MAPA = """
 .mapa { margin: 0 0 var(--gap); }
 .mapa__tela { height: min(68vh, 560px); border-radius: 14px; overflow: hidden;
   background: var(--papel); border: 1px solid var(--linha); touch-action: none; }
+.mapa__falha { display: grid; place-content: center; padding: 1.5rem; text-align: center;
+  color: var(--tinta-fraca); font-size: .9rem; line-height: 1.5; }
 .mapa__nota { margin: .55rem .2rem 0; font-size: .78rem; line-height: 1.4;
   color: var(--tinta-fraca); }
 .trilha__mapa { margin-left: auto; flex: none; padding: .35rem .7rem;
@@ -947,7 +950,8 @@ JS_MAPA = r"""
       filtros = document.getElementById('filtros'),
       verNoMapa = document.getElementById('ver-no-mapa'),
       pratos = Array.prototype.slice.call(lista.children),
-      croqui = null;
+      croqui = null,
+      falhou = false;
 
   function estadoURL() {
     var p = new URLSearchParams(location.search);
@@ -967,9 +971,19 @@ JS_MAPA = r"""
   }
 
   function montar() {
-    if (croqui) return;
-    croqui = window.FestaMapa.criarCroqui(alvo, window.FESTA_MAPA,
-                                          { aoSelecionar: irPara });
+    if (croqui || falhou) return;
+    // aba em branco e o pior desfecho: se o croqui nao subir, diz o que houve
+    // em vez de mostrar nada e deixar a pessoa achando que o site quebrou
+    try {
+      croqui = window.FestaMapa.criarCroqui(alvo, window.FESTA_MAPA,
+                                            { aoSelecionar: irPara });
+    } catch (erro) {
+      falhou = true;
+      alvo.textContent = 'Não consegui desenhar o mapa neste navegador. '
+        + 'A aba Barracas tem a mesma lista.';
+      alvo.className = 'mapa__falha';
+      if (window.console) console.error('croqui:', erro);
+    }
   }
 
   function sincronizar() {
@@ -994,15 +1008,14 @@ JS_MAPA = r"""
       // quase todas.
       var b = null;
       window.FESTA_MAPA.barracas.forEach(function (x) { if (x.chave === st.barraca) b = x; });
-      croqui.destacar([st.barraca]);
-      croqui.selecionar(st.barraca);
+      if (croqui) { croqui.destacar([st.barraca]); croqui.selecionar(st.barraca); }
       filtros.hidden = true;
       contador.textContent = 'barraca ' + ((b && (b.rotulo || b.numero)) || st.barraca);
       return;
     }
     filtros.hidden = false;
     var filtrando = !!(st.q || st.preco);
-    croqui.destacar(filtrando ? Object.keys(vistas) : null);
+    if (croqui) croqui.destacar(filtrando ? Object.keys(vistas) : null);
     contador.textContent = filtrando
       ? n + (n === 1 ? ' barraca' : ' barracas')
       : window.FESTA_MAPA.barracas.length + ' barracas no mapa';
@@ -1086,12 +1099,21 @@ def main():
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir(parents=True)
-    (DIST / "index.html").write_text(render_html(cardapio, categorias, evento, pratos, mapa),
-                                     encoding="utf-8")
-    (DIST / "style.css").write_text(CSS + CSS_MAPA, encoding="utf-8")
+
     mapa_js = ("window.FESTA_MAPA = "
                + json.dumps(mapa, ensure_ascii=False, separators=(",", ":")) + ";\n")
-    (DIST / "app.js").write_text(JS + mapa_js + fontes_mapa + JS_MAPA, encoding="utf-8")
+    css_txt = CSS + CSS_MAPA
+    js_txt = JS + mapa_js + fontes_mapa + JS_MAPA
+    # style.css e app.js tem nome fixo, entao quem ja visitou o site pode receber
+    # o index.html novo com o app.js velho do cache — foi o que fez a aba Mapa
+    # aparecer sem nada dentro. A assinatura do conteudo na URL corta isso.
+    versao = {k: hashlib.sha256(t.encode("utf-8")).hexdigest()[:10]
+              for k, t in (("css", css_txt), ("js", js_txt))}
+
+    (DIST / "index.html").write_text(
+        render_html(cardapio, categorias, evento, pratos, mapa, versao), encoding="utf-8")
+    (DIST / "style.css").write_text(css_txt, encoding="utf-8")
+    (DIST / "app.js").write_text(js_txt, encoding="utf-8")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
     antes, depois, tam_og = otimizar_assets()
 
