@@ -456,7 +456,7 @@ CSS = """/* Paleta medida do PDF oficial (data/identidade-visual.json), organiza
   --papel-linha: #DFCEB4;
   --cartao: #FFFFFF;
   --tinta: #1F1A14;          /* preto quente, não puro */
-  --tinta-fraca: #7B6E5D;    /* cinza enviesado para a temperatura do papel */
+  --tinta-fraca: #726553;    /* cinza enviesado para a temperatura do papel */
   --verde: #0F5F28;
   --verde-fundo: #08351A;
   --verde-suave: #E7EFE6;
@@ -490,7 +490,7 @@ a { color: var(--verde); }
 /* ---- faixa de marca: rola embora ---- */
 .marca { padding: var(--e3) var(--e4) var(--e2); }
 .marca__linha { display: flex; align-items: center; gap: var(--e3); }
-.marca__logo { width: auto; height: 54px; }
+.marca__logo { width: auto; height: auto; max-height: 54px; max-width: 100%; }
 .marca__linha .botao-share--icone { margin-left: auto; }
 .status {
   display: flex; align-items: center; gap: 7px;
@@ -509,14 +509,21 @@ a { color: var(--verde); }
   background: var(--verde-fundo); padding: var(--e3) var(--e4);
   display: grid; gap: var(--e2);
 }
+/* Itens de grid e flex nascem com min-width:auto e não encolhem abaixo do
+   próprio conteúdo. Sem estes zeros a barra de ferramentas estoura a tela em
+   320px e em qualquer nível de zoom ou fonte aumentada. */
+.ferramentas > * { min-width: 0; }
 .busca input {
   width: 100%; padding: 11px var(--e4); font: inherit; font-size: 16px;
   border: 0; border-radius: 999px; background: var(--cartao); color: var(--tinta);
 }
 .busca input::placeholder { color: var(--tinta-fraca); }
-.modos { display: flex; gap: 6px; }
+.modos { display: flex; flex-wrap: wrap; gap: 6px; }
 .modos button {
-  flex: 1; padding: 8px 4px; font: inherit; font-size: 13px; font-weight: 600;
+  /* max-content impede que a palavra seja cortada; com flex-wrap no pai, o
+     botão que não couber desce para a linha seguinte. É o que mantém os três
+     modos legíveis com fonte do sistema aumentada. */
+  flex: 1 1 auto; min-width: max-content; padding: 12px 10px; font: inherit; font-size: 13px; font-weight: 600;
   border: 1px solid rgba(255,255,255,.28); border-radius: 999px;
   background: transparent; color: #EFE4D4; cursor: pointer;
 }
@@ -529,7 +536,7 @@ main { padding: var(--e4) var(--e4) 0; }
 /* ---- trilha: o momento de display ---- */
 .trilha { display: flex; align-items: center; gap: var(--e3); margin-bottom: var(--e4); }
 .voltar {
-  display: grid; place-items: center; width: 40px; height: 40px; flex: 0 0 auto;
+  display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 auto;
   padding: 0; border: 1px solid var(--papel-linha); border-radius: 50%;
   background: var(--cartao); color: var(--verde); cursor: pointer;
 }
@@ -561,7 +568,7 @@ main { padding: var(--e4) var(--e4) 0; }
   background: var(--dourado); color: #3A2A12;
   font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums;
 }
-.card__nome { font-weight: 600; line-height: 1.25; }
+.card__nome { min-width: 0; font-weight: 600; line-height: 1.25; }
 .card__contagem {
   color: var(--tinta-fraca); font-size: 13px; font-variant-numeric: tabular-nums;
 }
@@ -574,7 +581,7 @@ main { padding: var(--e4) var(--e4) 0; }
 }
 .filtros::-webkit-scrollbar { display: none; }
 .filtros button {
-  flex: 0 0 auto; padding: 7px var(--e3); font: inherit; font-size: 13px; font-weight: 600;
+  flex: 0 0 auto; padding: 12px var(--e3); font: inherit; font-size: 13px; font-weight: 600;
   border: 1px solid var(--papel-linha); border-radius: 999px;
   background: var(--cartao); color: var(--tinta-fraca); cursor: pointer;
 }
@@ -592,9 +599,9 @@ main { padding: var(--e4) var(--e4) 0; }
   padding: var(--e3) var(--e4); background: var(--cartao);
   border-radius: var(--raio); box-shadow: var(--sombra-2);
 }
-.prato__topo { display: flex; align-items: baseline; gap: var(--e3); }
+.prato__topo { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--e3); }
 .prato__titulo {
-  margin: 0; flex: 1; font-size: 16px; font-weight: 700; line-height: 1.3;
+  margin: 0; flex: 1; min-width: 0; font-size: 16px; font-weight: 700; line-height: 1.3;
   color: var(--verde); text-wrap: balance;
 }
 .prato__faixa {
@@ -602,13 +609,16 @@ main { padding: var(--e4) var(--e4) 0; }
   font-variant-numeric: tabular-nums;
 }
 .prato__desc { margin: var(--e1) 0 0; font-size: 14px; color: var(--tinta-fraca); }
+.prato__titulo, .prato__desc, .card__nome, .oferta__nome, .trilha__titulo {
+  overflow-wrap: break-word;
+}
 .prato__onde {
   display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--e2);
   margin: var(--e3) 0 0; padding-top: var(--e2);
   border-top: 1px solid var(--papel); font-size: 13px;
 }
 .prato__toggle {
-  margin-top: var(--e3); padding: 5px var(--e3); font: inherit; font-size: 13px;
+  margin-top: var(--e3); padding: 12px var(--e3); font: inherit; font-size: 13px;
   font-weight: 600; border: 1px solid var(--papel-linha); border-radius: 999px;
   background: transparent; color: var(--tinta-fraca); cursor: pointer;
 }
@@ -624,7 +634,7 @@ main { padding: var(--e4) var(--e4) 0; }
   background: var(--dourado); color: #3A2A12;
   font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums;
 }
-.oferta__nome { color: var(--tinta-fraca); line-height: 1.2; }
+.oferta__nome { min-width: 0; color: var(--tinta-fraca); line-height: 1.2; }
 .oferta__preco { font-weight: 700; font-variant-numeric: tabular-nums; }
 
 /* dentro de uma barraca o preço vai para o topo; repetir o nome dela em cada
@@ -654,6 +664,8 @@ body[data-barraca-ativa] .lista .ofertas { display: none !important; }
   display: inline-flex; align-items: center; justify-content: center; gap: var(--e2);
   padding: 12px var(--e5); border-radius: 999px; background: var(--cartao);
   color: var(--verde-fundo); font-weight: 700; text-decoration: none;
+  /* com zoom alto o rótulo é maior que a tela: quebra em vez de estourar */
+  max-width: 100%; overflow-wrap: break-word;
 }
 .botao-share--icone {
   /* 44x44 é o alvo de toque mínimo recomendado */
