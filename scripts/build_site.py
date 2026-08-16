@@ -9,7 +9,7 @@ JavaScript a página continua sendo o cardápio inteiro, rolável.
     python3 scripts/build_site.py
 """
 import hashlib
-import json, re, shutil, unicodedata, pathlib, html, collections
+import json, re, shutil, subprocess, unicodedata, pathlib, html, collections
 
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
 DADOS = RAIZ / "data"
@@ -1526,6 +1526,22 @@ JS_MAPA = r"""
 """
 
 
+def conferir_sintaxe(caminho):
+    """Passa o app.js pelo parser do node, se houver node por perto.
+
+    O app.js e um arquivo so — app, geo.js, croqui.js e os dados concatenados —
+    entao um erro de sintaxe em qualquer pedaco derruba tudo, inclusive o aviso
+    de falha que existe justamente para nao deixar tela em branco. Ja aconteceu:
+    uma variavel redeclarada apagou o site inteiro.
+    """
+    if not shutil.which("node"):
+        print("  (node ausente: sintaxe do app.js nao conferida)")
+        return
+    r = subprocess.run(["node", "--check", str(caminho)], capture_output=True, text=True)
+    if r.returncode:
+        raise SystemExit(f"app.js nao passa no parser:\n{r.stderr.strip()}")
+
+
 def conferir_juncao(cardapio, mapa):
     """O mapa e o cardapio sao mantidos separados e so se encontram pela chave.
 
@@ -1607,6 +1623,7 @@ def main():
         encoding="utf-8")
     (DIST / "style.css").write_text(css_txt, encoding="utf-8")
     (DIST / "app.js").write_text(js_txt, encoding="utf-8")
+    conferir_sintaxe(DIST / "app.js")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
     antes, depois, tam_og = otimizar_assets()
 

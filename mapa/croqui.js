@@ -113,8 +113,12 @@ const SVG = 'http://www.w3.org/2000/svg';
         const [a, b] = [cx[i - 1], cx[i]];
         const L = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
         const u = [(b[0] - a[0]) / L, (b[1] - a[1]) / L];
+        // o texto inteiro tem de caber SOBRE o trecho: a ancora nao pode chegar
+        // perto das pontas, senao metade do nome fica no vazio depois do asfalto
+        if (L < 2 * meia) continue;
         for (let k = 0; k <= 60; k++) {
-          const pt = [a[0] + (b[0] - a[0]) * k / 60, a[1] + (b[1] - a[1]) * k / 60];
+          const passo = meia + (L - 2 * meia) * k / 60;
+          const pt = [a[0] + u[0] * passo, a[1] + u[1] * passo];
           const faixa = [];
           for (let j = -2; j <= 2; j++) {
             faixa.push([pt[0] + u[0] * meia * j / 2, pt[1] + u[1] * meia * j / 2]);
@@ -368,6 +372,7 @@ const SVG = 'http://www.w3.org/2000/svg';
     const aplicar = () => svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
 
 
+    let temporizadorNomes = null;           // roda da mouse dispara em rajada
     const ativos = new Map();               // pointerId -> {x, y} em coordenadas de tela
     let ancora = null;
 
@@ -416,10 +421,25 @@ const SVG = 'http://www.w3.org/2000/svg';
       ajustarEscalaPinos();
     }
 
+    /**
+     * Recoloca os nomes de rua para a vista atual.
+     *
+     * O bom lugar para o nome depende do enquadramento: com o mapa todo na tela
+     * a Vinte e Oito so cabe a oeste do cruzamento, mas quem aproxima o trecho
+     * leste tem ali uma rua larga e vazia, que e onde o nome deveria estar.
+     * So roda com o gesto ja terminado — recalcular a cada quadro faria o
+     * rotulo saltitar enquanto o dedo se move.
+     */
+    function recolocarNomes() {
+      desenharVias();
+      ajustarEscalaPinos();
+    }
+
     function aoSoltar(ev) {
       if (!ativos.delete(ev.pointerId)) return;
       ancorar();                            // o dedo que ficou continua de onde esta
       if (!ativos.size) {
+        recolocarNomes();
         window.removeEventListener('pointermove', aoMover);
         window.removeEventListener('pointerup', aoSoltar);
         window.removeEventListener('pointercancel', aoSoltar);
@@ -453,6 +473,8 @@ const SVG = 'http://www.w3.org/2000/svg';
       });
       aplicar();
       ajustarEscalaPinos();
+      clearTimeout(temporizadorNomes);
+      temporizadorNomes = setTimeout(recolocarNomes, 160);
     }, { passive: false });
 
     function selecionar(numero, porToque) {

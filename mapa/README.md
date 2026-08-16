@@ -215,7 +215,15 @@ Três regras decidem se um trecho vale, e vieram todas de defeito visto na tela:
 - **o texto inteiro cabe no quadro**, não só a âncora, senão o fim do nome sai
   cortado na borda;
 - **não encosta em outro nome de rua**, que se cruzariam no cruzamento, onde as
-  duas passam.
+  duas passam;
+- **o texto inteiro fica sobre o trecho de rua**, e não só a âncora — senão
+  metade do nome cai no vazio depois do fim do asfalto.
+
+E os nomes são **recolocados quando o gesto termina**, não fixados no
+enquadramento inicial: o bom lugar depende da vista. Com o mapa todo na tela a
+Vinte e Oito só cabe perto do cruzamento; quem aproxima o trecho leste tem ali
+uma rua larga e vazia, que é onde o nome deve estar. Recalcular a cada quadro
+faria o rótulo saltitar enquanto o dedo se move, então só ao soltar.
 
 O nome mais longo escolhe primeiro: ele tem menos lugar onde caber, e com o
 curto escolhendo antes ele tomava a única vaga que servia ao outro — o segundo
