@@ -69,6 +69,17 @@ def sem_acento(s):
                    if unicodedata.category(c) != "Mn").lower()
 
 
+def chave_barraca(numero):
+    """Identificador estável de barraca, usado na URL e nos data-attributes.
+
+    O Lar Bom Repouso ocupa dois números e seu rótulo impresso é "20/21". A
+    barra não pode ir para a URL nem para a lista separada por espaço em
+    data-barracas — era o que quebrava: o card linkava para "20/21" enquanto
+    os pratos gravavam "20 21", e a barraca inteira aparecia vazia.
+    """
+    return sem_acento(numero).replace("/", "-")
+
+
 def moeda(v):
     return f"R$ {v:,.2f}".replace(",", "_").replace(".", ",").replace("_", ".")
 
@@ -96,6 +107,9 @@ def agrupar_pratos(cardapio, categorias):
             g = grupos.setdefault(chave, {
                 "titulo": item["titulo"], "cats": collections.Counter(),
                 "ofertas": [], "descricoes": [],
+                # o PDF lista sabores e formatos de massa num título só, separados
+                # por "/"; o extrator já os separou e o gerador ignorava o campo
+                "variacoes": item.get("variacoes") or [],
             })
             g["cats"][atrib[item["id"]]] += 1
             g["ofertas"].append({
@@ -110,6 +124,7 @@ def agrupar_pratos(cardapio, categorias):
         g["ofertas"].sort(key=lambda o: o["preco"])
         pratos.append({
             "titulo": g["titulo"],
+            "variacoes": g["variacoes"],
             "categoria": g["cats"].most_common(1)[0][0],
             "ofertas": g["ofertas"],
             "min": min(precos), "max": max(precos),
@@ -133,11 +148,48 @@ def bucket_preco(v):
     return "ate10" if v <= 10 else "11a20" if v <= 20 else "21a30" if v <= 30 else "31mais"
 
 
+def titulo_e_variantes(p):
+    """Separa o nome do prato das suas alternativas.
+
+    O PDF junta variações num título só, separadas por "/", em dois formatos:
+
+      sabor   "Cannoli Alla Crema / Nutella / Fior di Latte"
+              -> o primeiro segmento é o prato, o resto são recheios
+
+      formato "Spaghetti / Penne Rigati / Farfalle Al Sugo"
+              -> os segmentos são formatos de massa e o molho vem grudado no
+                 último; usar só o primeiro deixaria cinco pratos chamados
+                 "Spaghetti", indistinguíveis na lista
+
+    O que separa os dois casos é o tamanho: no formato de massa o primeiro
+    segmento tem menos palavras que o último, porque o último carrega o molho.
+    A regra foi conferida contra os 17 itens com variação do cardápio.
+    """
+    v = p.get("variacoes") or []
+    if len(v) < 2:
+        return p["titulo"], []
+    primeiro, ultimo = v[0].split(), v[-1].split()
+    if len(primeiro) < len(ultimo):
+        sufixo = " ".join(ultimo[1:])          # o molho, comum a todos
+        return f"{v[0]} {sufixo}", v[1:-1] + [ultimo[0]]
+    return v[0], v[1:]
+
+
 def render_prato(p):
-    nums = " ".join(sem_acento(o["num"]).replace("/", " ") for o in p["ofertas"])
+    # "Spaghetti / Penne Rigati / Farfalle Al Sugo" ocupava cinco linhas. O
+    # primeiro segmento é o nome reconhecível do prato; os demais são as
+    # alternativas, e a descrição já explica todas em português.
+    titulo, variantes = titulo_e_variantes(p)
+    chips = ""
+    if variantes:
+        chips = ('<p class="variacoes"><span class="variacoes__ou">ou</span>'
+                 + "".join(f'<span class="variacao">{e(v)}</span>' for v in variantes)
+                 + "</p>")
+
+    nums = " ".join(chave_barraca(o["num"]) for o in p["ofertas"])
     buckets = " ".join(sorted({bucket_preco(o["preco"]) for o in p["ofertas"]}))
     ofertas = "".join(
-        f'<li class="oferta" data-barraca="{e(sem_acento(o["num"]))}">'
+        f'<li class="oferta" data-barraca="{e(chave_barraca(o["num"]))}">'
         f'<span class="oferta__num">{e(o["num"])}</span>'
         f'<span class="oferta__nome">{e(o["nome"])}</span>'
         f'<span class="oferta__preco">{e(moeda(o["preco"]))}</span></li>'
@@ -159,9 +211,9 @@ def render_prato(p):
         f'<article class="prato" data-cat="{e(p["categoria"])}" '
         f'data-barracas=" {e(nums)} " data-precos=" {e(buckets)} " '
         f'data-busca="{e(p["busca"])}">'
-        f'<div class="prato__topo"><h3 class="prato__titulo">{e(p["titulo"])}</h3>'
+        f'<div class="prato__topo"><h3 class="prato__titulo">{e(titulo)}</h3>'
         f'<span class="prato__faixa">{e(faixa_preco(p))}</span></div>'
-        f'<p class="prato__desc">{e(p["descricao"])}</p>'
+        f'<p class="prato__desc">{e(p["descricao"])}</p>{chips}'
         f'{onde}<ul class="ofertas">{ofertas}</ul></article>')
 
 
@@ -177,8 +229,8 @@ def render_indices(cardapio, categorias, pratos):
         for cid in ORDEM if por_cat[cid])
 
     cards_bar = "".join(
-        f'<a class="card" href="?barraca={e(sem_acento(b["numero"]))}" '
-        f'data-barraca="{e(sem_acento(b["numero"]))}">'
+        f'<a class="card" href="?barraca={e(chave_barraca(b["numero"]))}" '
+        f'data-barraca="{e(chave_barraca(b["numero"]))}">'
         f'<span class="card__numero">{e(b["numero"])}</span>'
         f'<span class="card__nome">{e(b["nome"])}</span>'
         f'<span class="card__contagem">{b["total_itens"]}</span>'
@@ -242,7 +294,7 @@ def render_html(cardapio, categorias, evento, pratos):
 <div class="ferramentas">
   <form class="busca" role="search" onsubmit="return false">
     <label class="sr" for="q">Buscar prato</label>
-    <input id="q" type="search" placeholder="buscar prato, ex: tiramisù" autocomplete="off">
+    <input id="q" type="search" placeholder="Buscar…" autocomplete="off">
   </form>
   <nav class="modos" aria-label="Modo de visualização">
     <button type="button" data-modo="categoria" aria-pressed="true">Categorias</button>
@@ -273,8 +325,8 @@ def render_html(cardapio, categorias, evento, pratos):
     <button type="button" class="limpar">limpar filtros</button></p>
 
   <aside class="convite">
-    <p class="convite__titulo">Manda pro grupo da família 🖤</p>
-    <p class="convite__texto">Alguém aí ainda está decidindo o que comer.</p>
+    <p class="convite__titulo">Manda pra quem vai contigo 😉</p>
+    <p class="convite__texto">Vale mandar pra amigo, família e até no grupo do prédio</p>
     <a class="botao-share" href="{e(wa)}" target="_blank" rel="noopener">
       Compartilhar no WhatsApp</a>
   </aside>
@@ -397,7 +449,7 @@ main { padding: var(--e4) var(--e4) 0; }
 /* ---- índices ---- */
 .indice { display: grid; gap: var(--e2); }
 .card {
-  display: grid; grid-template-columns: 44px 1fr auto 18px; align-items: center;
+  display: grid; grid-template-columns: auto 1fr auto 18px; align-items: center;
   gap: var(--e3); padding: var(--e3) var(--e4); background: var(--cartao);
   border-radius: var(--raio); box-shadow: var(--sombra-2);
   text-decoration: none; color: var(--tinta);
@@ -409,7 +461,9 @@ main { padding: var(--e4) var(--e4) 0; }
   border-radius: 50%; background: var(--verde-suave); color: var(--verde);
 }
 .card__numero {
-  display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+  /* pílula, não círculo: a barraca dupla imprime "20/21" e estourava o círculo */
+  display: grid; place-items: center; min-width: 40px; height: 40px;
+  padding: 0 9px; border-radius: 999px;
   background: var(--dourado); color: #3A2A12;
   font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums;
 }
@@ -454,8 +508,21 @@ main { padding: var(--e4) var(--e4) 0; }
   font-variant-numeric: tabular-nums;
 }
 .prato__desc { margin: var(--e1) 0 0; font-size: 14px; color: var(--tinta-fraca); }
+.variacoes {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 5px;
+  margin: var(--e2) 0 0;
+}
+.variacoes__ou {
+  font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--tinta-fraca);
+}
+.variacao {
+  padding: 3px 9px; border-radius: 999px; background: var(--verde-suave);
+  color: var(--verde); font-size: 13px; font-weight: 600;
+}
+
 .prato__onde {
-  display: grid; grid-template-columns: 26px 1fr; align-items: center; gap: var(--e2);
+  display: grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--e2);
   margin: var(--e3) 0 0; padding-top: var(--e2);
   border-top: 1px solid var(--papel); font-size: 13px;
 }
@@ -467,11 +534,12 @@ main { padding: var(--e4) var(--e4) 0; }
 .ofertas { display: none; margin: var(--e3) 0 0; padding: 0; list-style: none; }
 .prato__toggle[aria-expanded="true"] + .ofertas { display: block; }
 .oferta {
-  display: grid; grid-template-columns: 26px 1fr auto; align-items: center; gap: var(--e2);
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--e2);
   padding: var(--e2) 0; border-top: 1px solid var(--papel); font-size: 14px;
 }
 .oferta__num, .prato__onde .oferta__num {
-  display: grid; place-items: center; width: 26px; height: 22px; border-radius: 999px;
+  display: grid; place-items: center; min-width: 26px; height: 22px;
+  padding: 0 6px; border-radius: 999px;
   background: var(--dourado); color: #3A2A12;
   font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums;
 }
