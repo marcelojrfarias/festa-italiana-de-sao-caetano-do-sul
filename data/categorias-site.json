@@ -30,13 +30,13 @@
       "id": "pizzas-e-fogazza",
       "nome": "Pizzas e Fogazza",
       "ordem": 4,
-      "total": 50
+      "total": 52
     },
     {
       "id": "lanches",
       "nome": "Lanches",
       "ordem": 5,
-      "total": 40
+      "total": 38
     },
     {
       "id": "petiscos-e-porcoes",
@@ -89,9 +89,9 @@
     "1-23-suco-de-uva-natural-copo": "bebidas-sem-alcool",
     "1-24-vinho-tinto-copo": "bebidas-com-alcool",
     "1-25-vinho-quente-copo": "bebidas-com-alcool",
-    "10-01-focaccia-caprese": "pizzas-e-fogazza",
-    "10-02-focaccia-alla-mortadella": "pizzas-e-fogazza",
-    "10-03-focaccia-de-porchetta": "pizzas-e-fogazza",
+    "10-01-focaccia-caprese": "lanches",
+    "10-02-focaccia-alla-mortadella": "lanches",
+    "10-03-focaccia-de-porchetta": "lanches",
     "10-04-polenta-con-ragu-di-costine-e-pane-italiano": "carnes-e-polenta",
     "10-05-porzioni-porchetta-delle-marche": "petiscos-e-porcoes",
     "10-06-agua": "bebidas-sem-alcool",
@@ -145,10 +145,10 @@
     "13-21-vinho-quente-copo": "bebidas-com-alcool",
     "14-01-panino-alla-maiale-sfitacciato": "lanches",
     "14-02-panino-alla-salsiccia-calabrese": "lanches",
-    "14-03-trancio-di-pizza-di-sfoglia-ai-quattro-formaggi": "lanches",
-    "14-04-trancio-di-pizza-di-sfoglia-alla-salsiccia-calabrese": "lanches",
-    "14-05-trancio-di-pizza-di-sfoglia-al-prosciutto-e-formaggio": "lanches",
-    "14-06-trancio-di-pizza-di-sfoglia-al-pollo": "lanches",
+    "14-03-trancio-di-pizza-di-sfoglia-ai-quattro-formaggi": "pizzas-e-fogazza",
+    "14-04-trancio-di-pizza-di-sfoglia-alla-salsiccia-calabrese": "pizzas-e-fogazza",
+    "14-05-trancio-di-pizza-di-sfoglia-al-prosciutto-e-formaggio": "pizzas-e-fogazza",
+    "14-06-trancio-di-pizza-di-sfoglia-al-pollo": "pizzas-e-fogazza",
     "14-07-agua": "bebidas-sem-alcool",
     "14-08-agua": "bebidas-sem-alcool",
     "14-09-refrigerante-350-ml": "bebidas-sem-alcool",
@@ -282,7 +282,7 @@
     "20-21-14-pizza-intera": "pizzas-e-fogazza",
     "20-21-15-panino-al-manzo-sfilacciato": "lanches",
     "20-21-16-panino-alla-salsiccia-calabrese-e-cipolle": "lanches",
-    "20-21-17-fetta-di-pizza": "lanches",
+    "20-21-17-fetta-di-pizza": "pizzas-e-fogazza",
     "20-21-18-pizza-dolce-al-tiramisu": "doces",
     "20-21-19-agua": "bebidas-sem-alcool",
     "20-21-20-agua": "bebidas-sem-alcool",

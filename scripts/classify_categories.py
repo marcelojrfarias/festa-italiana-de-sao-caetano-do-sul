@@ -59,10 +59,17 @@ def classificar(item):
         return "bebidas-com-alcool" if re.search(ALCOOL, texto) else "bebidas-sem-alcool"
     if cid in ("dolci", "gelato"):
         return "doces"
-    if cid == "panini":
+    # Focaccia aqui é sanduíche, não pizza: a descrição das três diz "Lanche
+    # preparado com Focaccia" ou "Pão italiano artesanal recheado com".
+    if "focaccia" in titulo:
         return "lanches"
+    # Antes de panini: o PDF lista fatia de pizza salgada dentro de "Panini"
+    # (Fetta di Pizza, Trancio di Pizza di Sfoglia), e a regra de panini vindo
+    # primeiro mandava pizza para Lanches.
     if cid in ("pizza", "fogazza") or re.search(PIZZA, titulo):
         return "pizzas-e-fogazza"
+    if cid == "panini":
+        return "lanches"
     if re.search(MASSA, texto):
         return "massas"
     if cid in ("antipasti", "porzioni", "accompagnamenti", "insalata"):
