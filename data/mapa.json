@@ -20,12 +20,12 @@
       "largura_m": 9,
       "eixo": [
         [
-          -27.0,
-          88.0
+          -32.0,
+          110.0
         ],
         [
-          2.5,
-          -42.0
+          -1.0,
+          -26.5
         ]
       ]
     },
@@ -35,11 +35,11 @@
       "largura_m": 9,
       "eixo": [
         [
-          -26.0,
+          -11.0,
           0.0
         ],
         [
-          52.0,
+          60.0,
           0.0
         ]
       ]
@@ -102,8 +102,8 @@
       "rotulo": true,
       "aproximado": true,
       "rotulo_ponto": [
-        -82.0,
-        -38.0
+        -80.0,
+        -88.0
       ],
       "poligono": [
         [
@@ -197,7 +197,7 @@
     },
     {
       "id": "parque-travessa",
-      "nome": "Parque — travessa",
+      "nome": "Parque — segunda fila",
       "via": null,
       "barracas": [
         "30",
@@ -227,7 +227,7 @@
       ],
       "zona": "mariano-oeste",
       "centro": [
-        -30.1,
+        -30.2,
         68.8
       ],
       "largura_m": 4.0,
@@ -371,7 +371,7 @@
       ],
       "zona": "mariano-leste",
       "centro": [
-        -10.1,
+        -10.2,
         46.8
       ],
       "largura_m": 4.0,
@@ -387,7 +387,7 @@
       ],
       "zona": "mariano-leste",
       "centro": [
-        -8.2,
+        -8.3,
         38.4
       ],
       "largura_m": 4.0,
@@ -484,7 +484,7 @@
       ],
       "zona": "mariano-sul",
       "centro": [
-        2.4,
+        2.3,
         -8.3
       ],
       "largura_m": 4.0,
@@ -500,7 +500,7 @@
       ],
       "zona": "mariano-sul",
       "centro": [
-        3.9,
+        3.8,
         -15.0
       ],
       "largura_m": 4.0,
@@ -516,7 +516,7 @@
       ],
       "zona": "mariano-sul",
       "centro": [
-        5.4,
+        5.3,
         -21.6
       ],
       "largura_m": 4.0,
@@ -532,7 +532,7 @@
       ],
       "zona": "mariano-sul",
       "centro": [
-        6.5,
+        -1.0,
         -26.5
       ],
       "largura_m": 4.0,
@@ -565,7 +565,7 @@
       "zona": "parque-norte",
       "centro": [
         -94.5,
-        -24.1
+        -38.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -581,7 +581,7 @@
       "zona": "parque-norte",
       "centro": [
         -87.4,
-        -24.1
+        -38.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -597,7 +597,7 @@
       "zona": "parque-norte",
       "centro": [
         -77.7,
-        -24.1
+        -38.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -613,7 +613,7 @@
       "zona": "parque-norte",
       "centro": [
         -70.6,
-        -24.1
+        -38.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -629,7 +629,7 @@
       "zona": "parque-norte",
       "centro": [
         -63.5,
-        -24.1
+        -38.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -645,7 +645,7 @@
       "zona": "parque-norte",
       "centro": [
         -56.2,
-        -24.1
+        -38.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -661,7 +661,7 @@
       "zona": "parque-travessa",
       "centro": [
         -83.0,
-        -29.9
+        -48.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -677,7 +677,7 @@
       "zona": "parque-travessa",
       "centro": [
         -75.8,
-        -29.9
+        -48.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,

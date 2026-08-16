@@ -195,6 +195,32 @@ um dos dedos da pinça cair sobre uma barraca, o SVG precisa vê-lo. Vale como
 toque só se o dedo mal saiu do lugar (8 px). No editor é o contrário: lá o
 arrasto move a barraca, então ele fica com o ponteiro.
 
+### O que tem tamanho de tela e o que tem tamanho de mapa
+
+Pílulas das barracas, nomes de rua e nomes de área **não** escalam com o zoom:
+são rótulos, e rótulo que cresce junto com o desenho vira cartaz. O croqui
+recompõe o `transform` deles a cada quadro (`ajustarEscalaPinos`), o que é só
+troca de atributo, sem refazer nós.
+
+O que escala é o que representa o mundo: ruas, quadras, largo e parque.
+
+O nome da rua não fica fixo no meio da linha — ele pousa no trecho da via mais
+longe das barracas, dentre os que valem. Fixar no meio punha o rótulo bem no
+cruzamento, justo onde a rua é mais cheia.
+
+Três regras decidem se um trecho vale, e vieram todas de defeito visto na tela:
+
+- **fica sobre o leito**, nunca ao lado — o nome fora da rua não diz de que rua
+  se trata;
+- **o texto inteiro cabe no quadro**, não só a âncora, senão o fim do nome sai
+  cortado na borda;
+- **não encosta em outro nome de rua**, que se cruzariam no cruzamento, onde as
+  duas passam.
+
+O nome mais longo escolhe primeiro: ele tem menos lugar onde caber, e com o
+curto escolhendo antes ele tomava a única vaga que servia ao outro — o segundo
+nome simplesmente sumia do mapa.
+
 ## Detalhe de renderização
 
 O croqui inteiro tem 250 × 440 m. Nesse enquadramento uma barraca de 4 m ocupa

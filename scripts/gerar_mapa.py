@@ -47,9 +47,10 @@ def retangulo(x0, y0, x1, y1):
 # serve de eixo de orientação, e eixo torto não orienta.
 VIAS = [
     {"id": "mariano-pamplona", "nome": "R. Mariano Pamplona", "largura_m": 9,
-     "eixo": [[-27.0, 88.0], [2.5, -42.0]]},
+     # a ponta sul e aparada depois, na barraca que fecha a rua
+     "eixo": [[-32.0, 110.0], [21.3, -125.0]]},
     {"id": "vinte-e-oito-de-julho", "nome": "R. Vinte e Oito de Julho", "largura_m": 9,
-     "eixo": [[-26.0, 0.0], [52.0, 0.0]]},
+     "eixo": [[-11.0, 0.0], [60.0, 0.0]]},
 ]
 
 # --- áreas de contexto ------------------------------------------------------
@@ -64,7 +65,7 @@ AREAS = [
      "poligono": retangulo(-100.0, -28.0, -20.0, 9.0)},
     {"id": "parque-treviso", "nome": "Parque Província de Treviso", "tipo": "verde",
      "rotulo": True, "aproximado": True,
-     "rotulo_ponto": [-82.0, -38.0],   # canto livre: a fila 23-35 ocupa o meio
+     "rotulo_ponto": [-80.0, -88.0],   # canto livre: as filas ocupam o meio e o topo
      "poligono": retangulo(-106.0, -105.0, -19.0, -28.0)},
 ]
 
@@ -90,12 +91,14 @@ ZONAS = [
     ("praca", "Praça, a oeste da via", None, 90, [
         ("31", 915, 1090),
     ]),
+    # medidas na foto, estas duas filas caíam sobre a borda do parque — a de cima
+    # ficava até fora dele, no largo. Elas estão dentro do parque, então descem.
     ("parque-norte", "Parque — fila norte", None, 180, [
-        ("3", 200, 1190), ("11", 268, 1190), ("29", 360, 1190),
-        ("9", 428, 1190), ("24", 495, 1190), ("6", 565, 1190),
+        ("3", 200, 1322), ("11", 268, 1322), ("29", 360, 1322),
+        ("9", 428, 1322), ("24", 495, 1322), ("6", 565, 1322),
     ]),
-    ("parque-travessa", "Parque — travessa", None, 0, [
-        ("30", 310, 1245), ("14", 378, 1245),
+    ("parque-travessa", "Parque — segunda fila", None, 0, [
+        ("30", 310, 1417), ("14", 378, 1417),
     ]),
     ("parque-alameda", "Parque — fila sul", None, 90, [
         ("23", 628, 1560), ("26", 628, 1622), ("33", 628, 1685),
@@ -123,6 +126,14 @@ def projetar(eixo, ponto):
 
 FOLGA_CALCADA_M = 1.5
 
+# A 01 nao fica na calcada: ela fecha o fim da R. Mariano Pamplona, plantada no
+# meio do leito. Encostar ela na guia como as outras seria fiel a regra e infiel
+# a rua.
+NO_EIXO = {"1"}
+
+# barraca que marca o fim da via: o traco da rua para nela
+FIM_DE_VIA = {"1": "mariano-pamplona"}
+
 
 def encostar(centro, azimute, via, profundidade):
     """Empurra a barraca para fora do leito, ate a calcada.
@@ -149,7 +160,9 @@ def main():
             largura = LARGURA_PADRAO_M * len(numeros)  # a barraca dupla 20/21 é maior
             centro = list(m(px, py))
             via = next((v for v in VIAS if v["id"] == via_id), None)
-            if via:
+            if via and numero in NO_EIXO:
+                centro = [round(c, 1) for c in projetar(via["eixo"], centro)[0]]
+            elif via:
                 centro = encostar(centro, azimute, via, PROFUNDIDADE_PADRAO_M)
             barracas.append({
                 "numero": numero,
@@ -183,6 +196,14 @@ def main():
         "zonas": zonas,
         "barracas": barracas,
     }
+
+    # A rua nao segue depois da barraca que a fecha: 01 esta plantada no fim da
+    # R. Mariano Pamplona, e o asfalto ao sul dela nao existe. Aparar aqui, e nao
+    # na constante, mantem a ponta grudada na barraca se ela se mexer.
+    for numero, via_id in FIM_DE_VIA.items():
+        b = next(x for x in barracas if x["numero"] == numero)
+        via = next(v for v in VIAS if v["id"] == via_id)
+        via["eixo"][-1] = [round(c, 1) for c in b["centro"]]
 
     xs = [b["centro"][0] for b in barracas]
     ys = [b["centro"][1] for b in barracas]
