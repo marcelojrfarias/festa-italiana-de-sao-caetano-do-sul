@@ -21,6 +21,11 @@ DIST = RAIZ / "dist"
 # propagar esse endereço no compartilhamento.
 SITE = "https://marcelojrfarias.github.io/festa-italiana-de-sao-caetano-do-sul/"
 UTM = "?utm_source=whatsapp&utm_medium=share&utm_campaign=cardapio-33a"
+# Só o link, nunca o número em texto: raspador de página varre dígito solto e
+# o número vira lista de spam. O wa.me carrega o destino e a mensagem já pronta.
+CONTATO = "5511974067164"
+CONTATO_MSG = ("Oi! Tenho uma dúvida/sugestão sobre o Cardápio Digital da "
+               "Festa Italiana de SCS:")
 LINKEDIN = "https://www.linkedin.com/in/marcelojrfarias/"
 
 # Ícones desenhados com primitivas simples (arco, linha, polígono). Emoji foram
@@ -60,6 +65,27 @@ def svg(inner, tam=24, classe="icone"):
 CHEVRON = '<path d="M9 5l7 7-7 7"/>'
 ALFINETE = ('<path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11Z"/>'
             '<circle cx="12" cy="10" r="2.5"/>')
+
+
+# O alfinete aparece uma vez por oferta: eram 974 cópias do mesmo desenho,
+# 267 KB dos 749 KB do HTML. Como <symbol> ele é escrito uma vez só e cada
+# ponto de uso vira uma referência de ~90 bytes. Os atributos de traço ficam
+# no <svg> que referencia, e não no <symbol>, para herdarem currentColor.
+SPRITE = {"pin": ALFINETE, "seta": CHEVRON}
+
+
+def usar(nome, tam=24, classe="icone"):
+    # Sem os atributos de traço: eles vivem na regra .icone do CSS. Repetidos
+    # 1018 vezes no HTML custavam mais que o próprio desenho.
+    return (f'<svg class="{classe}" width="{tam}" height="{tam}" aria-hidden="true">'
+            f'<use href="#i-{nome}"/></svg>')
+
+
+def sprite_html():
+    simbolos = "".join(f'<symbol id="i-{k}" viewBox="0 0 24 24">{v}</symbol>'
+                       for k, v in SPRITE.items())
+    return f'<svg class="sprite" aria-hidden="true">{simbolos}</svg>'
+
 # Ordem de navegação: comida primeiro, bebida por último. A ordem do arquivo de
 # categorias é por volume, o que jogaria bebida para o topo do índice.
 ORDEM = ["massas", "pizzas-e-fogazza", "lanches", "carnes-e-polenta",
@@ -70,6 +96,10 @@ ORDEM = ["massas", "pizzas-e-fogazza", "lanches", "carnes-e-polenta",
 def sem_acento(s):
     return "".join(c for c in unicodedata.normalize("NFD", s or "")
                    if unicodedata.category(c) != "Mn").lower()
+
+
+def slug(texto):
+    return re.sub(r"[^a-z0-9]+", "-", sem_acento(texto)).strip("-")
 
 
 def chave_barraca(numero):
@@ -113,6 +143,160 @@ def carregar():
     return ler("cardapio.json"), ler("categorias-site.json"), ler("evento.json")
 
 
+# ---- grafias diferentes para a mesma coisa ----
+#
+# O cardápio é escrito por 35 entidades, cada uma do seu jeito. "Gnochi" e
+# "Gnocchi", "Suco Uva" e "Suco de Uva", "Cannoli Nutella" e "Cannoli Alla
+# Nutella" são o mesmo prato em cards separados, e nenhum dos dois mostra em
+# quantas barracas ele realmente está.
+#
+# A regra é estreita de propósito: entra aqui erro de grafia, palavra de
+# ligação faltando ou o mesmo ingrediente escrito em outra língua. Nome válido
+# diferente fica como está. Dos 80 pares parecidos que o cardápio tem, 15 são a
+# mesma coisa; nos outros 65 "Al Pesto" não é "Al Sugo", "Panino" não é
+# "Piadina" e "Copo" não é "Garrafa". Por isso o mapa é escrito à mão: nenhum
+# limiar de semelhança separa esses dois grupos.
+
+# Aplicado palavra a palavra, antes de tudo — pega também os títulos que não
+# têm par, onde o erro não duplica card mas atrapalha quem busca "formaggio".
+CORRECOES = {"gnochi": "Gnocchi", "sfitacciato": "Sfilacciato",
+             "fomarggio": "Formaggio"}
+
+# Aplicado ao título inteiro, já corrigido e normalizado.
+SINONIMOS = {
+    # concordância: maiale é masculino
+    "panino alla maiale sfilacciato": "Panino Al Maiale Sfilacciato",
+    "panino alla maiale sfilacciato affumicata": "Panino Al Maiale Sfilacciato Affumicata",
+    # falta o "de"
+    "suco uva (copo)": "Suco de Uva (Copo)",
+    "suco uva (garrafa)": "Suco de Uva (Garrafa)",
+    "suco uva integral (copo)": "Suco de Uva Integral (Copo)",
+    "suco uva integral (garrafa)": "Suco de Uva Integral (Garrafa)",
+    "copo de suco uva": "Suco de Uva (Copo)",
+    # ordem invertida, mesma medida
+    "copo vinho tinto": "Vinho Tinto (Copo)",
+    "copo vinho quente": "Vinho Quente (Copo)",
+    "chopp vinho": "Chopp de Vinho",
+    "cannoli nutella": "Cannoli Alla Nutella",
+    # doce de leite em três línguas
+    "cannoli dulce di latte": "Cannoli Dolce di Latte",
+    "cannoli al dulce de leche": "Cannoli Dolce di Latte",
+    # só a vírgula
+    "vinho tinto, seco ou suave (copo)": "Vinho Tinto Seco ou Suave (Copo)",
+    "vinho tinto, seco ou suave (garrafa)": "Vinho Tinto Seco ou Suave (Garrafa)",
+}
+
+
+def canonizar(titulo):
+    palavras = [CORRECOES.get(sem_acento(w), w) for w in titulo.split()]
+    corrigido = " ".join(palavras)
+    return SINONIMOS.get(sem_acento(corrigido), corrigido)
+
+
+def conferir_sinonimos(cardapio):
+    """Sinônimo que não casa com nada vira lixo silencioso: o título mudou no
+    cardápio e o mapa continua apontando para o nome velho, sem juntar nada."""
+    vistos = set()
+    for barraca in cardapio["barracas"]:
+        for item in barraca["itens"]:
+            for titulo, _ in expandir_titulo(item):
+                palavras = [CORRECOES.get(sem_acento(w), w) for w in titulo.split()]
+                vistos.add(sem_acento(" ".join(palavras)))
+                vistos.update(sem_acento(w) for w in titulo.split())
+    orfas = sorted(set(SINONIMOS) - vistos) + sorted(set(CORRECOES) - vistos)
+    if orfas:
+        raise SystemExit("grafias sem correspondência no cardápio: "
+                         + ", ".join(repr(o) for o in orfas))
+
+
+# ---- famílias dentro de uma categoria ----
+#
+# Massas tem 84 pratos e Doces 107. Rolar 84 cards para achar o gnocchi é o
+# mesmo problema que as categorias resolveram um nível acima, então a categoria
+# ganha mais uma etapa: Categorias -> Massas -> Gnocchi -> os 6 pratos. A
+# família sai do próprio nome do prato, porque quase todo título começa pelo
+# tipo — Spaghetti, Penne, Crostata, Cannoli.
+#
+# Três regras seguram o resultado. Família não pode aninhar: "Spaghetti Al Sugo"
+# entra em "Spaghetti", senão tocar em Spaghetti esconderia spaghetti. Família
+# com menos de 3 pratos não vira card — uma tela a mais para chegar a 1 prato é
+# trabalho, não atalho. E a etapa só existe onde a categoria é grande o
+# bastante: em Lanches, 25 dos 28 pratos são panino, e a tela do meio seria um
+# pedágio. Sobram Massas, Doces e Pizzas e Fogazza.
+FAM_MIN = 3
+FAM_CAT_MIN = 40
+FAM_FAMILIAS_MIN = 3
+LIGACAO = {"al", "alla", "ai", "alle", "allo", "di", "de", "con", "e", "a",
+           "da", "ao", "com", "ou", "in", "della", "dei", "del"}
+
+
+def _rotulo_familia(prefixo, membros):
+    """Estende o rótulo até onde os membros concordam. A chave do filtro
+    continua sendo o prefixo curto; só o texto do chip cresce. "Panna" vira
+    "Panna Cotta", que é o que está escrito na barraca."""
+    palavras = membros[0].split()
+    for m in membros[1:]:
+        w = m.split()
+        palavras = palavras[:next((i for i, (a, b) in enumerate(zip(palavras, w))
+                                   if sem_acento(a) != sem_acento(b)), min(len(palavras), len(w)))]
+    while palavras and sem_acento(palavras[-1]) in LIGACAO:
+        palavras.pop()
+    rotulo = " ".join(palavras)
+    return rotulo if len(rotulo) >= len(prefixo) else prefixo
+
+
+def familias_da_categoria(titulos):
+    contagem = collections.Counter()
+    for t in titulos:
+        w = t.split()
+        for n in range(1, min(4, len(w)) + 1):
+            if sem_acento(w[n - 1]) in LIGACAO:
+                continue
+            contagem[" ".join(w[:n])] += 1
+    # prefixo mais curto primeiro — é ele que absorve os mais longos
+    candidatos = sorted((p for p, n in contagem.items() if n >= FAM_MIN),
+                        key=lambda p: (len(p.split()), -contagem[p], sem_acento(p)))
+    familias, usados = [], set()
+    for pref in candidatos:
+        membros = [t for t in titulos
+                   if (t == pref or t.startswith(pref + " ")) and t not in usados]
+        if len(membros) >= FAM_MIN:
+            usados.update(membros)
+            familias.append({"chave": slug(pref), "prefixo": pref,
+                             "rotulo": _rotulo_familia(pref, sorted(membros)),
+                             "total": len(membros), "titulos": set(membros)})
+    familias.sort(key=lambda f: (-f["total"], sem_acento(f["rotulo"])))
+    if len(familias) < FAM_FAMILIAS_MIN:
+        return []
+    # o que não coube em família nenhuma vai para "Outros": sem isso a tela do
+    # meio esconderia 24 doces, e nenhum caminho levaria ao tiramisù
+    sobra = sorted(set(titulos) - {t for f in familias for t in f["titulos"]})
+    if sobra:
+        familias.append({"chave": "outros", "prefixo": "", "rotulo": "Outros",
+                         "total": len(sobra), "titulos": set(sobra)})
+    return familias
+
+
+def mapear_familias(pratos):
+    """Devolve (familias_por_categoria, familia_de_cada_titulo)."""
+    por_cat = collections.defaultdict(list)
+    for p in pratos:
+        por_cat[p["categoria"]].append(p["titulo"])
+    catalogo, de_titulo = {}, {}
+    for cid, titulos in sorted(por_cat.items()):
+        if len(titulos) < FAM_CAT_MIN:
+            continue
+        fs = familias_da_categoria(titulos)
+        if not fs:
+            continue
+        catalogo[cid] = [{"chave": f["chave"], "rotulo": f["rotulo"], "total": f["total"]}
+                         for f in fs]
+        for f in fs:
+            for t in f["titulos"]:
+                de_titulo[t] = f["chave"]
+    return catalogo, de_titulo
+
+
 def agrupar_pratos(cardapio, categorias):
     """Um prato = um título. 645 itens viram ~365 pratos com faixa de preço.
 
@@ -120,14 +304,16 @@ def agrupar_pratos(cardapio, categorias):
     responde "onde tem tiramisù e por quanto" sem obrigar a varrer a lista.
     """
     atrib = categorias["atribuicoes"]
+    conferir_sinonimos(cardapio)
     grupos = {}
     for barraca in cardapio["barracas"]:
         for item in barraca["itens"]:
-          for titulo_expandido in expandir_titulo(item):
+          for titulo_original, desc_expandida in expandir_titulo(item):
+            titulo_expandido = canonizar(titulo_original)
             chave = sem_acento(titulo_expandido)
             g = grupos.setdefault(chave, {
                 "titulo": titulo_expandido, "cats": collections.Counter(),
-                "ofertas": [], "descricoes": [],
+                "ofertas": [], "descricoes": [], "grafias": set(),
                 # o PDF lista sabores e formatos de massa num título só, separados
                 # por "/"; o extrator já os separou e o gerador ignorava o campo
             })
@@ -136,7 +322,10 @@ def agrupar_pratos(cardapio, categorias):
                 "num": barraca["numero"], "nome": barraca["nome"],
                 "preco": item["preco"], "descricao": item["descricao"],
             })
-            g["descricoes"].append(item["descricao"])
+            g["descricoes"].append(desc_expandida)
+            # quem lê "Gnochi" na placa da barraca digita "Gnochi". O card
+            # mostra a grafia certa, mas a busca precisa aceitar a impressa.
+            g["grafias"].add(titulo_original)
 
     pratos = []
     for g in grupos.values():
@@ -150,9 +339,27 @@ def agrupar_pratos(cardapio, categorias):
             "descricao": collections.Counter(g["descricoes"]).most_common(1)[0][0],
             # sorted(): a ordem de iteração de um set de strings muda entre
             # processos (PYTHONHASHSEED), e sem isso o build não é reprodutível
-            "busca": sem_acento(g["titulo"] + " " + " ".join(sorted(set(g["descricoes"])))),
+            "busca": sem_acento(" ".join(sorted(g["grafias"] | {g["titulo"]}))
+                                 + " " + " ".join(sorted(set(g["descricoes"])))),
         })
     pratos.sort(key=lambda p: sem_acento(p["titulo"]))
+
+    # Três ordens, gravadas como posição em cada card e aplicadas no cliente
+    # via CSS order — sem reordenar o DOM.
+    #
+    # "Popular" aqui é o número de barracas que vendem o prato. Não há dado de
+    # venda; o que existe é a aposta de 35 entidades sobre o que sai. Bebida vem
+    # depois da comida porque água está em 34 barracas por ser necessidade, não
+    # por ser o que a pessoa foi comer na festa — sem essa separação, o topo da
+    # lista volta a ser água.
+    for pos, pr in enumerate(pratos):
+        pr["ord_nome"] = pos
+    for pos, pr in enumerate(sorted(pratos, key=lambda x: (x["min"], sem_acento(x["titulo"])))):
+        pr["ord_preco"] = pos
+    for pos, pr in enumerate(sorted(pratos, key=lambda x: (x["categoria"].startswith("bebidas"),
+                                                           -len(x["ofertas"]),
+                                                           sem_acento(x["titulo"])))):
+        pr["ord_pop"] = pos
     return pratos
 
 
@@ -182,6 +389,32 @@ EXPANSAO_MANUAL = {
 }
 
 
+def descricao_por_variacao(descricao, n):
+    """Reparte a descrição entre as n variações, quando ela as enumera.
+
+    "Massa Crocante recheada com Creme, Doce de Leite ou Nutella" descreve as
+    três variações de "Cannoli Alla Crema / Dolce di Latte / Nutella", na mesma
+    ordem. Sem repartir, os três pratos expandidos herdam a descrição inteira e
+    "Cannoli Alla Crema" alega ter Doce de Leite e Nutella dentro.
+
+    Só reparte quando a conta fecha: a enumeração precisa ter exatamente n itens
+    e vir depois de um "com". Nas descrições de massa a enumeração está no meio
+    da frase ("Macarrão Tipo Espaguete, Penne ou Gravatinha ao Molho de Tomate")
+    e a função devolve None, mantendo a descrição original.
+    """
+    if " ou " not in descricao:
+        return None
+    cabeca, ultimo = descricao.rsplit(" ou ", 1)
+    partes = [x.strip() for x in cabeca.split(",")]
+    if " com " not in partes[0]:
+        return None
+    prefixo, primeiro = partes[0].rsplit(" com ", 1)
+    itens = [primeiro] + partes[1:] + [ultimo]
+    if len(itens) != n:
+        return None
+    return [f"{prefixo} com {x}" for x in itens]
+
+
 def expandir_titulo(item):
     """Um item por sabor ou formato de massa.
 
@@ -198,26 +431,33 @@ def expandir_titulo(item):
     O que separa os dois é o tamanho: no formato de massa o primeiro segmento
     tem menos palavras que o último, porque o último carrega o molho.
     """
+    # "recheada com Creme – sabores" está assim no PDF: a barraca não listou
+    # quais. O traço pendurado não informa nada.
+    desc = re.sub(r"\s*[–-]\s*sabores\s*$", "", item["descricao"])
+
     if item["id"] in EXPANSAO_MANUAL:
-        return EXPANSAO_MANUAL[item["id"]]
+        return [(t, desc) for t in EXPANSAO_MANUAL[item["id"]]]
     v = item.get("variacoes") or []
     if len(v) < 2:
-        return [item["titulo"]]
+        return [(item["titulo"], desc)]
 
     primeiro, ultimo = v[0].split(), v[-1].split()
     if len(primeiro) < len(ultimo):
         sufixo = " ".join(ultimo[1:])
-        return [f"{x} {sufixo}" for x in v[:-1]] + [f"{ultimo[0]} {sufixo}"]
+        titulos = [f"{x} {sufixo}" for x in v[:-1]] + [f"{ultimo[0]} {sufixo}"]
+    else:
+        base = ""
+        for i, palavra in enumerate(primeiro):
+            if palavra.lower() in PREPOSICOES:
+                base = " ".join(primeiro[:i])
+                break
+        titulos = [v[0]] + [f"{base} {x}".strip() for x in v[1:]]
 
-    base = ""
-    for i, palavra in enumerate(primeiro):
-        if palavra.lower() in PREPOSICOES:
-            base = " ".join(primeiro[:i])
-            break
-    return [v[0]] + [f"{base} {x}".strip() for x in v[1:]]
+    descs = descricao_por_variacao(desc, len(titulos))
+    return list(zip(titulos, descs if descs else [desc] * len(titulos)))
 
 
-def render_prato(p):
+def render_prato(p, familia_de=None):
     # "Spaghetti / Penne Rigati / Farfalle Al Sugo" ocupava cinco linhas. O
     # primeiro segmento é o nome reconhecível do prato; os demais são as
     # alternativas, e a descrição já explica todas em português.
@@ -233,7 +473,7 @@ def render_prato(p):
         f'<span class="oferta__num">{e(o["num"])}</span>'
         f'<span class="oferta__nome">{e(o["nome"])}</span>'
         f'<span class="oferta__preco">{e(moeda(o["preco"]))}</span>'
-        f'<span class="oferta__pin">{svg(ALFINETE, 15)}</span></a></li>'
+        f'<span class="oferta__pin">{usar("pin", 15)}</span></a></li>'
         for o in p["ofertas"])
     n = len(p["ofertas"])
     # Com uma barraca só não há o que expandir, mas "onde encontro isto" é a
@@ -246,21 +486,24 @@ def render_prato(p):
                 f'href="?modo=mapa&amp;barraca={e(chave_barraca(o["num"]))}">'
                 f'<span class="oferta__num">{e(o["num"])}</span>'
                 f'<span class="oferta__nome">{e(o["nome"])}</span>'
-                f'<span class="oferta__pin">{svg(ALFINETE, 15)}</span></a>')
+                f'<span class="oferta__pin">{usar("pin", 15)}</span></a>')
     else:
         onde = (f'<button class="prato__toggle" type="button" aria-expanded="false">'
                 f'em {n} barracas</button>')
     return (
         f'<article class="prato" data-cat="{e(p["categoria"])}" '
         f'data-barracas=" {e(nums)} " data-precos=" {e(buckets)} " '
-        f'data-busca="{e(p["busca"])}">'
+        f'data-fam="{e((familia_de or {}).get(p["titulo"], ""))}" '
+        f'data-busca="{e(p["busca"])}" '
+        f'data-ord-pop="{p["ord_pop"]}" data-ord-preco="{p["ord_preco"]}" '
+        f'data-ord-nome="{p["ord_nome"]}">'
         f'<div class="prato__topo"><h3 class="prato__titulo">{e(p["titulo"])}</h3>'
         f'<span class="prato__faixa">{e(faixa_preco(p))}</span></div>'
         f'<p class="prato__desc">{e(p["descricao"])}</p>'
         f'{onde}<ul class="ofertas">{ofertas}</ul></article>')
 
 
-def render_indices(cardapio, categorias, pratos):
+def render_indices(cardapio, categorias, pratos, fam_catalogo):
     por_cat = collections.Counter(p["categoria"] for p in pratos)
     nomes = {c["id"]: c["nome"] for c in categorias["categorias"]}
     cards_cat = "".join(
@@ -268,7 +511,7 @@ def render_indices(cardapio, categorias, pratos):
         f'<span class="card__icone">{svg(ICONES[cid], 26)}</span>'
         f'<span class="card__nome">{e(nomes[cid])}</span>'
         f'<span class="card__contagem">{por_cat[cid]}</span>'
-        f'<span class="card__chevron">{svg(CHEVRON, 18)}</span></a>'
+        f'<span class="card__chevron">{usar("seta", 18)}</span></a>'
         for cid in ORDEM if por_cat[cid])
 
     cards_bar = "".join(
@@ -277,30 +520,63 @@ def render_indices(cardapio, categorias, pratos):
         f'<span class="card__numero">{e(b["numero"])}</span>'
         f'<span class="card__nome">{e(b["nome"])}</span>'
         f'<span class="card__contagem">{b["total_itens"]}</span>'
-        f'<span class="card__chevron">{svg(CHEVRON, 18)}</span></a>'
+        f'<span class="card__chevron">{usar("seta", 18)}</span></a>'
         for b in sorted(cardapio["barracas"], key=lambda x: x["numeros"][0]))
-    return cards_cat, cards_bar
+
+    # todos os tipos de todas as categorias no mesmo bloco; o cliente esconde
+    # os que não são da categoria aberta. São 35 cards no total — separar em
+    # seções por categoria só multiplicaria elemento para o mesmo efeito.
+    def cards_de(cid):
+        fs = fam_catalogo[cid]
+        tipos = "".join(
+            f'<a class="card card--tipo" href="?cat={e(cid)}&amp;fam={e(f["chave"])}" '
+            f'data-cat="{e(cid)}" data-fam="{e(f["chave"])}">'
+            f'<span class="card__nome">{e(f["rotulo"])}</span>'
+            f'<span class="card__contagem">{f["total"]}</span>'
+            f'<span class="card__chevron">{usar("seta", 18)}</span></a>'
+            for f in fs)
+        # Sem esta saída, ver a categoria inteira exigia a aba "Tudo", que traz
+        # os 363 pratos da festa. Fica por último: é o caminho de quem não quer
+        # escolher tipo, não o primeiro que se oferece.
+        total = sum(f["total"] for f in fs)
+        return tipos + (
+            f'<a class="card card--tipo card--todos" href="?cat={e(cid)}&amp;fam=todos" '
+            f'data-cat="{e(cid)}" data-fam="todos">'
+            f'<span class="card__nome">Ver todos</span>'
+            f'<span class="card__contagem">{total}</span>'
+            f'<span class="card__chevron">{usar("seta", 18)}</span></a>')
+
+    cards_fam = "".join(cards_de(cid) for cid in ORDEM if cid in fam_catalogo)
+    return cards_cat, cards_bar, cards_fam
 
 
-def render_html(cardapio, categorias, evento, pratos, geo, versao):
-    cards_cat, cards_bar = render_indices(cardapio, categorias, pratos)
-    lista = "".join(render_prato(p) for p in pratos)
+def render_html(cardapio, categorias, evento, pratos, geo, versao,
+                fam_catalogo, fam_de_titulo):
+    cards_cat, cards_bar, cards_fam = render_indices(cardapio, categorias, pratos,
+                                                     fam_catalogo)
+    lista = "".join(render_prato(p, fam_de_titulo) for p in pratos)
     ev = evento["local"]
     endereco = f'{ev["endereco"]} — {ev["bairro"]}, {ev["cidade"]}/{ev["uf"]}'
     mapa = "https://www.google.com/maps/search/?api=1&query=" + \
            re.sub(r"\s+", "+", f'{ev["endereco"]} {ev["bairro"]} {ev["cidade"]}')
 
-    msg = ("Achei um cardápio digital da Festa Italiana de SCS — dá pra procurar "
-           "prato e ver preço de todas as barracas. Tá me ajudando a decidir o que "
-           "comer: " + SITE + UTM)
+    msg = ("Achei um cardápio digital da Festa Italiana de SCS. Dá pra buscar por "
+           "prato, comparar preço e encontrar a barraca no mapa. Tá me ajudando a "
+           "decidir o que comer e pode te ajudar também: " + SITE + UTM)
     from urllib.parse import quote
     wa = "https://wa.me/?text=" + quote(msg, safe="")
+    wa_contato = f"https://wa.me/{CONTATO}?text=" + quote(CONTATO_MSG, safe="")
 
     dados_js = json.dumps({"dias": evento["dias"], "horarios": evento["horarios"]},
                           ensure_ascii=False)
     # o número anunciado é o do cardápio oficial, que o validate_menu.py
     # confere contra o PDF; expandir variações infla a contagem interna
+    # "itens" são as linhas do cardápio oficial, que o validate_menu.py confere
+    # contra o PDF. "pratos" são os cards da tela — o mesmo prato vendido em 11
+    # barracas é um card só. Usar a mesma palavra para os dois fazia o card do
+    # WhatsApp prometer 645 e a tela mostrar 376.
     total = sum(len(b["itens"]) for b in cardapio["barracas"])
+    distintos = len(pratos)
     nota_mapa = ("Posições conforme o mapa oficial das entidades. Toque numa barraca "
                  "para ver o cardápio dela."
                  if geo["_status"] != "aproximado" else
@@ -315,7 +591,7 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
 <meta name="description" content="Cardápio completo da 33ª Festa Italiana de São Caetano do Sul: {total} itens de {len(cardapio['barracas'])} barracas, com preço e busca por prato.">
 <meta name="theme-color" content="#196B24">
 <meta property="og:title" content="Cardápio da 33ª Festa Italiana">
-<meta property="og:description" content="{total} pratos e bebidas de {len(cardapio['barracas'])} barracas, com preço. Procure o que quer comer.">
+<meta property="og:description" content="O cardápio completo das {len(cardapio['barracas'])} barracas: {distintos} pratos, com preço. Procure o que quer comer.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{e(SITE)}">
 <meta property="og:site_name" content="33ª Festa Italiana de São Caetano do Sul">
@@ -332,6 +608,7 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🍝</text></svg>">
 </head>
 <body data-modo="categoria">
+{sprite_html()}
 
 <header class="marca">
   <div class="marca__linha">
@@ -364,19 +641,27 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
 
 <main>
   <div class="trilha" id="trilha" hidden>
-    <button class="voltar" type="button" aria-label="Voltar">{svg(CHEVRON, 18, "icone voltar__seta")}</button>
+    <button class="voltar" type="button" aria-label="Voltar">{usar("seta", 18, "icone voltar__seta")}</button>
     <h2 class="trilha__titulo" id="trilha-titulo"></h2>
-    <button class="trilha__mapa" type="button" id="ver-no-mapa" hidden>ver no mapa</button>
+    <button class="trilha__mapa" type="button" id="ver-no-mapa" hidden>{usar("pin", 15)}ver no mapa</button>
   </div>
 
   <section class="indice" id="idx-categoria" aria-label="Categorias">{cards_cat}</section>
   <section class="indice" id="idx-barraca" aria-label="Barracas" hidden>{cards_bar}</section>
+  <section class="indice" id="idx-familia" aria-label="Tipos de prato" hidden>{cards_fam}</section>
 
   <div class="filtros" id="filtros" hidden>
     <button type="button" data-preco="ate10">até R$ 10</button>
     <button type="button" data-preco="11a20">R$ 11–20</button>
     <button type="button" data-preco="21a30">R$ 21–30</button>
     <button type="button" data-preco="31mais">R$ 31+</button>
+  </div>
+
+  <div class="ordenacao" id="ordenacao" hidden>
+    <span class="ordenacao__rotulo">Ordenar</span>
+    <button type="button" data-ord="pop" aria-pressed="true">Populares</button>
+    <button type="button" data-ord="preco" aria-pressed="false">Preço</button>
+    <button type="button" data-ord="nome" aria-pressed="false">Nome</button>
   </div>
 
   <p class="contador" id="contador" hidden></p>
@@ -402,6 +687,8 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
   <p class="rodape__local"><a href="{e(mapa)}" target="_blank" rel="noopener">{e(endereco)}</a></p>
   <p class="rodape__credito">Desenvolvido com 🖤 por
     <a href="{e(LINKEDIN)}" target="_blank" rel="noopener">Marcelo Farias</a></p>
+  <p class="rodape__contato">Encontrou um problema ou tem sugestão?</p>
+  <a class="rodape__fale" href="{e(wa_contato)}" target="_blank" rel="noopener">Fale comigo no WhatsApp</a>
   <p class="rodape__aviso">Projeto voluntário e independente, sem vínculo com a Prefeitura
     de São Caetano do Sul ou com a organização da Festa Italiana. Cardápio e programação
     extraídos do material oficial; preços e atrações podem mudar.<br>Medimos acessos de forma anônima, sem cookies.</p>
@@ -435,7 +722,8 @@ CSS_MAPA = """
   color: var(--tinta-fraca); font-size: .9rem; line-height: 1.5; }
 .mapa__nota { margin: .55rem .2rem 0; font-size: .78rem; line-height: 1.4;
   color: var(--tinta-fraca); }
-.trilha__mapa { margin-left: auto; flex: none; padding: .35rem .7rem;
+.trilha__mapa { display: inline-flex; align-items: center; gap: 6px;
+  flex: none; min-height: 44px; padding: .35rem .9rem;
   font: inherit; font-size: .82rem; color: var(--verde); background: none;
   border: 1px solid var(--papel-linha); border-radius: 999px; cursor: pointer; }
 .modos button { padding-inline: .6rem; }
@@ -456,7 +744,7 @@ CSS = """/* Paleta medida do PDF oficial (data/identidade-visual.json), organiza
   --papel-linha: #DFCEB4;
   --cartao: #FFFFFF;
   --tinta: #1F1A14;          /* preto quente, não puro */
-  --tinta-fraca: #7B6E5D;    /* cinza enviesado para a temperatura do papel */
+  --tinta-fraca: #726553;    /* cinza enviesado para a temperatura do papel */
   --verde: #0F5F28;
   --verde-fundo: #08351A;
   --verde-suave: #E7EFE6;
@@ -485,12 +773,14 @@ body {
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 a { color: var(--verde); }
 :focus-visible { outline: 3px solid var(--verde); outline-offset: 2px; border-radius: 4px; }
-.icone { flex: 0 0 auto; }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.icone { flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.7;
+         stroke-linecap: round; stroke-linejoin: round; }
 
 /* ---- faixa de marca: rola embora ---- */
 .marca { padding: var(--e3) var(--e4) var(--e2); }
 .marca__linha { display: flex; align-items: center; gap: var(--e3); }
-.marca__logo { width: auto; height: 54px; }
+.marca__logo { width: auto; height: auto; max-height: 54px; max-width: 100%; }
 .marca__linha .botao-share--icone { margin-left: auto; }
 .status {
   display: flex; align-items: center; gap: 7px;
@@ -509,14 +799,21 @@ a { color: var(--verde); }
   background: var(--verde-fundo); padding: var(--e3) var(--e4);
   display: grid; gap: var(--e2);
 }
+/* Itens de grid e flex nascem com min-width:auto e não encolhem abaixo do
+   próprio conteúdo. Sem estes zeros a barra de ferramentas estoura a tela em
+   320px e em qualquer nível de zoom ou fonte aumentada. */
+.ferramentas > * { min-width: 0; }
 .busca input {
   width: 100%; padding: 11px var(--e4); font: inherit; font-size: 16px;
   border: 0; border-radius: 999px; background: var(--cartao); color: var(--tinta);
 }
 .busca input::placeholder { color: var(--tinta-fraca); }
-.modos { display: flex; gap: 6px; }
+.modos { display: flex; flex-wrap: wrap; gap: 6px; }
 .modos button {
-  flex: 1; padding: 8px 4px; font: inherit; font-size: 13px; font-weight: 600;
+  /* max-content impede que a palavra seja cortada; com flex-wrap no pai, o
+     botão que não couber desce para a linha seguinte. É o que mantém os três
+     modos legíveis com fonte do sistema aumentada. */
+  flex: 1 1 auto; min-width: max-content; padding: 12px 10px; font: inherit; font-size: 13px; font-weight: 600;
   border: 1px solid rgba(255,255,255,.28); border-radius: 999px;
   background: transparent; color: #EFE4D4; cursor: pointer;
 }
@@ -527,9 +824,17 @@ a { color: var(--verde); }
 main { padding: var(--e4) var(--e4) 0; }
 
 /* ---- trilha: o momento de display ---- */
-.trilha { display: flex; align-items: center; gap: var(--e3); margin-bottom: var(--e4); }
+/* Grade em vez de linha: o botão do mapa roubava 107px da largura e o nome da
+   barraca 24, com 83 caracteres, quebrava em nove linhas num título de 142px.
+   O título passa a ocupar a largura toda e o botão desce, alinhado com ele. */
+.trilha {
+  display: grid; grid-template-columns: 44px 1fr; align-items: start;
+  gap: var(--e2) var(--e3); margin-bottom: var(--e4);
+}
+.trilha__titulo, .trilha__mapa { grid-column: 2; }
+.trilha__mapa { justify-self: start; }
 .voltar {
-  display: grid; place-items: center; width: 40px; height: 40px; flex: 0 0 auto;
+  display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 auto;
   padding: 0; border: 1px solid var(--papel-linha); border-radius: 50%;
   background: var(--cartao); color: var(--verde); cursor: pointer;
 }
@@ -561,11 +866,17 @@ main { padding: var(--e4) var(--e4) 0; }
   background: var(--dourado); color: #3A2A12;
   font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums;
 }
-.card__nome { font-weight: 600; line-height: 1.25; }
+.card__nome { min-width: 0; font-weight: 600; line-height: 1.25; }
 .card__contagem {
   color: var(--tinta-fraca); font-size: 13px; font-variant-numeric: tabular-nums;
 }
 .card__chevron { display: grid; place-items: center; color: var(--papel-linha); }
+/* o tipo não tem ícone próprio: sem a primeira coluna o nome ocupa a largura */
+.card--tipo { grid-template-columns: 1fr auto 18px; min-height: 60px; }
+.card--todos {
+  background: transparent; box-shadow: none; border: 1px solid var(--papel-linha);
+}
+.card--todos .card__nome { font-weight: 600; color: var(--tinta-fraca); }
 
 /* ---- filtros ---- */
 .filtros {
@@ -574,13 +885,31 @@ main { padding: var(--e4) var(--e4) 0; }
 }
 .filtros::-webkit-scrollbar { display: none; }
 .filtros button {
-  flex: 0 0 auto; padding: 7px var(--e3); font: inherit; font-size: 13px; font-weight: 600;
+  flex: 0 0 auto; padding: 12px var(--e3); font: inherit; font-size: 13px; font-weight: 600;
   border: 1px solid var(--papel-linha); border-radius: 999px;
   background: var(--cartao); color: var(--tinta-fraca); cursor: pointer;
 }
 .filtros button[aria-pressed="true"] {
   background: var(--vermelho); border-color: var(--vermelho); color: #fff;
 }
+.ordenacao {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  margin-bottom: var(--e3);
+}
+.ordenacao__rotulo {
+  font-size: 12px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--tinta-fraca); margin-right: 2px;
+}
+.ordenacao button {
+  flex: 0 0 auto; min-width: max-content;
+  padding: 12px var(--e3); font: inherit; font-size: 13px; font-weight: 600;
+  border: 1px solid var(--papel-linha); border-radius: 999px;
+  background: var(--cartao); color: var(--tinta-fraca); cursor: pointer;
+}
+.ordenacao button[aria-pressed="true"] {
+  background: var(--verde); border-color: var(--verde); color: #fff;
+}
+
 .contador {
   margin: 0 0 var(--e3); font-size: 12px; font-weight: 600; letter-spacing: .06em;
   text-transform: uppercase; color: var(--tinta-fraca);
@@ -592,9 +921,9 @@ main { padding: var(--e4) var(--e4) 0; }
   padding: var(--e3) var(--e4); background: var(--cartao);
   border-radius: var(--raio); box-shadow: var(--sombra-2);
 }
-.prato__topo { display: flex; align-items: baseline; gap: var(--e3); }
+.prato__topo { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--e3); }
 .prato__titulo {
-  margin: 0; flex: 1; font-size: 16px; font-weight: 700; line-height: 1.3;
+  margin: 0; flex: 1; min-width: 0; font-size: 16px; font-weight: 700; line-height: 1.3;
   color: var(--verde); text-wrap: balance;
 }
 .prato__faixa {
@@ -602,13 +931,16 @@ main { padding: var(--e4) var(--e4) 0; }
   font-variant-numeric: tabular-nums;
 }
 .prato__desc { margin: var(--e1) 0 0; font-size: 14px; color: var(--tinta-fraca); }
+.prato__titulo, .prato__desc, .card__nome, .oferta__nome, .trilha__titulo {
+  overflow-wrap: break-word;
+}
 .prato__onde {
   display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--e2);
   margin: var(--e3) 0 0; padding-top: var(--e2);
   border-top: 1px solid var(--papel); font-size: 13px;
 }
 .prato__toggle {
-  margin-top: var(--e3); padding: 5px var(--e3); font: inherit; font-size: 13px;
+  margin-top: var(--e3); padding: 12px var(--e3); font: inherit; font-size: 13px;
   font-weight: 600; border: 1px solid var(--papel-linha); border-radius: 999px;
   background: transparent; color: var(--tinta-fraca); cursor: pointer;
 }
@@ -624,7 +956,7 @@ main { padding: var(--e4) var(--e4) 0; }
   background: var(--dourado); color: #3A2A12;
   font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums;
 }
-.oferta__nome { color: var(--tinta-fraca); line-height: 1.2; }
+.oferta__nome { min-width: 0; color: var(--tinta-fraca); line-height: 1.2; }
 .oferta__preco { font-weight: 700; font-variant-numeric: tabular-nums; }
 
 /* dentro de uma barraca o preço vai para o topo; repetir o nome dela em cada
@@ -654,6 +986,8 @@ body[data-barraca-ativa] .lista .ofertas { display: none !important; }
   display: inline-flex; align-items: center; justify-content: center; gap: var(--e2);
   padding: 12px var(--e5); border-radius: 999px; background: var(--cartao);
   color: var(--verde-fundo); font-weight: 700; text-decoration: none;
+  /* com zoom alto o rótulo é maior que a tela: quebra em vez de estourar */
+  max-width: 100%; overflow-wrap: break-word;
 }
 .botao-share--icone {
   /* 44x44 é o alvo de toque mínimo recomendado */
@@ -667,7 +1001,17 @@ body[data-barraca-ativa] .lista .ofertas { display: none !important; }
   border-top: 1px solid var(--papel-linha); text-align: center; font-size: 13px;
 }
 .rodape__local { margin: 0 0 var(--e3); font-weight: 600; }
-.rodape__credito { margin: 0 0 var(--e4); }
+.rodape__credito { margin: 0 0 var(--e2); }
+.rodape__contato { margin: 0 0 var(--e2); }
+/* botão, não link no meio da frase: quem vai tocar nisto está relatando um
+   problema, e o alvo precisa dos 44px inteiros */
+.rodape__fale {
+  display: inline-flex; align-items: center; min-height: 44px;
+  margin: 0 auto var(--e4); padding: 0 var(--e4);
+  border: 1px solid var(--papel-linha); border-radius: 999px;
+  background: var(--cartao); color: var(--verde);
+  font-weight: 600; text-decoration: none;
+}
 .rodape__aviso {
   margin: 0; color: var(--tinta-fraca); font-size: 12px; line-height: 1.5;
   max-width: 46ch; margin-inline: auto;
@@ -701,10 +1045,12 @@ JS = r"""(function () {
       lista = document.getElementById('lista'),
       pratos = Array.prototype.slice.call(lista.children),
       idx = { categoria: document.getElementById('idx-categoria'),
-              barraca: document.getElementById('idx-barraca') },
+              barraca: document.getElementById('idx-barraca'),
+              familia: document.getElementById('idx-familia') },
       trilha = document.getElementById('trilha'),
       trilhaTitulo = document.getElementById('trilha-titulo'),
       filtros = document.getElementById('filtros'),
+      ordenacao = document.getElementById('ordenacao'),
       contador = document.getElementById('contador'),
       vazio = document.getElementById('vazio'),
       convite = document.querySelector('.convite'),
@@ -714,13 +1060,19 @@ JS = r"""(function () {
   document.querySelectorAll('#idx-categoria .card').forEach(function (c) {
     nomes['cat:' + c.dataset.cat] = c.querySelector('.card__nome').textContent;
   });
+  document.querySelectorAll('#idx-familia .card').forEach(function (c) {
+    nomes['fam:' + c.dataset.cat + ':' + c.dataset.fam] =
+      c.querySelector('.card__nome').textContent;
+  });
   document.querySelectorAll('#idx-barraca .card').forEach(function (c) {
     nomes['barraca:' + c.dataset.barraca] =
       c.querySelector('.card__numero').textContent + ' · ' +
       c.querySelector('.card__nome').textContent;
   });
 
-  var estado = { modo: 'categoria', cat: '', barraca: '', q: '', preco: '' };
+  var estado = { modo: 'categoria', cat: '', barraca: '', q: '', preco: '', fam: '', ord: 'pop' };
+  var FAMILIAS = window.FESTA_FAMILIAS || {};
+  var ordAplicada = null;   // reordenar 376 cards só quando a ordem muda
 
   // faixa original ("R$ 20,00 a R$ 30,00") para restaurar ao sair da barraca
   var faixaOriginal = new Map();
@@ -739,6 +1091,8 @@ JS = r"""(function () {
     estado.barraca = p.get('barraca') || '';
     estado.q = p.get('q') || '';
     estado.preco = p.get('preco') || '';
+    estado.fam = p.get('fam') || '';
+    estado.ord = p.get('ord') || 'pop';
     if (p.get('modo') === 'tudo') estado.modo = 'tudo';
   }
 
@@ -749,14 +1103,26 @@ JS = r"""(function () {
     if (estado.barraca) p.set('barraca', estado.barraca);
     if (estado.q) p.set('q', estado.q);
     if (estado.preco) p.set('preco', estado.preco);
+    if (estado.fam) p.set('fam', estado.fam);
+    if (estado.ord && estado.ord !== 'pop') p.set('ord', estado.ord);
     var s = p.toString();
     return s ? '?' + s : location.pathname;
+  }
+
+  /* Categorias grandes ganham uma parada antes da lista: Massas mostra
+     Spaghetti, Penne, Gnocchi… em vez de 84 cards de uma vez. Busca e filtro de
+     preço pulam a parada — quem digitou "gnocchi" já disse o que quer. */
+  function noIndiceTipos() {
+    return estado.modo === 'categoria' && !!estado.cat && !estado.barraca &&
+           !estado.fam && !estado.q && !estado.preco && !!FAMILIAS[estado.cat];
   }
 
   /* Mostrar a lista, e não o índice, quando há busca, filtro de preço, ou
      quando a pessoa entrou numa categoria/barraca. */
   function emLista() {
-    return !!(estado.q || estado.preco || estado.cat || estado.barraca || estado.modo === 'tudo');
+    if (noIndiceTipos()) return false;
+    return !!(estado.q || estado.preco || estado.fam || estado.cat || estado.barraca ||
+              estado.modo === 'tudo');
   }
 
   function aplicar() {
@@ -769,6 +1135,8 @@ JS = r"""(function () {
           el.dataset.barracas.indexOf(' ' + estado.barraca + ' ') === -1) ok = false;
       if (ok && estado.preco &&
           el.dataset.precos.indexOf(' ' + estado.preco + ' ') === -1) ok = false;
+      if (ok && estado.fam && estado.fam !== 'todos' &&
+          el.dataset.fam !== estado.fam) ok = false;
       if (ok && q && el.dataset.busca.indexOf(q) === -1) ok = false;
       el.hidden = !ok;
       if (ok) visiveis++;
@@ -788,11 +1156,26 @@ JS = r"""(function () {
     if (estado.barraca) body.dataset.barracaAtiva = estado.barraca;
     else delete body.dataset.barracaAtiva;
 
+    // a ordem é aplicada por CSS order, sem mexer no DOM
+    if (estado.ord !== ordAplicada) {
+      var campo = 'ord' + estado.ord.charAt(0).toUpperCase() + estado.ord.slice(1);
+      pratos.forEach(function (el) { el.style.order = el.dataset[campo]; });
+      ordAplicada = estado.ord;
+    }
+
     var listando = emLista();
-    idx.categoria.hidden = listando || estado.modo !== 'categoria';
+    var tipos = noIndiceTipos();
+    idx.categoria.hidden = listando || tipos || estado.modo !== 'categoria';
     idx.barraca.hidden = listando || estado.modo !== 'barraca';
+    idx.familia.hidden = !tipos;
+    if (tipos) {
+      idx.familia.querySelectorAll('.card').forEach(function (c) {
+        c.hidden = c.dataset.cat !== estado.cat;
+      });
+    }
     lista.hidden = !listando;
     filtros.hidden = !listando;
+    ordenacao.hidden = !listando;
     contador.hidden = !listando;
     vazio.hidden = !listando || visiveis > 0;
     convite.hidden = false;
@@ -801,6 +1184,10 @@ JS = r"""(function () {
 
     var rotulo = estado.cat ? nomes['cat:' + estado.cat]
                : estado.barraca ? nomes['barraca:' + estado.barraca] : '';
+    // o título carrega os dois degraus: de onde veio e onde está
+    if (rotulo && estado.cat && estado.fam && estado.fam !== 'todos') {
+      rotulo += ' · ' + (nomes['fam:' + estado.cat + ':' + estado.fam] || '');
+    }
     trilha.hidden = !rotulo;
     trilhaTitulo.textContent = rotulo || '';
 
@@ -810,6 +1197,9 @@ JS = r"""(function () {
     });
     filtros.querySelectorAll('button').forEach(function (b) {
       b.setAttribute('aria-pressed', String(b.dataset.preco === estado.preco));
+    });
+    ordenacao.querySelectorAll('button').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.ord === estado.ord));
     });
     if (busca.value !== estado.q) busca.value = estado.q;
 
@@ -824,9 +1214,24 @@ JS = r"""(function () {
     history.replaceState(atual, '', location.href);
   }
 
+  function profundidade() {
+    return (history.state && history.state.d) || 0;
+  }
+
+  /* Desce um degrau substituindo a entrada em vez de empilhar: empilhando, a
+     seta seguinte veria profundidade 1, chamaria history.back() e voltaria
+     para a tela de onde acabou de sair. */
+  function substituir() {
+    var novo = {}; for (var k in estado) novo[k] = estado[k];
+    novo.y = 0; novo.d = profundidade();
+    history.replaceState(novo, '', montarURL());
+    aplicar();
+  }
+
   function navegar(push) {
     if (push !== false) {
       var novo = {}; for (var k in estado) novo[k] = estado[k]; novo.y = 0;
+      novo.d = profundidade() + 1;
       history.pushState(novo, '', montarURL());
     }
     aplicar();
@@ -843,7 +1248,7 @@ JS = r"""(function () {
     b.addEventListener('click', function () {
       guardarRolagem();
       estado.modo = b.dataset.modo;
-      estado.cat = estado.barraca = estado.preco = '';
+      estado.cat = estado.barraca = estado.preco = estado.fam = '';
       navegar();
       window.scrollTo(0, 0);
     });
@@ -854,8 +1259,15 @@ JS = r"""(function () {
     if (card) {
       ev.preventDefault();
       guardarRolagem();
-      if (card.dataset.cat) { estado.cat = card.dataset.cat; estado.modo = 'categoria'; }
-      else { estado.barraca = card.dataset.barraca; estado.modo = 'barraca'; }
+      if (card.dataset.fam) {
+        estado.cat = card.dataset.cat; estado.fam = card.dataset.fam;
+        estado.modo = 'categoria';
+      } else if (card.dataset.cat) {
+        // o tipo escolhido é de outra categoria: manter filtraria tudo para fora
+        estado.cat = card.dataset.cat; estado.fam = ''; estado.modo = 'categoria';
+      } else {
+        estado.barraca = card.dataset.barraca; estado.fam = ''; estado.modo = 'barraca';
+      }
       navegar();
       window.scrollTo(0, 0);
       return;
@@ -865,6 +1277,13 @@ JS = r"""(function () {
       t.setAttribute('aria-expanded', t.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
       return;
     }
+    var o = ev.target.closest('.ordenacao button');
+    if (o) {
+      estado.ord = o.dataset.ord;
+      navegar();
+      window.scrollTo(0, 0);
+      return;
+    }
     var f = ev.target.closest('.filtros button');
     if (f) {
       estado.preco = estado.preco === f.dataset.preco ? '' : f.dataset.preco;
@@ -872,11 +1291,19 @@ JS = r"""(function () {
       return;
     }
     if (ev.target.closest('.voltar')) {
-      history.back();
+      if (profundidade() > 0) { history.back(); return; }
+      // sem histórico interno: desce o degrau à mão, em vez de sair do site
+      if (estado.fam) estado.fam = '';
+      else if (estado.barraca) { estado.barraca = ''; estado.modo = 'barraca'; }
+      else if (estado.cat) estado.cat = '';
+      else return;
+      estado.q = ''; estado.preco = '';
+      substituir();
+      window.scrollTo(0, 0);
       return;
     }
     if (ev.target.closest('.limpar')) {
-      estado.q = ''; estado.preco = '';
+      estado.q = ''; estado.preco = ''; estado.fam = '';
       navegar();
     }
   });
@@ -886,7 +1313,9 @@ JS = r"""(function () {
     clearTimeout(timer);
     timer = setTimeout(function () {
       estado.q = busca.value;
-      history.replaceState(estado, '', montarURL());
+      var comQ = {}; for (var k in estado) comQ[k] = estado[k];
+      comQ.d = profundidade();
+      history.replaceState(comQ, '', montarURL());
       aplicar();
     }, 120);
   });
@@ -898,9 +1327,10 @@ JS = r"""(function () {
   (function share() {
     var canonical = document.querySelector('link[rel="canonical"]');
     var base = canonical ? canonical.href : location.origin + location.pathname;
-    var msg = 'Achei um cardápio digital da Festa Italiana de SCS — dá pra procurar ' +
-              'prato e ver preço de todas as barracas. Tá me ajudando a decidir o que ' +
-              'comer: ' + base + '?utm_source=whatsapp&utm_medium=share&utm_campaign=cardapio-33a';
+    var msg = 'Achei um cardápio digital da Festa Italiana de SCS. Dá pra buscar por ' +
+              'prato, comparar preço e encontrar a barraca no mapa. Tá me ajudando a ' +
+              'decidir o que comer e pode te ajudar também: ' +
+              base + '?utm_source=whatsapp&utm_medium=share&utm_campaign=cardapio-33a';
     var href = 'https://wa.me/?text=' + encodeURIComponent(msg);
     document.querySelectorAll('.botao-share').forEach(function (a) { a.href = href; });
   })();
@@ -948,7 +1378,12 @@ JS = r"""(function () {
   })();
 
   lerURL();
-  history.replaceState(estado, '', montarURL());
+  // Quem chega por link compartilhado entra direto em ?cat=massas: essa é a
+  // primeira entrada do histórico, profundidade 0, e history.back() dali sai
+  // do site. O contador diz quando há degrau interno para descer.
+  var inicial = {}; for (var k in estado) inicial[k] = estado[k];
+  inicial.d = 0;
+  history.replaceState(inicial, '', montarURL());
   aplicar();
 })();
 """
@@ -1147,10 +1582,13 @@ def main():
         shutil.rmtree(DIST)
     DIST.mkdir(parents=True)
 
+    fam_catalogo, fam_de_titulo = mapear_familias(pratos)
     mapa_js = ("window.FESTA_MAPA = "
-               + json.dumps(mapa, ensure_ascii=False, separators=(",", ":")) + ";\n")
+               + json.dumps(mapa, ensure_ascii=False, separators=(",", ":")) + ";\n"
+               + "window.FESTA_FAMILIAS = "
+               + json.dumps(fam_catalogo, ensure_ascii=False, separators=(",", ":")) + ";\n")
     css_txt = CSS + CSS_ONDE + CSS_MAPA
-    js_txt = JS + mapa_js + fontes_mapa + JS_MAPA
+    js_txt = mapa_js + JS + fontes_mapa + JS_MAPA
     # style.css e app.js tem nome fixo, entao quem ja visitou o site pode receber
     # o index.html novo com o app.js velho do cache — foi o que fez a aba Mapa
     # aparecer sem nada dentro. A assinatura do conteudo na URL corta isso.
@@ -1158,7 +1596,9 @@ def main():
               for k, t in (("css", css_txt), ("js", js_txt))}
 
     (DIST / "index.html").write_text(
-        render_html(cardapio, categorias, evento, pratos, mapa, versao), encoding="utf-8")
+        render_html(cardapio, categorias, evento, pratos, mapa, versao,
+                    fam_catalogo, fam_de_titulo),
+        encoding="utf-8")
     (DIST / "style.css").write_text(css_txt, encoding="utf-8")
     (DIST / "app.js").write_text(js_txt, encoding="utf-8")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
