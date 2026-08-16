@@ -670,7 +670,6 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao,
     <div class="mapa__tela" id="mapa-tela"></div>
     <p class="mapa__nota">{e(nota_mapa)}</p>
   </section>
-
   <section class="lista" id="lista" aria-label="Pratos">{lista}</section>
   <p class="vazio" id="vazio" hidden>Nenhum prato encontrado.<br>
     <button type="button" class="limpar">limpar filtros</button></p>
@@ -683,6 +682,12 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao,
   </aside>
 </main>
 
+<!-- O app roda aqui, e nao no fim do body, porque ele decide o que fica
+     visível dentro do <main>. Depois do rodapé, o rodapé já teria pintado
+     colado nas abas e desceria meia tela quando o mapa aparecesse. O rodapé
+     não depende do app: nenhum id nem botão de compartilhar mora nele. -->
+<script src="app.js?v={versao["js"]}"></script>
+
 <footer class="rodape">
   <p class="rodape__local"><a href="{e(mapa)}" target="_blank" rel="noopener">{e(endereco)}</a></p>
   <p class="rodape__credito">Desenvolvido com 🖤 por
@@ -694,7 +699,6 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao,
     extraídos do material oficial; preços e atrações podem mudar.<br>Medimos acessos de forma anônima, sem cookies.</p>
 </footer>
 
-<script src="app.js?v={versao["js"]}"></script>
 <!-- Cloudflare Web Analytics: sem cookie e sem dado pessoal, então não exige
      banner de consentimento. type=module já adia a execução. O beacon rastreia
      pushState sozinho, que é como toda a navegação interna funciona aqui. -->
@@ -714,6 +718,7 @@ CSS_ONDE = """
 """
 
 CSS_MAPA = """
+
 /* --- mapa ---------------------------------------------------------------- */
 .mapa { margin: 0 0 var(--gap); }
 .mapa__tela { height: min(68vh, 560px); border-radius: 14px; overflow: hidden;
@@ -1520,7 +1525,12 @@ JS_MAPA = r"""
   });
 
   window.addEventListener('popstate', sincronizar);
-  document.addEventListener('click', function () { setTimeout(sincronizar, 0); });
+  // Sincrono, e nao setTimeout: o app trata o clique primeiro e esvazia o
+  // <main>; ceder o controle ao navegador entre uma coisa e outra deixa ele
+  // pintar esse vazio, o rodape sobe para junto das abas e desce de novo quando
+  // o mapa monta. Este manipulador e registrado depois do app, entao ja le a
+  // URL nova sem precisar esperar.
+  document.addEventListener('click', function () { sincronizar(); });
   document.getElementById('q').addEventListener('input', function () {
     setTimeout(sincronizar, 260);
   });
