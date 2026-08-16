@@ -14,9 +14,10 @@ RAIZ = pathlib.Path(__file__).resolve().parent.parent
 DADOS = RAIZ / "data"
 DIST = RAIZ / "dist"
 
-# Fallback para quem está sem JavaScript; com JS o app.js reescreve os links
-# de compartilhamento a partir da URL real da página, o que sobrevive a
-# renomeação do repositório (que já aconteceu uma vez).
+# Endereço canônico do site. Precisa ser declarado, não inferido: o GitHub
+# continua atendendo o caminho antigo depois de um rename, e derivar a URL de
+# location.pathname faria cada visitante que entrou pelo endereço legado
+# propagar esse endereço no compartilhamento.
 SITE = "https://marcelojrfarias.github.io/festa-italiana-de-sao-caetano-do-sul/"
 UTM = "?utm_source=whatsapp&utm_medium=share&utm_campaign=cardapio-33a"
 LINKEDIN = "https://www.linkedin.com/in/marcelojrfarias/"
@@ -109,8 +110,18 @@ def render_prato(p):
         f'<span class="oferta__preco">{e(moeda(o["preco"]))}</span></li>'
         for o in p["ofertas"])
     n = len(p["ofertas"])
-    toggle = (f'<button class="prato__toggle" type="button" aria-expanded="false">'
-              f'em {n} barracas</button>') if n > 1 else ""
+    # Com uma barraca só não há o que expandir, mas "onde encontro isto" é a
+    # pergunta de quem está de pé na festa — então mostra direto. 302 dos 365
+    # pratos caem neste caso: escondê-los atrás de nada deixava a maioria da
+    # lista sem resposta.
+    if n == 1:
+        o = p["ofertas"][0]
+        onde = (f'<p class="prato__onde">'
+                f'<span class="oferta__num">{e(o["num"])}</span>'
+                f'<span class="oferta__nome">{e(o["nome"])}</span></p>')
+    else:
+        onde = (f'<button class="prato__toggle" type="button" aria-expanded="false">'
+                f'em {n} barracas</button>')
     return (
         f'<article class="prato" data-cat="{e(p["categoria"])}" '
         f'data-barracas=" {e(nums)} " data-precos=" {e(buckets)} " '
@@ -118,7 +129,7 @@ def render_prato(p):
         f'<div class="prato__topo"><h3 class="prato__titulo">{e(p["titulo"])}</h3>'
         f'<span class="prato__faixa">{e(faixa_preco(p))}</span></div>'
         f'<p class="prato__desc">{e(p["descricao"])}</p>'
-        f'{toggle}<ul class="ofertas">{ofertas}</ul></article>')
+        f'{onde}<ul class="ofertas">{ofertas}</ul></article>')
 
 
 def render_indices(cardapio, categorias, pratos):
@@ -173,6 +184,7 @@ def render_html(cardapio, categorias, evento, pratos):
 <meta property="og:description" content="{total} pratos e bebidas de {len(cardapio['barracas'])} barracas, com preço. Procure o que quer comer.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{e(SITE)}">
+<link rel="canonical" href="{e(SITE)}">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🍝</text></svg>">
 </head>
@@ -362,6 +374,10 @@ main { padding: 12px 16px 0; }
   border: 1px solid var(--borda); border-radius: 999px;
   background: transparent; color: var(--suave); cursor: pointer;
 }
+.prato__onde {
+  display: grid; grid-template-columns: 30px 1fr; align-items: center; gap: 8px;
+  margin: 8px 0 0; font-size: 14px;
+}
 .ofertas { display: none; margin: 8px 0 0; padding: 0; list-style: none; }
 .prato__toggle[aria-expanded="true"] + .ofertas { display: block; }
 .oferta {
@@ -379,6 +395,7 @@ main { padding: 12px 16px 0; }
    reescreve .prato__faixa); repetir o nome da barraca em cada prato seria
    redundante com a trilha. */
 body[data-barraca-ativa] .lista .prato__toggle,
+body[data-barraca-ativa] .lista .prato__onde,
 body[data-barraca-ativa] .lista .ofertas { display: none !important; }
 
 .vazio { padding: 24px 0; text-align: center; color: var(--suave); }
@@ -602,11 +619,13 @@ JS = r"""(function () {
     }, 120);
   });
 
-  /* Reescreve os links de compartilhamento com a URL real desta página. O
-     endereço fica codificado no HTML como fallback sem JS, e já ficou errado
-     uma vez quando o repositório foi renomeado. */
+  /* Monta os links de compartilhamento a partir do <link rel="canonical">.
+     Deliberadamente NÃO usa location.pathname: o GitHub segue atendendo o
+     caminho antigo depois de um rename, e quem entrasse por ele passaria a
+     espalhar o endereço legado. */
   (function share() {
-    var base = location.origin + location.pathname;
+    var canonical = document.querySelector('link[rel="canonical"]');
+    var base = canonical ? canonical.href : location.origin + location.pathname;
     var msg = 'Achei um cardápio digital da Festa Italiana de SCS — dá pra procurar ' +
               'prato e ver preço de todas as barracas. Tá me ajudando a decidir o que ' +
               'comer: ' + base + '?utm_source=whatsapp&utm_medium=share&utm_campaign=cardapio-33a';
