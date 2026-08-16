@@ -134,6 +134,72 @@ def carregar():
     return ler("cardapio.json"), ler("categorias-site.json"), ler("evento.json")
 
 
+# ---- grafias diferentes para a mesma coisa ----
+#
+# O cardápio é escrito por 35 entidades, cada uma do seu jeito. "Gnochi" e
+# "Gnocchi", "Suco Uva" e "Suco de Uva", "Cannoli Nutella" e "Cannoli Alla
+# Nutella" são o mesmo prato em cards separados, e nenhum dos dois mostra em
+# quantas barracas ele realmente está.
+#
+# A regra é estreita de propósito: entra aqui erro de grafia, palavra de
+# ligação faltando ou o mesmo ingrediente escrito em outra língua. Nome válido
+# diferente fica como está. Dos 80 pares parecidos que o cardápio tem, 15 são a
+# mesma coisa; nos outros 65 "Al Pesto" não é "Al Sugo", "Panino" não é
+# "Piadina" e "Copo" não é "Garrafa". Por isso o mapa é escrito à mão: nenhum
+# limiar de semelhança separa esses dois grupos.
+
+# Aplicado palavra a palavra, antes de tudo — pega também os títulos que não
+# têm par, onde o erro não duplica card mas atrapalha quem busca "formaggio".
+CORRECOES = {"gnochi": "Gnocchi", "sfitacciato": "Sfilacciato",
+             "fomarggio": "Formaggio"}
+
+# Aplicado ao título inteiro, já corrigido e normalizado.
+SINONIMOS = {
+    # concordância: maiale é masculino
+    "panino alla maiale sfilacciato": "Panino Al Maiale Sfilacciato",
+    "panino alla maiale sfilacciato affumicata": "Panino Al Maiale Sfilacciato Affumicata",
+    # falta o "de"
+    "suco uva (copo)": "Suco de Uva (Copo)",
+    "suco uva (garrafa)": "Suco de Uva (Garrafa)",
+    "suco uva integral (copo)": "Suco de Uva Integral (Copo)",
+    "suco uva integral (garrafa)": "Suco de Uva Integral (Garrafa)",
+    "copo de suco uva": "Suco de Uva (Copo)",
+    # ordem invertida, mesma medida
+    "copo vinho tinto": "Vinho Tinto (Copo)",
+    "copo vinho quente": "Vinho Quente (Copo)",
+    "chopp vinho": "Chopp de Vinho",
+    "cannoli nutella": "Cannoli Alla Nutella",
+    # doce de leite em três línguas
+    "cannoli dulce di latte": "Cannoli Dolce di Latte",
+    "cannoli al dulce de leche": "Cannoli Dolce di Latte",
+    # só a vírgula
+    "vinho tinto, seco ou suave (copo)": "Vinho Tinto Seco ou Suave (Copo)",
+    "vinho tinto, seco ou suave (garrafa)": "Vinho Tinto Seco ou Suave (Garrafa)",
+}
+
+
+def canonizar(titulo):
+    palavras = [CORRECOES.get(sem_acento(w), w) for w in titulo.split()]
+    corrigido = " ".join(palavras)
+    return SINONIMOS.get(sem_acento(corrigido), corrigido)
+
+
+def conferir_sinonimos(cardapio):
+    """Sinônimo que não casa com nada vira lixo silencioso: o título mudou no
+    cardápio e o mapa continua apontando para o nome velho, sem juntar nada."""
+    vistos = set()
+    for barraca in cardapio["barracas"]:
+        for item in barraca["itens"]:
+            for titulo, _ in expandir_titulo(item):
+                palavras = [CORRECOES.get(sem_acento(w), w) for w in titulo.split()]
+                vistos.add(sem_acento(" ".join(palavras)))
+                vistos.update(sem_acento(w) for w in titulo.split())
+    orfas = sorted(set(SINONIMOS) - vistos) + sorted(set(CORRECOES) - vistos)
+    if orfas:
+        raise SystemExit("grafias sem correspondência no cardápio: "
+                         + ", ".join(repr(o) for o in orfas))
+
+
 def agrupar_pratos(cardapio, categorias):
     """Um prato = um título. 645 itens viram ~365 pratos com faixa de preço.
 
@@ -141,14 +207,16 @@ def agrupar_pratos(cardapio, categorias):
     responde "onde tem tiramisù e por quanto" sem obrigar a varrer a lista.
     """
     atrib = categorias["atribuicoes"]
+    conferir_sinonimos(cardapio)
     grupos = {}
     for barraca in cardapio["barracas"]:
         for item in barraca["itens"]:
-          for titulo_expandido, desc_expandida in expandir_titulo(item):
+          for titulo_original, desc_expandida in expandir_titulo(item):
+            titulo_expandido = canonizar(titulo_original)
             chave = sem_acento(titulo_expandido)
             g = grupos.setdefault(chave, {
                 "titulo": titulo_expandido, "cats": collections.Counter(),
-                "ofertas": [], "descricoes": [],
+                "ofertas": [], "descricoes": [], "grafias": set(),
                 # o PDF lista sabores e formatos de massa num título só, separados
                 # por "/"; o extrator já os separou e o gerador ignorava o campo
             })
@@ -158,6 +226,9 @@ def agrupar_pratos(cardapio, categorias):
                 "preco": item["preco"], "descricao": item["descricao"],
             })
             g["descricoes"].append(desc_expandida)
+            # quem lê "Gnochi" na placa da barraca digita "Gnochi". O card
+            # mostra a grafia certa, mas a busca precisa aceitar a impressa.
+            g["grafias"].add(titulo_original)
 
     pratos = []
     for g in grupos.values():
@@ -171,7 +242,8 @@ def agrupar_pratos(cardapio, categorias):
             "descricao": collections.Counter(g["descricoes"]).most_common(1)[0][0],
             # sorted(): a ordem de iteração de um set de strings muda entre
             # processos (PYTHONHASHSEED), e sem isso o build não é reprodutível
-            "busca": sem_acento(g["titulo"] + " " + " ".join(sorted(set(g["descricoes"])))),
+            "busca": sem_acento(" ".join(sorted(g["grafias"] | {g["titulo"]}))
+                                 + " " + " ".join(sorted(set(g["descricoes"])))),
         })
     pratos.sort(key=lambda p: sem_acento(p["titulo"]))
 
