@@ -64,7 +64,7 @@ AREAS = [
      "poligono": retangulo(-100.0, -28.0, -20.0, 9.0)},
     {"id": "parque-treviso", "nome": "Parque Província de Treviso", "tipo": "verde",
      "rotulo": True, "aproximado": True,
-     "rotulo_ponto": [-82.0, -38.0],   # canto livre: a fila 23-35 ocupa o meio
+     "rotulo_ponto": [-80.0, -88.0],   # canto livre: as filas ocupam o meio e o topo
      "poligono": retangulo(-106.0, -105.0, -19.0, -28.0)},
 ]
 
@@ -90,12 +90,14 @@ ZONAS = [
     ("praca", "Praça, a oeste da via", None, 90, [
         ("31", 915, 1090),
     ]),
+    # medidas na foto, estas duas filas caíam sobre a borda do parque — a de cima
+    # ficava até fora dele, no largo. Elas estão dentro do parque, então descem.
     ("parque-norte", "Parque — fila norte", None, 180, [
-        ("3", 200, 1190), ("11", 268, 1190), ("29", 360, 1190),
-        ("9", 428, 1190), ("24", 495, 1190), ("6", 565, 1190),
+        ("3", 200, 1322), ("11", 268, 1322), ("29", 360, 1322),
+        ("9", 428, 1322), ("24", 495, 1322), ("6", 565, 1322),
     ]),
-    ("parque-travessa", "Parque — travessa", None, 0, [
-        ("30", 310, 1245), ("14", 378, 1245),
+    ("parque-travessa", "Parque — segunda fila", None, 0, [
+        ("30", 310, 1417), ("14", 378, 1417),
     ]),
     ("parque-alameda", "Parque — fila sul", None, 90, [
         ("23", 628, 1560), ("26", 628, 1622), ("33", 628, 1685),

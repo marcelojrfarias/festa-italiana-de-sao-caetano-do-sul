@@ -102,8 +102,8 @@
       "rotulo": true,
       "aproximado": true,
       "rotulo_ponto": [
-        -82.0,
-        -38.0
+        -80.0,
+        -88.0
       ],
       "poligono": [
         [
@@ -197,7 +197,7 @@
     },
     {
       "id": "parque-travessa",
-      "nome": "Parque — travessa",
+      "nome": "Parque — segunda fila",
       "via": null,
       "barracas": [
         "30",
@@ -565,7 +565,7 @@
       "zona": "parque-norte",
       "centro": [
         -94.5,
-        -24.1
+        -38.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -581,7 +581,7 @@
       "zona": "parque-norte",
       "centro": [
         -87.4,
-        -24.1
+        -38.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -597,7 +597,7 @@
       "zona": "parque-norte",
       "centro": [
         -77.7,
-        -24.1
+        -38.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -613,7 +613,7 @@
       "zona": "parque-norte",
       "centro": [
         -70.6,
-        -24.1
+        -38.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -629,7 +629,7 @@
       "zona": "parque-norte",
       "centro": [
         -63.5,
-        -24.1
+        -38.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -645,7 +645,7 @@
       "zona": "parque-norte",
       "centro": [
         -56.2,
-        -24.1
+        -38.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -661,7 +661,7 @@
       "zona": "parque-travessa",
       "centro": [
         -83.0,
-        -29.9
+        -48.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
@@ -677,7 +677,7 @@
       "zona": "parque-travessa",
       "centro": [
         -75.8,
-        -29.9
+        -48.0
       ],
       "largura_m": 4.0,
       "profundidade_m": 3.0,
