@@ -435,7 +435,7 @@ CSS_MAPA = """
   color: var(--tinta-fraca); font-size: .9rem; line-height: 1.5; }
 .mapa__nota { margin: .55rem .2rem 0; font-size: .78rem; line-height: 1.4;
   color: var(--tinta-fraca); }
-.trilha__mapa { margin-left: auto; flex: none; padding: .35rem .7rem;
+.trilha__mapa { flex: none; padding: .35rem .7rem;
   font: inherit; font-size: .82rem; color: var(--verde); background: none;
   border: 1px solid var(--papel-linha); border-radius: 999px; cursor: pointer; }
 .modos button { padding-inline: .6rem; }
@@ -534,7 +534,15 @@ a { color: var(--verde); }
 main { padding: var(--e4) var(--e4) 0; }
 
 /* ---- trilha: o momento de display ---- */
-.trilha { display: flex; align-items: center; gap: var(--e3); margin-bottom: var(--e4); }
+/* Grade em vez de linha: o botão do mapa roubava 107px da largura e o nome da
+   barraca 24, com 83 caracteres, quebrava em nove linhas num título de 142px.
+   O título passa a ocupar a largura toda e o botão desce, alinhado com ele. */
+.trilha {
+  display: grid; grid-template-columns: 44px 1fr; align-items: start;
+  gap: var(--e2) var(--e3); margin-bottom: var(--e4);
+}
+.trilha__titulo, .trilha__mapa { grid-column: 2; }
+.trilha__mapa { justify-self: start; }
 .voltar {
   display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 auto;
   padding: 0; border: 1px solid var(--papel-linha); border-radius: 50%;
