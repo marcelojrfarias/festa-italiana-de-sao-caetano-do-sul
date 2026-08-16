@@ -196,8 +196,11 @@ def render_html(cardapio, categorias, evento, pratos):
          alt="33ª Festa Italiana de São Caetano do Sul">
     <a class="botao-share botao-share--icone" href="{e(wa)}" target="_blank" rel="noopener"
        aria-label="Compartilhar no WhatsApp">
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor"
-        d="M18 16.1c-.8 0-1.6-.2-2.3-.5l-.4-.2-3.1.8.8-3-.2-.4A6 6 0 1 1 18 16.1M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2"/></svg>
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+        <line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/>
+      </svg>
     </a>
   </div>
   <p class="status" id="status" data-evento='{dados_js}'>33ª Festa Italiana · São Caetano do Sul</p>
@@ -417,7 +420,8 @@ body[data-barraca-ativa] .lista .ofertas { display: none !important; }
   font-weight: 700; text-decoration: none;
 }
 .botao-share--icone {
-  width: 42px; height: 42px; padding: 0; flex: 0 0 auto;
+  /* 44x44 é o alvo de toque mínimo recomendado */
+  width: 44px; height: 44px; padding: 0; flex: 0 0 auto;
   background: var(--verde); color: #fff;
 }
 
