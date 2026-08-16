@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mapa — 33ª Festa Italiana</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { margin:0; height:100dvh; display:flex; flex-direction:column;
+         font:15px/1.5 system-ui,sans-serif; }
+  header { padding:10px 14px; border-bottom:1px solid #0002; }
+  header b { color:#196B24; }
+  #croqui { flex:1; min-height:0; }
+  #ficha { padding:12px 14px; border-top:1px solid #0002; min-height:74px; }
+  .aviso { background:#EE00001a; color:#BB2121; padding:6px 14px; font-size:13px; }
+</style>
+<header><b>33ª Festa Italiana</b> — croqui das barracas</header>
+<div class="aviso" id="aviso" hidden></div>
+<div id="croqui"></div>
+<div id="ficha">Toque numa barraca.</div>
+<script src="geo.js"></script>
+<script src="croqui.js"></script>
+<script>
+const { criarCroqui } = window.FestaMapa;
+(async () => {
+const [mapa, cardapio] = await Promise.all([
+  fetch('../data/mapa.json').then((r) => r.json()),
+  fetch('../data/cardapio.json').then((r) => r.json()),
+]);
+const RECADO = {
+  aproximado: 'Posições aproximadas — aguardando a planta oficial da festa.',
+  parcial: 'Arranjo conforme o mapa oficial da festa; a escala ainda é estimada.',
+};
+if (RECADO[mapa._status]) {
+  const a = document.getElementById('aviso');
+  a.hidden = false;
+  a.textContent = RECADO[mapa._status];
+}
+const porNumero = new Map(cardapio.barracas.map((b) => [b.numero, b]));
+criarCroqui(document.getElementById('croqui'), mapa, {
+  aoSelecionar: (numero) => {
+    const b = porNumero.get(numero);
+    const ficha = document.getElementById('ficha');
+    if (!b) { ficha.textContent = `Barraca ${numero}`; return; }
+    const faixa = `R$ ${b.preco_min.toFixed(2)} a R$ ${b.preco_max.toFixed(2)}`.replace(/\./g, ',');
+    ficha.innerHTML =
+      `<strong>${b.numero} · ${b.nome}</strong><br>` +
+      `<span style="opacity:.75">${b.regiao_italiana} · ${b.total_itens} itens · ${faixa}</span><br>` +
+      `<a href="#/barraca/${encodeURIComponent(b.numero)}">ver cardápio →</a>`;
+  },
+});
+})();
+</script>

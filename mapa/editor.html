@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Editor de planta — Festa Italiana</title>
+<style>
+  :root { color-scheme: light dark; --borda:#0002; }
+  * { box-sizing:border-box; }
+  body { margin:0; height:100dvh; display:grid; grid-template-columns:1fr 320px;
+         font:14px/1.45 system-ui,sans-serif; }
+  #palco { position:relative; overflow:hidden; }
+  #painel { border-left:1px solid var(--borda); padding:14px; overflow:auto; }
+  h1 { font-size:15px; margin:0 0 4px; }
+  h2 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; opacity:.6;
+       margin:18px 0 6px; }
+  p.dica { font-size:12px; opacity:.7; margin:4px 0 0; }
+  label { display:block; font-size:12px; margin:8px 0 2px; opacity:.8; }
+  input[type=number], input[type=text], select { width:100%; padding:5px 7px;
+       border:1px solid var(--borda); border-radius:6px; background:transparent; color:inherit; }
+  input[type=range] { width:100%; }
+  button { padding:7px 10px; border:1px solid var(--borda); border-radius:7px;
+       background:transparent; color:inherit; cursor:pointer; font:inherit; }
+  button.primario { background:#196B24; color:#fff; border-color:#196B24; }
+  .linha { display:flex; gap:6px; }
+  .linha > * { flex:1; }
+  #status { font-size:12px; opacity:.7; margin-top:10px; min-height:1.2em; }
+  #lastro { position:absolute; inset:0; pointer-events:none; transform-origin:0 0; }
+  #lastro img { position:absolute; transform-origin:0 0; }
+</style>
+
+<div id="palco"><div id="lastro"><img id="lastro-img" hidden></div><div id="croqui" style="position:absolute;inset:0"></div></div>
+
+<div id="painel">
+  <h1>Editor de planta</h1>
+  <p class="dica">Arraste as barracas sobre a planta oficial. Setas movem 0,5 m
+    (com Shift, 5 m). Exporte e salve em <code>data/mapa.json</code>.</p>
+
+  <h2>Planta oficial de fundo</h2>
+  <input type="file" id="arquivo" accept="image/*">
+  <label>Escala <span id="v-escala"></span></label>
+  <input type="range" id="escala" min="0.05" max="8" step="0.01" value="1">
+  <label>Giro <span id="v-giro"></span></label>
+  <input type="range" id="giro" min="-180" max="180" step="0.5" value="0">
+  <label>Opacidade <span id="v-op"></span></label>
+  <input type="range" id="opacidade" min="0" max="1" step="0.05" value="0.55">
+  <p class="dica">Arraste a imagem com o botão direito para posicioná-la.</p>
+
+  <h2>Barraca selecionada</h2>
+  <div id="sem-selecao" class="dica">Clique numa barraca no croqui.</div>
+  <div id="form" hidden>
+    <label>Número</label><input type="text" id="f-numero" readonly>
+    <div class="linha">
+      <div><label>x (m)</label><input type="number" id="f-x" step="0.5"></div>
+      <div><label>y (m)</label><input type="number" id="f-y" step="0.5"></div>
+    </div>
+    <div class="linha">
+      <div><label>Frente (m)</label><input type="number" id="f-larg" step="0.5" min="1"></div>
+      <div><label>Fundo (m)</label><input type="number" id="f-prof" step="0.5" min="1"></div>
+    </div>
+    <label>Azimute da frente <span id="v-azi"></span></label>
+    <input type="range" id="f-azi" min="0" max="359" step="5">
+    <label><input type="checkbox" id="f-aprox"> ainda aproximada</label>
+  </div>
+
+  <h2>Arquivo</h2>
+  <div class="linha">
+    <button id="exportar" class="primario">Exportar mapa.json</button>
+    <button id="recarregar">Descartar</button>
+  </div>
+  <div id="status"></div>
+</div>
+
+<script src="geo.js"></script>
+<script src="croqui.js"></script>
+<script>
+const { criarCroqui } = window.FestaMapa;
+
+const $ = (id) => document.getElementById(id);
+let mapa, croqui, sel = null;
+
+const status = (t) => { $('status').textContent = t; };
+
+async function carregar() {
+  mapa = await (await fetch('../data/mapa.json')).json();
+  croqui = criarCroqui($('croqui'), mapa, {
+    editavel: true,
+    aoSelecionar: selecionar,
+    aoArrastar: (b, centro) => { b.centro = centro; b.aproximado = false; croqui.redesenhar(); preencher(b); },
+  });
+  const naoAprox = mapa.barracas.filter((b) => !b.aproximado).length;
+  status(`${mapa.barracas.length} barracas — ${naoAprox} já ajustadas`);
+}
+
+function selecionar(numero) {
+  sel = mapa.barracas.find((b) => b.numero === numero) || null;
+  $('sem-selecao').hidden = !!sel;
+  $('form').hidden = !sel;
+  if (sel) preencher(sel);
+}
+
+function preencher(b) {
+  $('f-numero').value = b.numero;
+  $('f-x').value = b.centro[0];
+  $('f-y').value = b.centro[1];
+  $('f-larg').value = b.largura_m;
+  $('f-prof').value = b.profundidade_m;
+  $('f-azi').value = b.azimute || 0;
+  $('v-azi').textContent = `${b.azimute || 0}°`;
+  $('f-aprox').checked = !!b.aproximado;
+}
+
+for (const [id, aplica] of [
+  ['f-x', (b, v) => (b.centro[0] = v)], ['f-y', (b, v) => (b.centro[1] = v)],
+  ['f-larg', (b, v) => (b.largura_m = v)], ['f-prof', (b, v) => (b.profundidade_m = v)],
+  ['f-azi', (b, v) => { b.azimute = v; $('v-azi').textContent = `${v}°`; }],
+]) {
+  $(id).addEventListener('input', (e) => {
+    if (!sel) return;
+    aplica(sel, parseFloat(e.target.value));
+    sel.aproximado = false;
+    $('f-aprox').checked = false;
+    croqui.redesenhar();
+  });
+}
+$('f-aprox').addEventListener('change', (e) => { if (sel) sel.aproximado = e.target.checked; });
+
+addEventListener('keydown', (e) => {
+  if (!sel || !e.key.startsWith('Arrow') || /INPUT/.test(e.target.tagName)) return;
+  e.preventDefault();
+  const passo = e.shiftKey ? 5 : 0.5;
+  const d = { ArrowLeft: [-passo, 0], ArrowRight: [passo, 0], ArrowUp: [0, passo], ArrowDown: [0, -passo] }[e.key];
+  sel.centro = [+(sel.centro[0] + d[0]).toFixed(1), +(sel.centro[1] + d[1]).toFixed(1)];
+  sel.aproximado = false;
+  croqui.redesenhar();
+  preencher(sel);
+});
+
+// --- planta de fundo --------------------------------------------------------
+const lastro = { x: 0, y: 0, escala: 1, giro: 0 };
+const aplicarLastro = () => {
+  $('lastro-img').style.transform =
+    `translate(${lastro.x}px,${lastro.y}px) rotate(${lastro.giro}deg) scale(${lastro.escala})`;
+};
+$('arquivo').addEventListener('change', (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const img = $('lastro-img');
+  img.src = URL.createObjectURL(f);
+  img.hidden = false;
+  img.style.opacity = $('opacidade').value;
+  aplicarLastro();
+  status(`planta "${f.name}" carregada — alinhe pelas ruas`);
+});
+for (const [id, campo, sufixo] of [['escala', 'escala', '×'], ['giro', 'giro', '°']]) {
+  $(id).addEventListener('input', (e) => {
+    lastro[campo] = parseFloat(e.target.value);
+    $(`v-${id === 'escala' ? 'escala' : 'giro'}`).textContent = e.target.value + sufixo;
+    aplicarLastro();
+  });
+}
+$('opacidade').addEventListener('input', (e) => {
+  $('lastro-img').style.opacity = e.target.value;
+  $('v-op').textContent = e.target.value;
+});
+$('palco').addEventListener('contextmenu', (e) => e.preventDefault());
+$('palco').addEventListener('pointerdown', (e) => {
+  if (e.button !== 2) return;
+  const p0 = { x: e.clientX, y: e.clientY }, l0 = { ...lastro };
+  const mover = (ev) => { lastro.x = l0.x + ev.clientX - p0.x; lastro.y = l0.y + ev.clientY - p0.y; aplicarLastro(); };
+  const soltar = () => { removeEventListener('pointermove', mover); removeEventListener('pointerup', soltar); };
+  addEventListener('pointermove', mover); addEventListener('pointerup', soltar);
+});
+
+// --- exportar ---------------------------------------------------------------
+$('exportar').addEventListener('click', () => {
+  const restantes = mapa.barracas.filter((b) => b.aproximado).length;
+  mapa._status = restantes ? 'parcial' : 'conferido';
+  mapa._fonte = restantes ? mapa._fonte : 'planta oficial da festa, traçada no editor';
+  const blob = new Blob([JSON.stringify(mapa, null, 2) + '\n'], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'mapa.json';
+  a.click();
+  status(`exportado — ainda aproximadas: ${restantes}`);
+});
+$('recarregar').addEventListener('click', () => location.reload());
+
+carregar();
+</script>
