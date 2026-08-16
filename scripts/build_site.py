@@ -360,11 +360,6 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
     <button class="trilha__mapa" type="button" id="ver-no-mapa" hidden>ver no mapa</button>
   </div>
 
-  <section class="mapa" id="mapa" aria-label="Mapa das barracas" hidden>
-    <div class="mapa__tela" id="mapa-tela"></div>
-    <p class="mapa__nota">{e(nota_mapa)}</p>
-  </section>
-
   <section class="indice" id="idx-categoria" aria-label="Categorias">{cards_cat}</section>
   <section class="indice" id="idx-barraca" aria-label="Barracas" hidden>{cards_bar}</section>
 
@@ -376,6 +371,12 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
   </div>
 
   <p class="contador" id="contador" hidden></p>
+
+  <section class="mapa" id="mapa" aria-label="Mapa das barracas" hidden>
+    <div class="mapa__tela" id="mapa-tela"></div>
+    <p class="mapa__nota">{e(nota_mapa)}</p>
+  </section>
+
   <section class="lista" id="lista" aria-label="Pratos">{lista}</section>
   <p class="vazio" id="vazio" hidden>Nenhum prato encontrado.<br>
     <button type="button" class="limpar">limpar filtros</button></p>
@@ -412,14 +413,14 @@ CSS_MAPA = """
 /* --- mapa ---------------------------------------------------------------- */
 .mapa { margin: 0 0 var(--gap); }
 .mapa__tela { height: min(68vh, 560px); border-radius: 14px; overflow: hidden;
-  background: var(--papel); border: 1px solid var(--linha); touch-action: none; }
+  background: var(--papel); border: 1px solid var(--papel-linha); touch-action: none; }
 .mapa__falha { display: grid; place-content: center; padding: 1.5rem; text-align: center;
   color: var(--tinta-fraca); font-size: .9rem; line-height: 1.5; }
 .mapa__nota { margin: .55rem .2rem 0; font-size: .78rem; line-height: 1.4;
   color: var(--tinta-fraca); }
 .trilha__mapa { margin-left: auto; flex: none; padding: .35rem .7rem;
   font: inherit; font-size: .82rem; color: var(--verde); background: none;
-  border: 1px solid var(--linha); border-radius: 999px; cursor: pointer; }
+  border: 1px solid var(--papel-linha); border-radius: 999px; cursor: pointer; }
 .modos button { padding-inline: .6rem; }
 """
 
@@ -975,12 +976,8 @@ JS_MAPA = r"""
     // aba em branco e o pior desfecho: se o croqui nao subir, diz o que houve
     // em vez de mostrar nada e deixar a pessoa achando que o site quebrou
     try {
-      // o site e sempre claro (color-scheme: light); sem isso o mapa virava
-      // sozinho no celular em modo escuro e ficava preto na pagina bege
-      croqui = window.FestaMapa.criarCroqui(alvo, window.FESTA_MAPA, {
-        aoSelecionar: irPara, tema: 'claro',
-        paleta: { papel: getComputedStyle(document.body).getPropertyValue('--papel').trim() || '#EFE4D4' },
-      });
+      croqui = window.FestaMapa.criarCroqui(alvo, window.FESTA_MAPA,
+                                            { aoSelecionar: irPara });
     } catch (erro) {
       falhou = true;
       alvo.textContent = 'Não consegui desenhar o mapa neste navegador. '

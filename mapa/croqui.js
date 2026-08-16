@@ -17,60 +17,43 @@ const SVG = 'http://www.w3.org/2000/svg';
     return n;
   };
   
-  // A paleta escura fica separada porque quem manda no tema e a pagina que
-  // hospeda o croqui, nao o sistema operacional: embutido num site que e sempre
-  // claro, seguir `prefers-color-scheme` deixava o mapa preto no meio de uma
-  // pagina bege.
-  const ESCURO = `
-    --papel:#14100B; --tinta:#F3E7D4; --asfalto:#2A2318; --meio-fio:#3D3423;
-    --verde:#4CAF5B; --verde-escuro:#2E7D46; --vermelho:#FF5A4D; --bege:#4A3B27;
-    --edificado:#241D14; --verde-area:#1E2C1B; --pavimento:#1C1710;`;
-
+  // Sem paleta propria e sem tema escuro: o croqui usa os tokens do app
+  // (`--papel`, `--dourado`, ...) e so cai no valor de reserva quando roda nas
+  // paginas avulsas do mapa, que nao os definem. Assim ele nunca desencontra do
+  // resto da interface — que e clara de proposito.
   const ESTILO = `
-  .croqui { --verde:#196B24; --verde-escuro:#095A34; --vermelho:#EE0000;
-    --vermelho-logo:#BB2121; --bege:#E5B67E; --papel:#FFF8EE; --tinta:#2B1D10;
-    --asfalto:#E8DCC8; --meio-fio:#CBB795;
-    --edificado:#DCD3C6; --verde-area:#C3D6B0; --pavimento:#EDE1CD;
-    background:var(--papel); touch-action:none; display:block; width:100%; height:100%; }
-  .croqui .via-base { stroke:var(--meio-fio); stroke-linecap:round; stroke-linejoin:round; fill:none; }
-  .croqui .via { stroke:var(--asfalto); stroke-linecap:round; stroke-linejoin:round; fill:none; }
-  .croqui .via-nome { fill:var(--tinta); opacity:.6; font:600 3px system-ui,sans-serif;
+  .croqui { background:var(--papel,#EFE4D4); touch-action:none;
+    display:block; width:100%; height:100%; }
+  .croqui .via { fill:none; stroke:var(--papel-linha,#DFCEB4);
+    stroke-linecap:round; stroke-linejoin:round; }
+  .croqui .via-nome { fill:var(--tinta-fraca,#7B6E5D); font:600 3px var(--corpo,system-ui),sans-serif;
     letter-spacing:.12px; text-anchor:middle;
-    stroke:var(--asfalto); stroke-width:.9; paint-order:stroke; }
+    stroke:var(--papel-linha,#DFCEB4); stroke-width:.9; paint-order:stroke; }
   .croqui .area { stroke:none; }
-  .croqui .area.edificado { fill:var(--edificado); }
-  .croqui .area.verde { fill:var(--verde-area); }
-  .croqui .area.pavimento { fill:var(--pavimento); }
-  .croqui .area-nome { fill:var(--tinta); opacity:.75; font:600 3.2px system-ui,sans-serif;
-    text-anchor:middle; stroke:var(--papel); stroke-width:1.1; paint-order:stroke; }
-  .croqui .referencia { fill:var(--verde-escuro); opacity:.75; }
-  .croqui .referencia-nome { fill:var(--verde-escuro); font:600 3.4px system-ui,sans-serif;
-    text-anchor:middle; opacity:.85; }
-  .croqui .barraca { fill:var(--verde); stroke:var(--papel); stroke-width:.35; cursor:pointer; }
-  .croqui .barraca:hover { fill:var(--verde-escuro); }
-  .croqui .barraca.selecionada { fill:var(--vermelho); }
-  .croqui .barraca.apagada { fill:var(--meio-fio); }
-  .croqui .barraca-num { fill:#fff; font:700 2.4px system-ui,sans-serif;
-    paint-order:stroke; }
-  .croqui .barraca-num.pino { font-size:4px;
+  .croqui .area.edificado { fill:var(--cartao,#FFFFFF); }
+  .croqui .area.verde { fill:var(--verde-suave,#E7EFE6); }
+  .croqui .area.pavimento { fill:var(--papel-linha,#DFCEB4); opacity:.55; }
+  .croqui .area-nome { fill:var(--tinta-fraca,#7B6E5D); font:600 3.2px var(--corpo,system-ui),sans-serif;
+    text-anchor:middle; stroke:var(--papel,#EFE4D4); stroke-width:1.1; paint-order:stroke; }
+  /* mesma pilula dourada do .card__numero das listas */
+  .croqui .barraca { fill:var(--dourado,#D6A25E); cursor:pointer; }
+  .croqui .barraca.selecionada { fill:var(--verde,#0F5F28); }
+  .croqui .barraca.apagada { fill:var(--papel-linha,#DFCEB4); }
+  .croqui .barraca-num { fill:#3A2A12; font:700 2.4px var(--corpo,system-ui),sans-serif; }
+  .croqui .barraca-num.pino { font-size:3.2px;
     text-anchor:middle; dominant-baseline:central; pointer-events:none; }
+  .croqui .barraca.selecionada ~ .barraca-num { fill:#FFFFFF; }
+  .croqui .barraca.apagada ~ .barraca-num { fill:var(--tinta-fraca,#7B6E5D); }
   .croqui .voce { fill:#2F6FED; stroke:#fff; stroke-width:.5; }
   .croqui .voce-raio { fill:#2F6FED; opacity:.15; }
   `;
-  
+
   function criarCroqui(hospedeiro, mapa, opcoes = {}) {
-    const { aoSelecionar, aoArrastar, editavel = false, margem_m = 25,
-            tema = 'auto', paleta } = opcoes;
+    const { aoSelecionar, aoArrastar, editavel = false, margem_m = 10 } = opcoes;
   
     const svg = el('svg', { class: 'croqui', xmlns: SVG });
     const folha = el('style');
-    folha.textContent = ESTILO
-      + (tema === 'auto'
-          ? `@media (prefers-color-scheme: dark) { .croqui {${ESCURO}} }`
-          : tema === 'escuro' ? `.croqui {${ESCURO}}` : '')
-      + (paleta
-          ? `.croqui {${Object.entries(paleta).map(([k, v]) => `--${k}:${v};`).join('')}}`
-          : '');
+    folha.textContent = ESTILO;
     svg.append(folha);
     const camadas = {};
     for (const nome of ['areas', 'vias', 'referencias', 'barracas', 'voce']) {
@@ -113,7 +96,6 @@ const SVG = 'http://www.w3.org/2000/svg';
       g.replaceChildren();
       for (const via of mapa.vias || []) {
         const d = via.eixo.map(P).join(' ');
-        g.append(el('polyline', { class: 'via-base', points: d, 'stroke-width': (via.largura_m || 8) + 1.5 }));
         g.append(el('polyline', { class: 'via', points: d, 'stroke-width': via.largura_m || 8 }));
       }
       for (const via of mapa.vias || []) {
