@@ -385,7 +385,7 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
   <div class="trilha" id="trilha" hidden>
     <button class="voltar" type="button" aria-label="Voltar">{svg(CHEVRON, 18, "icone voltar__seta")}</button>
     <h2 class="trilha__titulo" id="trilha-titulo"></h2>
-    <button class="trilha__mapa" type="button" id="ver-no-mapa" hidden>ver no mapa</button>
+    <button class="trilha__mapa" type="button" id="ver-no-mapa" hidden>{svg(ALFINETE, 15)}ver no mapa</button>
   </div>
 
   <section class="indice" id="idx-categoria" aria-label="Categorias">{cards_cat}</section>
@@ -461,7 +461,8 @@ CSS_MAPA = """
   color: var(--tinta-fraca); font-size: .9rem; line-height: 1.5; }
 .mapa__nota { margin: .55rem .2rem 0; font-size: .78rem; line-height: 1.4;
   color: var(--tinta-fraca); }
-.trilha__mapa { flex: none; padding: .35rem .7rem;
+.trilha__mapa { display: inline-flex; align-items: center; gap: 6px;
+  flex: none; min-height: 44px; padding: .35rem .9rem;
   font: inherit; font-size: .82rem; color: var(--verde); background: none;
   border: 1px solid var(--papel-linha); border-radius: 999px; cursor: pointer; }
 .modos button { padding-inline: .6rem; }
