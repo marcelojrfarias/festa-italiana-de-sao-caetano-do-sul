@@ -88,6 +88,18 @@ def e(s):
     return html.escape(str(s), quote=True)
 
 
+def ler_mapa():
+    """Geometria do croqui + os dois scripts que a desenham.
+
+    Vai tudo embutido no app.js em vez de virar requisicao separada: numa rua
+    lotada, cada ida a rede a mais e uma chance de o mapa nao abrir.
+    """
+    mapa = json.loads((DADOS / "mapa.json").read_text(encoding="utf-8"))
+    fontes = "".join((RAIZ / "mapa" / n).read_text(encoding="utf-8")
+                     for n in ("geo.js", "croqui.js"))
+    return mapa, fontes
+
+
 def carregar():
     ler = lambda n: json.loads((DADOS / n).read_text(encoding="utf-8"))
     return ler("cardapio.json"), ler("categorias-site.json"), ler("evento.json")
@@ -255,7 +267,7 @@ def render_indices(cardapio, categorias, pratos):
     return cards_cat, cards_bar
 
 
-def render_html(cardapio, categorias, evento, pratos):
+def render_html(cardapio, categorias, evento, pratos, geo):
     cards_cat, cards_bar = render_indices(cardapio, categorias, pratos)
     lista = "".join(render_prato(p) for p in pratos)
     ev = evento["local"]
@@ -274,6 +286,10 @@ def render_html(cardapio, categorias, evento, pratos):
     # o número anunciado é o do cardápio oficial, que o validate_menu.py
     # confere contra o PDF; expandir variações infla a contagem interna
     total = sum(len(b["itens"]) for b in cardapio["barracas"])
+    nota_mapa = ("Posições conforme o mapa oficial das entidades. Toque numa barraca "
+                 "para ver o cardápio dela."
+                 if geo["_status"] != "aproximado" else
+                 "Posições aproximadas.")
 
     return f"""<!doctype html>
 <html lang="pt-BR">
@@ -327,6 +343,7 @@ def render_html(cardapio, categorias, evento, pratos):
     <button type="button" data-modo="categoria" aria-pressed="true">Categorias</button>
     <button type="button" data-modo="barraca" aria-pressed="false">Barracas</button>
     <button type="button" data-modo="tudo" aria-pressed="false">Tudo</button>
+    <button type="button" data-modo="mapa" aria-pressed="false">Mapa</button>
   </nav>
 </div>
 
@@ -334,7 +351,13 @@ def render_html(cardapio, categorias, evento, pratos):
   <div class="trilha" id="trilha" hidden>
     <button class="voltar" type="button" aria-label="Voltar">{svg(CHEVRON, 18, "icone voltar__seta")}</button>
     <h2 class="trilha__titulo" id="trilha-titulo"></h2>
+    <button class="trilha__mapa" type="button" id="ver-no-mapa" hidden>ver no mapa</button>
   </div>
+
+  <section class="mapa" id="mapa" aria-label="Mapa das barracas" hidden>
+    <div class="mapa__tela" id="mapa-tela"></div>
+    <p class="mapa__nota">{e(nota_mapa)}</p>
+  </section>
 
   <section class="indice" id="idx-categoria" aria-label="Categorias">{cards_cat}</section>
   <section class="indice" id="idx-barraca" aria-label="Barracas" hidden>{cards_bar}</section>
@@ -378,6 +401,19 @@ def render_html(cardapio, categorias, evento, pratos):
 </html>
 """
 
+
+CSS_MAPA = """
+/* --- mapa ---------------------------------------------------------------- */
+.mapa { margin: 0 0 var(--gap); }
+.mapa__tela { height: min(68vh, 560px); border-radius: 14px; overflow: hidden;
+  background: var(--papel); border: 1px solid var(--linha); touch-action: none; }
+.mapa__nota { margin: .55rem .2rem 0; font-size: .78rem; line-height: 1.4;
+  color: var(--tinta-fraca); }
+.trilha__mapa { margin-left: auto; flex: none; padding: .35rem .7rem;
+  font: inherit; font-size: .82rem; color: var(--verde); background: none;
+  border: 1px solid var(--linha); border-radius: 999px; cursor: pointer; }
+.modos button { padding-inline: .6rem; }
+"""
 
 CSS = """/* Paleta medida do PDF oficial (data/identidade-visual.json), organizada em
    rampa. O bege #E5B67E do impresso não é usado chapado: em área grande ele lê
@@ -892,6 +928,86 @@ JS = r"""(function () {
 """
 
 
+JS_MAPA = r"""
+/* --- aba do mapa ----------------------------------------------------------
+   Roda depois do app: o croqui e montado na primeira vez que a aba abre, e
+   passa a acompanhar a busca e o filtro de preco — quem procurou "cannoli" ve
+   no mapa so as barracas que tem. */
+(function () {
+  'use strict';
+  var alvo = document.getElementById('mapa-tela'),
+      secao = document.getElementById('mapa'),
+      lista = document.getElementById('lista'),
+      contador = document.getElementById('contador'),
+      filtros = document.getElementById('filtros'),
+      verNoMapa = document.getElementById('ver-no-mapa'),
+      pratos = Array.prototype.slice.call(lista.children),
+      croqui = null;
+
+  function estadoURL() {
+    var p = new URLSearchParams(location.search);
+    return { modo: p.get('modo') || '', barraca: p.get('barraca') || '',
+             q: p.get('q') || '', preco: p.get('preco') || '' };
+  }
+
+  function irPara(numero) {
+    var p = new URLSearchParams(location.search);
+    p.delete('modo'); p.delete('cat');
+    p.set('barraca', numero);
+    history.pushState(null, '', '?' + p.toString());
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    window.scrollTo(0, 0);
+  }
+
+  function montar() {
+    if (croqui) return;
+    croqui = window.FestaMapa.criarCroqui(alvo, window.FESTA_MAPA,
+                                          { aoSelecionar: irPara });
+  }
+
+  function sincronizar() {
+    var st = estadoURL(), noMapa = st.modo === 'mapa';
+    secao.hidden = !noMapa;
+    if (!noMapa) { verNoMapa.hidden = !st.barraca; return; }
+    verNoMapa.hidden = true;
+    lista.hidden = true;
+    montar();
+
+    var vistas = {}, n = 0;
+    pratos.forEach(function (el) {
+      if (el.hidden) return;
+      el.dataset.barracas.trim().split(/\s+/).forEach(function (b) {
+        if (!vistas[b]) { vistas[b] = 1; n++; }
+      });
+    });
+    var filtrando = !!(st.q || st.preco || st.barraca);
+    croqui.destacar(filtrando ? Object.keys(vistas) : null);
+    if (st.barraca) croqui.selecionar(st.barraca);
+
+    filtros.hidden = false;
+    contador.hidden = false;
+    contador.textContent = filtrando
+      ? n + (n === 1 ? ' barraca' : ' barracas')
+      : window.FESTA_MAPA.barracas.length + ' barracas no mapa';
+  }
+
+  verNoMapa.addEventListener('click', function () {
+    var p = new URLSearchParams(location.search);
+    p.set('modo', 'mapa');
+    history.pushState(null, '', '?' + p.toString());
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  });
+
+  window.addEventListener('popstate', sincronizar);
+  document.addEventListener('click', function () { setTimeout(sincronizar, 0); });
+  document.getElementById('q').addEventListener('input', function () {
+    setTimeout(sincronizar, 260);
+  });
+  sincronizar();
+})();
+"""
+
+
 def otimizar_assets():
     from PIL import Image
     Image.init()
@@ -930,15 +1046,18 @@ def main():
     orfas = set(EXPANSAO_MANUAL) - ids
     if orfas:
         raise SystemExit(f"EXPANSAO_MANUAL aponta para id inexistente: {sorted(orfas)}")
+    mapa, fontes_mapa = ler_mapa()
     pratos = agrupar_pratos(cardapio, categorias)
 
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir(parents=True)
-    (DIST / "index.html").write_text(render_html(cardapio, categorias, evento, pratos),
+    (DIST / "index.html").write_text(render_html(cardapio, categorias, evento, pratos, mapa),
                                      encoding="utf-8")
-    (DIST / "style.css").write_text(CSS, encoding="utf-8")
-    (DIST / "app.js").write_text(JS, encoding="utf-8")
+    (DIST / "style.css").write_text(CSS + CSS_MAPA, encoding="utf-8")
+    mapa_js = ("window.FESTA_MAPA = "
+               + json.dumps(mapa, ensure_ascii=False, separators=(",", ":")) + ";\n")
+    (DIST / "app.js").write_text(JS + mapa_js + fontes_mapa + JS_MAPA, encoding="utf-8")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
     antes, depois, tam_og = otimizar_assets()
 

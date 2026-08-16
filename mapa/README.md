@@ -66,6 +66,23 @@ a pessoa se situar — "estou do lado da igreja", "isso aqui é o parque" — e 
 como levantamento. A ilustração do banner é dos organizadores; o que está aqui é
 redesenho simplificado.
 
+## Como entra no site
+
+`scripts/build_site.py` embute tudo no `app.js`: `geo.js`, `croqui.js` e o
+`data/mapa.json` inteiro viram `window.FESTA_MAPA` mais o namespace
+`window.FestaMapa`. Nenhuma requisição extra — numa rua lotada, cada ida a mais
+à rede é uma chance de o mapa não abrir. Custo: `app.js` sai de 3,0 KB para
+10,2 KB em gzip.
+
+Por isso `geo.js` e `croqui.js` são scripts simples e não módulos ES: o `app.js`
+do site é um IIFE global, e assim o build só concatena o texto dos arquivos, sem
+cirurgia de regex no fonte.
+
+A aba é o quarto modo (`?modo=mapa`), ao lado de Categorias/Barracas/Tudo, e
+reaproveita o roteamento que já existe. O que faz ela valer a pena é acompanhar
+a busca: quem procurou "cannoli" vê 12 barracas acesas e 23 apagadas, e toca na
+mais perto. Da barraca, o botão "ver no mapa" faz o caminho de volta.
+
 ## O contrato com o app do cardápio
 
 O mapa **não duplica** dado do cardápio. `data/mapa.json` só tem geometria e se
@@ -85,7 +102,7 @@ const croqui = criarCroqui(elemento, mapa, {
 
 croqui.destacar(['3', '12', '27']);  // apaga o resto — amarra o mapa ao filtro de pratos
 croqui.destacar(null);               // volta ao normal
-croqui.selecionar('12');             // realça, como se tivesse sido tocada
+croqui.selecionar('12');             // realça sem disparar `aoSelecionar`
 croqui.marcarVoce([x, y], 15);       // ponto azul, em metros do frame local
 croqui.enquadrar();                  // reenquadra
 ```

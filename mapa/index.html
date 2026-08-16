@@ -17,8 +17,11 @@
 <div class="aviso" id="aviso" hidden></div>
 <div id="croqui"></div>
 <div id="ficha">Toque numa barraca.</div>
-<script type="module">
-import { criarCroqui } from './croqui.js';
+<script src="geo.js"></script>
+<script src="croqui.js"></script>
+<script>
+const { criarCroqui } = window.FestaMapa;
+(async () => {
 const [mapa, cardapio] = await Promise.all([
   fetch('../data/mapa.json').then((r) => r.json()),
   fetch('../data/cardapio.json').then((r) => r.json()),
@@ -45,4 +48,5 @@ criarCroqui(document.getElementById('croqui'), mapa, {
       `<a href="#/barraca/${encodeURIComponent(b.numero)}">ver cardápio →</a>`;
   },
 });
+})();
 </script>

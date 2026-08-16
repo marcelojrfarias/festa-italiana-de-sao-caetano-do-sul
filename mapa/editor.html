@@ -70,8 +70,10 @@
   <div id="status"></div>
 </div>
 
-<script type="module">
-import { criarCroqui } from './croqui.js';
+<script src="geo.js"></script>
+<script src="croqui.js"></script>
+<script>
+const { criarCroqui } = window.FestaMapa;
 
 const $ = (id) => document.getElementById(id);
 let mapa, croqui, sel = null;
