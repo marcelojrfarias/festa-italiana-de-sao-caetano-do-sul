@@ -160,6 +160,21 @@ Cada barraca é um retângulo: centro, `largura_m` (a frente, por onde se atende
 `profundidade_m` e `azimute` — a direção da frente, em graus no sentido horário
 a partir do norte. `cantosDaBarraca()` devolve os quatro cantos.
 
+### Gestos
+
+Pan e pinça são **um gesto só**: o croqui guarda o ponto do mundo que estava sob
+o meio dos dedos e mantém ele ali enquanto eles se movem. Com um dedo a distância
+não muda, o fator de escala vira 1 e sobra pan puro — sem código separado.
+
+Isso não é elegância gratuita. A primeira versão abria um arrasto por ponteiro,
+cada um com o próprio instantâneo do viewBox, e os dois se sobrescreviam a cada
+movimento: com dois dedos o mapa tremia e escorregava, sem dar zoom nenhum.
+
+Pelo mesmo motivo, no site o toque na barraca **não** intercepta o ponteiro — se
+um dos dedos da pinça cair sobre uma barraca, o SVG precisa vê-lo. Vale como
+toque só se o dedo mal saiu do lugar (8 px). No editor é o contrário: lá o
+arrasto move a barraca, então ele fica com o ponteiro.
+
 ## Detalhe de renderização
 
 O croqui inteiro tem 250 × 440 m. Nesse enquadramento uma barraca de 4 m ocupa
