@@ -93,14 +93,19 @@ const SVG = 'http://www.w3.org/2000/svg';
   
     // --- desenho --------------------------------------------------------------
     /**
-     * Onde pousar o nome da via.
+     * Onde pousar o nome da via — sempre sobre o leito.
      *
-     * Nao basta olhar o ponto de ancoragem: o texto se estende ao longo da rua e
-     * atropela as barracas mesmo com a ancora caindo num vao. Aqui cada candidato
-     * e julgado pela faixa inteira que o texto vai ocupar.
+     * Duas regras: o texto inteiro cabe no quadro, e nao encosta no nome de
+     * outra rua (que se cruzariam no cruzamento, onde as duas passam). Entre os
+     * candidatos que valem, ganha o que fica mais longe das barracas, para o
+     * nome cair num vao entre pilulas em vez de em cima delas.
      */
-    function pousoDoNome(via) {
-      const cx = via.eixo, q = limites(), folga = 5;
+    function pousoDoNome(via, jaPostos) {
+      // o quadro e o viewBox corrente, nao o enquadramento inicial: com zoom o
+      // que cabe muda, e usar `limites()` deixava o nome escapar da tela
+      const v = vb || enquadrar();
+      const q = { x: v.x, y: -(v.y + v.h), w: v.w, h: v.h };   // de volta ao mundo
+      const cx = via.eixo, folga = v.w * 0.03;
       // o rotulo tem tamanho de tela; em metros ele mede isto no zoom atual
       const meia = (via.nome.length * 3 * 0.55 * fatorPino()) / 2;
       let melhor = null, maiorDist = -1;
@@ -108,35 +113,32 @@ const SVG = 'http://www.w3.org/2000/svg';
         const [a, b] = [cx[i - 1], cx[i]];
         const L = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
         const u = [(b[0] - a[0]) / L, (b[1] - a[1]) / L];
-        const n = [-u[1], u[0]];                    // normal da via
         for (let k = 0; k <= 60; k++) {
-          const base = [a[0] + (b[0] - a[0]) * k / 60, a[1] + (b[1] - a[1]) * k / 60];
-          // rua cheia de barraca dos dois lados nao tem onde caber o nome; entao
-          // ele pode sair do leito e deitar ao lado, como em mapa impresso
-          for (const lado of [0, -14, 14, -22, 22]) {
-            const pt = [base[0] + n[0] * lado, base[1] + n[1] * lado];
-            let d = Infinity, cabe = true;
-            for (let j = -2; j <= 2 && cabe; j++) {
-              const amostra = [pt[0] + u[0] * meia * j / 2, pt[1] + u[1] * meia * j / 2];
-              // o texto inteiro precisa caber, nao so a ancora: era o que fazia
-              // "R. Vinte e Oito de Julho" sair cortado na borda do quadro
-              cabe = amostra[0] >= q.x + folga && amostra[0] <= q.x + q.w - folga
-                  && -amostra[1] >= q.y + folga && -amostra[1] <= q.y + q.h - folga;
-              for (const bar of mapa.barracas) {
-                d = Math.min(d, Math.hypot(amostra[0] - bar.centro[0], amostra[1] - bar.centro[1]));
-              }
+          const pt = [a[0] + (b[0] - a[0]) * k / 60, a[1] + (b[1] - a[1]) * k / 60];
+          const faixa = [];
+          for (let j = -2; j <= 2; j++) {
+            faixa.push([pt[0] + u[0] * meia * j / 2, pt[1] + u[1] * meia * j / 2]);
+          }
+          // o texto inteiro precisa caber, nao so a ancora
+          if (faixa.some((c) => c[0] < q.x + folga || c[0] > q.x + q.w - folga
+                             || c[1] < q.y + folga || c[1] > q.y + q.h - folga)) continue;
+          // e nao pode encostar num nome ja posto
+          const bate = jaPostos.some((outro) =>
+            faixa.some((c) => outro.some((o) => Math.hypot(c[0] - o[0], c[1] - o[1]) < meia * 0.6)));
+          if (bate) continue;
+          let d = Infinity;
+          for (const c of faixa) {
+            for (const bar of mapa.barracas) {
+              d = Math.min(d, Math.hypot(c[0] - bar.centro[0], c[1] - bar.centro[1]));
             }
-            if (!cabe) continue;
-            // empate vai para o leito: fora dele o nome custa um passo de leitura
-            const nota = d - Math.abs(lado) * 0.15;
-            if (nota > maiorDist) {
-              maiorDist = nota;
-              melhor = { meio: pt, ang: (Math.atan2(-(b[1] - a[1]), b[0] - a[0]) * 180) / Math.PI };
-            }
+          }
+          if (d > maiorDist) {
+            maiorDist = d;
+            melhor = { meio: pt, faixa, ang: (Math.atan2(-(b[1] - a[1]), b[0] - a[0]) * 180) / Math.PI };
           }
         }
       }
-      return melhor || { meio: null, ang: 0 };
+      return melhor;
     }
 
     function desenharVias() {
@@ -146,13 +148,19 @@ const SVG = 'http://www.w3.org/2000/svg';
         const d = via.eixo.map(P).join(' ');
         g.append(el('polyline', { class: 'via', points: d, 'stroke-width': via.largura_m || 8 }));
       }
-      for (const via of mapa.vias || []) {
-        if (!via.nome) continue;
+      const postos = [];   // faixas já ocupadas por outros nomes de rua
+      // o nome mais longo escolhe primeiro: ele tem menos lugar onde caber, e se
+      // o curto escolhesse antes acabava tomando a unica vaga que servia ao outro
+      const comNome = (mapa.vias || []).filter((v) => v.nome)
+        .sort((a, b) => b.nome.length - a.nome.length);
+      for (const via of comNome) {
         // O nome vai no trecho mais vazio da rua que ainda esteja dentro do
         // quadro. Fixar no meio da linha punha o rotulo bem no cruzamento,
         // por cima das barracas, justo onde a rua e mais cheia.
-        const { meio, ang } = pousoDoNome(via);
-        if (!meio) continue;
+        const pouso = pousoDoNome(via, postos);
+        if (!pouso) continue;
+        postos.push(pouso.faixa);
+        const { meio, ang } = pouso;
         const baseVia = `translate(${P(meio)}) rotate(${((ang + 90) % 180) - 90})`;
         const t = el('text', { class: 'via-nome', x: 0, y: 1.1, transform: baseVia });
         t.dataset.base = baseVia;

@@ -204,9 +204,22 @@ troca de atributo, sem refazer nós.
 
 O que escala é o que representa o mundo: ruas, quadras, largo e parque.
 
-O nome da rua também não fica fixo no meio da linha — ele pousa no trecho da via
-que está dentro do quadro e mais longe de qualquer barraca. Fixar no meio punha
-o rótulo bem no cruzamento, justo onde a rua é mais cheia.
+O nome da rua não fica fixo no meio da linha — ele pousa no trecho da via mais
+longe das barracas, dentre os que valem. Fixar no meio punha o rótulo bem no
+cruzamento, justo onde a rua é mais cheia.
+
+Três regras decidem se um trecho vale, e vieram todas de defeito visto na tela:
+
+- **fica sobre o leito**, nunca ao lado — o nome fora da rua não diz de que rua
+  se trata;
+- **o texto inteiro cabe no quadro**, não só a âncora, senão o fim do nome sai
+  cortado na borda;
+- **não encosta em outro nome de rua**, que se cruzariam no cruzamento, onde as
+  duas passam.
+
+O nome mais longo escolhe primeiro: ele tem menos lugar onde caber, e com o
+curto escolhendo antes ele tomava a única vaga que servia ao outro — o segundo
+nome simplesmente sumia do mapa.
 
 ## Detalhe de renderização
 
