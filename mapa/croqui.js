@@ -195,12 +195,32 @@ const SVG = 'http://www.w3.org/2000/svg';
   
     let vb = null;
   
+    const TOLERANCIA_TOQUE = 8;   // px: acima disso o dedo estava navegando, nao tocando
+
     function ligarPonteiro(grupo, barraca) {
+      if (editavel && aoArrastar) {
+        // no editor o arrasto move a barraca, entao ele fica com o ponteiro
+        grupo.addEventListener('pointerdown', (ev) => {
+          ev.stopPropagation();
+          selecionar(barraca.numero, true);
+          iniciarArrasto(ev, barraca);
+        });
+        return;
+      }
+      // No site o ponteiro NAO pode ser interceptado: se um dos dedos da pinca
+      // cair sobre uma barraca, o SVG precisa ve-lo mesmo assim. Entao deixa
+      // passar e so trata como toque se mal saiu do lugar e estava sozinho.
+      let inicio = null;
       grupo.addEventListener('pointerdown', (ev) => {
-        ev.stopPropagation();
-        selecionar(barraca.numero, true);
-        if (editavel && aoArrastar) iniciarArrasto(ev, barraca);
+        inicio = { x: ev.clientX, y: ev.clientY, id: ev.pointerId };
       });
+      grupo.addEventListener('pointerup', (ev) => {
+        if (!inicio || ev.pointerId !== inicio.id) return;
+        const andou = Math.hypot(ev.clientX - inicio.x, ev.clientY - inicio.y);
+        inicio = null;
+        if (andou <= TOLERANCIA_TOQUE) selecionar(barraca.numero, true);
+      });
+      grupo.addEventListener('pointercancel', () => { inicio = null; });
     }
   
     function redesenhar() {
@@ -236,36 +256,114 @@ const SVG = 'http://www.w3.org/2000/svg';
       window.addEventListener('pointerup', soltar);
     }
   
-    // pan e zoom
+    // --- pan e pinca ---------------------------------------------------------
+    // Um gesto so, para um ou dois dedos: guarda o ponto do mundo que estava sob
+    // o meio dos dedos e mantem ele ali enquanto eles se movem. Com um dedo a
+    // distancia nao muda, o fator vira 1 e sobra pan puro.
+    //
+    // O bug que isto conserta: antes cada ponteiro abria o proprio arrasto, com
+    // o proprio instantaneo do viewBox, e os dois se sobrescreviam a cada
+    // movimento — o mapa tremia e fugia com dois dedos.
     vb = enquadrar();
+    const AJUSTE = { ...vb };
+    const MIN_M = 12;                       // nao adianta passar disso: barraca tem 4 m
+    const MAX_M = AJUSTE.w * 1.6;
+
     const aplicar = () => svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+
+    function redesenharSePassouDoLimiar(antes) {
+      if (antes !== vb.w > LIMIAR_PINO_M) desenharBarracas();
+    }
+
+    const ativos = new Map();               // pointerId -> {x, y} em coordenadas de tela
+    let ancora = null;
+
+    function medir() {
+      const ps = [...ativos.values()];
+      if (!ps.length) return null;
+      const meio = {
+        x: ps.reduce((t, q) => t + q.x, 0) / ps.length,
+        y: ps.reduce((t, q) => t + q.y, 0) / ps.length,
+      };
+      const dist = ps.length >= 2 ? Math.hypot(ps[1].x - ps[0].x, ps[1].y - ps[0].y) : 0;
+      return { meio, dist };
+    }
+
+    /** Refaz o instantaneo — tambem ao entrar ou sair um dedo, senao o mapa salta. */
+    function ancorar() {
+      const m = medir();
+      if (!m) { ancora = null; return; }
+      const r = svg.getBoundingClientRect();
+      ancora = {
+        vb: { ...vb }, r, dist: m.dist,
+        mundo: {
+          x: vb.x + (m.meio.x - r.left) * vb.w / r.width,
+          y: vb.y + (m.meio.y - r.top) * vb.h / r.height,
+        },
+      };
+    }
+
+    function aoMover(ev) {
+      if (!ativos.has(ev.pointerId)) return;
+      ativos.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+      if (!ancora) return;
+      const m = medir();
+      const { r, mundo } = ancora;
+      let k = 1;
+      if (ancora.dist > 0 && m.dist > 0) k = ancora.dist / m.dist;  // dedos afastam -> quadro encolhe
+      let w = Math.min(MAX_M, Math.max(MIN_M, ancora.vb.w * k));
+      k = w / ancora.vb.w;                                          // k depois do limite
+      const h = ancora.vb.h * k;
+      const antes = vb.w > LIMIAR_PINO_M;
+      vb = {
+        x: mundo.x - (m.meio.x - r.left) * w / r.width,
+        y: mundo.y - (m.meio.y - r.top) * h / r.height,
+        w, h,
+      };
+      aplicar();
+      redesenharSePassouDoLimiar(antes);
+    }
+
+    function aoSoltar(ev) {
+      if (!ativos.delete(ev.pointerId)) return;
+      ancorar();                            // o dedo que ficou continua de onde esta
+      if (!ativos.size) {
+        window.removeEventListener('pointermove', aoMover);
+        window.removeEventListener('pointerup', aoSoltar);
+        window.removeEventListener('pointercancel', aoSoltar);
+      }
+    }
+
+    svg.addEventListener('pointerdown', (ev) => {
+      if (ativos.size === 0) {
+        window.addEventListener('pointermove', aoMover);
+        window.addEventListener('pointerup', aoSoltar);
+        window.addEventListener('pointercancel', aoSoltar);
+      }
+      ativos.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+      ancorar();
+    });
+
     svg.addEventListener('wheel', (ev) => {
       ev.preventDefault();
-      const k = ev.deltaY > 0 ? 1.12 : 1 / 1.12;
-      const p = svg.createSVGPoint();
-      p.x = ev.clientX; p.y = ev.clientY;
-      const m = p.matrixTransform(svg.getScreenCTM().inverse());
+      const r = svg.getBoundingClientRect();
+      const mundo = {
+        x: vb.x + (ev.clientX - r.left) * vb.w / r.width,
+        y: vb.y + (ev.clientY - r.top) * vb.h / r.height,
+      };
+      const alvo = vb.w * (ev.deltaY > 0 ? 1.12 : 1 / 1.12);
+      const w = Math.min(MAX_M, Math.max(MIN_M, alvo));
+      const h = vb.h * (w / vb.w);
       const antes = vb.w > LIMIAR_PINO_M;
-      vb = { x: m.x - (m.x - vb.x) * k, y: m.y - (m.y - vb.y) * k, w: vb.w * k, h: vb.h * k };
+      vb = {
+        x: mundo.x - (ev.clientX - r.left) * w / r.width,
+        y: mundo.y - (ev.clientY - r.top) * h / r.height,
+        w, h,
+      };
       aplicar();
-      if (antes !== vb.w > LIMIAR_PINO_M) desenharBarracas();
+      redesenharSePassouDoLimiar(antes);
     }, { passive: false });
-    svg.addEventListener('pointerdown', (ev) => {
-      const p0 = { x: ev.clientX, y: ev.clientY };
-      const vb0 = { ...vb };
-      const escala = vb.w / svg.clientWidth;
-      const mover = (e) => {
-        vb = { ...vb0, x: vb0.x - (e.clientX - p0.x) * escala, y: vb0.y - (e.clientY - p0.y) * escala };
-        aplicar();
-      };
-      const soltar = () => {
-        window.removeEventListener('pointermove', mover);
-        window.removeEventListener('pointerup', soltar);
-      };
-      window.addEventListener('pointermove', mover);
-      window.addEventListener('pointerup', soltar);
-    });
-  
+
     function selecionar(numero, porToque) {
       selecionada = numero;
       desenharBarracas();
