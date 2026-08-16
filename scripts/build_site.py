@@ -110,8 +110,18 @@ def render_prato(p):
         f'<span class="oferta__preco">{e(moeda(o["preco"]))}</span></li>'
         for o in p["ofertas"])
     n = len(p["ofertas"])
-    toggle = (f'<button class="prato__toggle" type="button" aria-expanded="false">'
-              f'em {n} barracas</button>') if n > 1 else ""
+    # Com uma barraca só não há o que expandir, mas "onde encontro isto" é a
+    # pergunta de quem está de pé na festa — então mostra direto. 302 dos 365
+    # pratos caem neste caso: escondê-los atrás de nada deixava a maioria da
+    # lista sem resposta.
+    if n == 1:
+        o = p["ofertas"][0]
+        onde = (f'<p class="prato__onde">'
+                f'<span class="oferta__num">{e(o["num"])}</span>'
+                f'<span class="oferta__nome">{e(o["nome"])}</span></p>')
+    else:
+        onde = (f'<button class="prato__toggle" type="button" aria-expanded="false">'
+                f'em {n} barracas</button>')
     return (
         f'<article class="prato" data-cat="{e(p["categoria"])}" '
         f'data-barracas=" {e(nums)} " data-precos=" {e(buckets)} " '
@@ -119,7 +129,7 @@ def render_prato(p):
         f'<div class="prato__topo"><h3 class="prato__titulo">{e(p["titulo"])}</h3>'
         f'<span class="prato__faixa">{e(faixa_preco(p))}</span></div>'
         f'<p class="prato__desc">{e(p["descricao"])}</p>'
-        f'{toggle}<ul class="ofertas">{ofertas}</ul></article>')
+        f'{onde}<ul class="ofertas">{ofertas}</ul></article>')
 
 
 def render_indices(cardapio, categorias, pratos):
@@ -364,6 +374,10 @@ main { padding: 12px 16px 0; }
   border: 1px solid var(--borda); border-radius: 999px;
   background: transparent; color: var(--suave); cursor: pointer;
 }
+.prato__onde {
+  display: grid; grid-template-columns: 30px 1fr; align-items: center; gap: 8px;
+  margin: 8px 0 0; font-size: 14px;
+}
 .ofertas { display: none; margin: 8px 0 0; padding: 0; list-style: none; }
 .prato__toggle[aria-expanded="true"] + .ofertas { display: block; }
 .oferta {
@@ -381,6 +395,7 @@ main { padding: 12px 16px 0; }
    reescreve .prato__faixa); repetir o nome da barraca em cada prato seria
    redundante com a trilha. */
 body[data-barraca-ativa] .lista .prato__toggle,
+body[data-barraca-ativa] .lista .prato__onde,
 body[data-barraca-ativa] .lista .ofertas { display: none !important; }
 
 .vazio { padding: 24px 0; text-align: center; color: var(--suave); }
