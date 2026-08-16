@@ -521,14 +521,27 @@ def render_indices(cardapio, categorias, pratos, fam_catalogo):
     # todos os tipos de todas as categorias no mesmo bloco; o cliente esconde
     # os que não são da categoria aberta. São 35 cards no total — separar em
     # seções por categoria só multiplicaria elemento para o mesmo efeito.
-    cards_fam = "".join(
-        f'<a class="card card--tipo" href="?cat={e(cid)}&amp;fam={e(f["chave"])}" '
-        f'data-cat="{e(cid)}" data-fam="{e(f["chave"])}">'
-        f'<span class="card__nome">{e(f["rotulo"])}</span>'
-        f'<span class="card__contagem">{f["total"]}</span>'
-        f'<span class="card__chevron">{usar("seta", 18)}</span></a>'
-        for cid in ORDEM if cid in fam_catalogo
-        for f in fam_catalogo[cid])
+    def cards_de(cid):
+        fs = fam_catalogo[cid]
+        tipos = "".join(
+            f'<a class="card card--tipo" href="?cat={e(cid)}&amp;fam={e(f["chave"])}" '
+            f'data-cat="{e(cid)}" data-fam="{e(f["chave"])}">'
+            f'<span class="card__nome">{e(f["rotulo"])}</span>'
+            f'<span class="card__contagem">{f["total"]}</span>'
+            f'<span class="card__chevron">{usar("seta", 18)}</span></a>'
+            for f in fs)
+        # Sem esta saída, ver a categoria inteira exigia a aba "Tudo", que traz
+        # os 363 pratos da festa. Fica por último: é o caminho de quem não quer
+        # escolher tipo, não o primeiro que se oferece.
+        total = sum(f["total"] for f in fs)
+        return tipos + (
+            f'<a class="card card--tipo card--todos" href="?cat={e(cid)}&amp;fam=todos" '
+            f'data-cat="{e(cid)}" data-fam="todos">'
+            f'<span class="card__nome">Ver todos</span>'
+            f'<span class="card__contagem">{total}</span>'
+            f'<span class="card__chevron">{usar("seta", 18)}</span></a>')
+
+    cards_fam = "".join(cards_de(cid) for cid in ORDEM if cid in fam_catalogo)
     return cards_cat, cards_bar, cards_fam
 
 
@@ -852,6 +865,10 @@ main { padding: var(--e4) var(--e4) 0; }
 .card__chevron { display: grid; place-items: center; color: var(--papel-linha); }
 /* o tipo não tem ícone próprio: sem a primeira coluna o nome ocupa a largura */
 .card--tipo { grid-template-columns: 1fr auto 18px; min-height: 60px; }
+.card--todos {
+  background: transparent; box-shadow: none; border: 1px solid var(--papel-linha);
+}
+.card--todos .card__nome { font-weight: 600; color: var(--tinta-fraca); }
 
 /* ---- filtros ---- */
 .filtros {
@@ -1100,7 +1117,8 @@ JS = r"""(function () {
           el.dataset.barracas.indexOf(' ' + estado.barraca + ' ') === -1) ok = false;
       if (ok && estado.preco &&
           el.dataset.precos.indexOf(' ' + estado.preco + ' ') === -1) ok = false;
-      if (ok && estado.fam && el.dataset.fam !== estado.fam) ok = false;
+      if (ok && estado.fam && estado.fam !== 'todos' &&
+          el.dataset.fam !== estado.fam) ok = false;
       if (ok && q && el.dataset.busca.indexOf(q) === -1) ok = false;
       el.hidden = !ok;
       if (ok) visiveis++;
@@ -1149,7 +1167,7 @@ JS = r"""(function () {
     var rotulo = estado.cat ? nomes['cat:' + estado.cat]
                : estado.barraca ? nomes['barraca:' + estado.barraca] : '';
     // o título carrega os dois degraus: de onde veio e onde está
-    if (rotulo && estado.cat && estado.fam) {
+    if (rotulo && estado.cat && estado.fam && estado.fam !== 'todos') {
       rotulo += ' · ' + (nomes['fam:' + estado.cat + ':' + estado.fam] || '');
     }
     trilha.hidden = !rotulo;
