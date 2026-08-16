@@ -22,11 +22,41 @@ SITE = "https://marcelojrfarias.github.io/festa-italiana-de-sao-caetano-do-sul/"
 UTM = "?utm_source=whatsapp&utm_medium=share&utm_campaign=cardapio-33a"
 LINKEDIN = "https://www.linkedin.com/in/marcelojrfarias/"
 
+# Ícones desenhados com primitivas simples (arco, linha, polígono). Emoji foram
+# a maior fonte da aparência amadora da v1: renderizam no estilo cartoon de cada
+# plataforma e brigam com o logo manuscrito da festa.
 ICONES = {
-    "massas": "🍝", "pizzas-e-fogazza": "🍕", "doces": "🍰", "lanches": "🥪",
-    "petiscos-e-porcoes": "🧀", "carnes-e-polenta": "🍖", "outros-pratos": "🍽️",
-    "bebidas-sem-alcool": "🥤", "bebidas-com-alcool": "🍺",
+    "massas": '<path d="M3.2 12.6h17.6a8.8 8.8 0 0 1-17.6 0Z"/>'
+              '<path d="M6.5 9.5c1.2-2 2.4-2 3.6 0s2.4 2 3.6 0 2.4-2 3.6 0"/>'
+              '<path d="M7.5 6c1-1.6 2-1.6 3 0s2 1.6 3 0 2-1.6 3 0"/>',
+    "pizzas-e-fogazza": '<path d="M12 3.5 4.8 18.2a15 15 0 0 0 14.4 0Z"/>'
+              '<circle cx="10.5" cy="12" r="1.1"/><circle cx="14" cy="15" r="1.1"/>',
+    "lanches": '<path d="M4 8.5c0-2 3.6-3.5 8-3.5s8 1.5 8 3.5"/>'
+              '<path d="M4 12.2c2 1.4 4.4 1 6-.2 1.6 1.4 4.4 1.4 6 0 1.6 1.2 3 1.4 4 .2"/>'
+              '<path d="M4.5 15.5h15a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2Z"/>',
+    # panela com vapor: cobre polenta ao ragu, carne assada e zuppa. Espeto lia
+    # como rolo de macarrão e a silhueta de bife com osso virava uma cruz.
+    "carnes-e-polenta": '<path d="M4.4 9.6h15.2v5.8a4 4 0 0 1-4 4H8.4a4 4 0 0 1-4-4Z"/>'
+              '<path d="M4.4 11.8H2.6"/><path d="M19.6 11.8h1.8"/>'
+              '<path d="M9.4 6.6c0-1.1 1-1.5 1-2.6"/><path d="M13.6 6.6c0-1.1 1-1.5 1-2.6"/>',
+    "petiscos-e-porcoes": '<path d="M3.5 16.5 13 7l7.5 4.5v5Z"/>'
+              '<circle cx="9" cy="14" r="1.2"/><circle cx="15.5" cy="13.5" r="1.1"/>',
+    "doces": '<path d="M6.6 10h10.8L12 20.6Z"/>'
+              '<path d="M6.9 10a5.1 5.1 0 0 1 10.2 0"/><path d="M8.6 13.6h6.8"/>',
+    "bebidas-sem-alcool": '<path d="M6.5 8.5h11l-1.2 10a1.6 1.6 0 0 1-1.6 1.4H9.3a1.6 1.6 0 0 1-1.6-1.4Z"/>'
+              '<path d="M13.5 8.5 16 3.5"/><path d="M6.9 12.5h10.2"/>',
+    "bebidas-com-alcool": '<path d="M6 3.5h12l-1 6a5 5 0 0 1-10 0Z"/>'
+              '<path d="M12 14.5v5"/><path d="M8.5 20h7"/>',
+    "outros-pratos": '<path d="M7.2 3.4v5.2a2.5 2.5 0 0 0 5 0V3.4"/><path d="M9.7 11.1v9.5"/>'
+              '<path d="M16.8 20.6V3.4c1.7 0 2.8 1.5 2.8 3.7s-1.1 3.7-2.8 3.7"/>',
 }
+
+def svg(inner, tam=24, classe="icone"):
+    return (f'<svg class="{classe}" viewBox="0 0 24 24" width="{tam}" height="{tam}" fill="none" '
+            f'stroke="currentColor" stroke-width="1.7" stroke-linecap="round" '
+            f'stroke-linejoin="round" aria-hidden="true">{inner}</svg>')
+
+CHEVRON = '<path d="M9 5l7 7-7 7"/>'
 # Ordem de navegação: comida primeiro, bebida por último. A ordem do arquivo de
 # categorias é por volume, o que jogaria bebida para o topo do índice.
 ORDEM = ["massas", "pizzas-e-fogazza", "lanches", "carnes-e-polenta",
@@ -93,7 +123,10 @@ def agrupar_pratos(cardapio, categorias):
 
 
 def faixa_preco(p):
-    return moeda(p["min"]) if p["min"] == p["max"] else f"{moeda(p['min'])} a {moeda(p['max'])}"
+    if p["min"] == p["max"]:
+        return moeda(p["min"])
+    # "R$ 15,00 a R$ 16,00" espremia o título do prato em três linhas
+    return f"{moeda(p['min'])}–{moeda(p['max']).removeprefix('R$ ')}"
 
 
 def bucket_preco(v):
@@ -137,10 +170,10 @@ def render_indices(cardapio, categorias, pratos):
     nomes = {c["id"]: c["nome"] for c in categorias["categorias"]}
     cards_cat = "".join(
         f'<a class="card" href="?cat={e(cid)}" data-cat="{e(cid)}">'
-        f'<span class="card__icone" aria-hidden="true">{ICONES[cid]}</span>'
+        f'<span class="card__icone">{svg(ICONES[cid], 26)}</span>'
         f'<span class="card__nome">{e(nomes[cid])}</span>'
         f'<span class="card__contagem">{por_cat[cid]}</span>'
-        f'<span class="card__chevron" aria-hidden="true">›</span></a>'
+        f'<span class="card__chevron">{svg(CHEVRON, 18)}</span></a>'
         for cid in ORDEM if por_cat[cid])
 
     cards_bar = "".join(
@@ -149,7 +182,7 @@ def render_indices(cardapio, categorias, pratos):
         f'<span class="card__numero">{e(b["numero"])}</span>'
         f'<span class="card__nome">{e(b["nome"])}</span>'
         f'<span class="card__contagem">{b["total_itens"]}</span>'
-        f'<span class="card__chevron" aria-hidden="true">›</span></a>'
+        f'<span class="card__chevron">{svg(CHEVRON, 18)}</span></a>'
         for b in sorted(cardapio["barracas"], key=lambda x: x["numeros"][0]))
     return cards_cat, cards_bar
 
@@ -220,7 +253,7 @@ def render_html(cardapio, categorias, evento, pratos):
 
 <main>
   <div class="trilha" id="trilha" hidden>
-    <button class="voltar" type="button">‹ voltar</button>
+    <button class="voltar" type="button" aria-label="Voltar">{svg(CHEVRON, 18, "icone voltar__seta")}</button>
     <h2 class="trilha__titulo" id="trilha-titulo"></h2>
   </div>
 
@@ -262,162 +295,216 @@ def render_html(cardapio, categorias, evento, pratos):
 """
 
 
-CSS = """/* Paleta e escala vêm de data/identidade-visual.json, medidas do PDF oficial. */
+CSS = """/* Paleta medida do PDF oficial (data/identidade-visual.json), organizada em
+   rampa. O bege #E5B67E do impresso não é usado chapado: em área grande ele lê
+   como cor padrão, não como superfície escolhida. Aqui ele vira o papel claro
+   do fundo e reaparece saturado só como acento, no número da barraca. */
+@font-face {
+  font-family: "Bevan";
+  src: url("assets/fonts/bevan-latin-400.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+
 :root {
-  --verde: #196B24; --verde-logo: #0F7645; --verde-escuro: #095A34;
-  --vermelho: #EE0000; --vermelho-logo: #BB2121;
-  --bege: #E5B67E; --cartao: #FFFFFF; --texto: #1A1A1A; --suave: #5C5245;
-  --borda: #E3D5C2; --raio: 14px;
-  --display: Georgia, "Times New Roman", serif;
+  --papel: #EFE4D4;
+  --papel-linha: #DFCEB4;
+  --cartao: #FFFFFF;
+  --tinta: #1F1A14;          /* preto quente, não puro */
+  --tinta-fraca: #7B6E5D;    /* cinza enviesado para a temperatura do papel */
+  --verde: #0F5F28;
+  --verde-fundo: #08351A;
+  --verde-suave: #E7EFE6;
+  --vermelho: #B02020;
+  --dourado: #D6A25E;
+
+  --sombra-1: 0 1px 2px rgba(31,26,20,.05);
+  --sombra-2: 0 2px 5px rgba(31,26,20,.07), 0 1px 2px rgba(31,26,20,.04);
+  --sombra-3: 0 10px 28px rgba(8,53,26,.18);
+
+  --e1: 4px; --e2: 8px; --e3: 12px; --e4: 16px; --e5: 24px; --e6: 32px;
+  --raio: 16px;
+
+  --display: "Bevan", Georgia, serif;
   --corpo: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color-scheme: light;
 }
 * { box-sizing: border-box; }
-/* display: grid/flex nos containers sobrepõe o [hidden] do HTML; sem isto o
-   índice e a lista aparecem juntos. */
+/* display:grid/flex nos containers sobrepõe o [hidden] do HTML */
 [hidden] { display: none !important; }
 body {
-  margin: 0; background: var(--bege); color: var(--texto);
+  margin: 0; background: var(--papel); color: var(--tinta);
   font-family: var(--corpo); font-size: 16px; line-height: 1.45;
   -webkit-text-size-adjust: 100%;
 }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 a { color: var(--verde); }
+:focus-visible { outline: 3px solid var(--verde); outline-offset: 2px; border-radius: 4px; }
+.icone { flex: 0 0 auto; }
 
 /* ---- faixa de marca: rola embora ---- */
-.marca { padding: 14px 16px 10px; }
-.marca__linha { display: flex; align-items: center; gap: 12px; }
-.marca__logo { width: auto; height: 56px; max-width: 70%; }
+.marca { padding: var(--e3) var(--e4) var(--e2); }
+.marca__linha { display: flex; align-items: center; gap: var(--e3); }
+.marca__logo { width: auto; height: 54px; }
 .marca__linha .botao-share--icone { margin-left: auto; }
 .status {
-  margin: 8px 0 0; font-size: 14px; font-weight: 600; color: var(--verde-escuro);
+  display: flex; align-items: center; gap: 7px;
+  margin: var(--e2) 0 0; font-size: 13px; font-weight: 600;
+  letter-spacing: .02em; color: var(--verde-fundo);
 }
-.status[data-aberta="1"]::before {
-  content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 7px;
-  border-radius: 50%; background: var(--verde); vertical-align: 1px;
+.status::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--tinta-fraca); flex: 0 0 auto;
 }
+.status[data-aberta="1"]::before { background: var(--verde); }
 
-/* ---- faixa de ferramenta: gruda no topo ---- */
+/* ---- faixa de ferramenta: a espinha verde do app ---- */
 .ferramentas {
-  position: sticky; top: 0; z-index: 10; background: var(--bege);
-  padding: 8px 16px 10px; box-shadow: 0 6px 12px -8px rgba(0,0,0,.35);
+  position: sticky; top: 0; z-index: 10;
+  background: var(--verde-fundo); padding: var(--e3) var(--e4);
+  display: grid; gap: var(--e2);
 }
 .busca input {
-  width: 100%; padding: 11px 14px; font: inherit; font-size: 16px;
-  border: 1px solid var(--borda); border-radius: 999px; background: var(--cartao);
+  width: 100%; padding: 11px var(--e4); font: inherit; font-size: 16px;
+  border: 0; border-radius: 999px; background: var(--cartao); color: var(--tinta);
 }
-.busca input:focus-visible { outline: 3px solid var(--verde); outline-offset: 1px; }
-.modos { display: flex; gap: 6px; margin-top: 8px; }
+.busca input::placeholder { color: var(--tinta-fraca); }
+.modos { display: flex; gap: 6px; }
 .modos button {
   flex: 1; padding: 8px 4px; font: inherit; font-size: 13px; font-weight: 600;
-  border: 1px solid var(--borda); border-radius: 999px;
-  background: var(--cartao); color: var(--suave); cursor: pointer;
+  border: 1px solid rgba(255,255,255,.28); border-radius: 999px;
+  background: transparent; color: #EFE4D4; cursor: pointer;
 }
 .modos button[aria-pressed="true"] {
-  background: var(--verde); border-color: var(--verde); color: #fff;
+  background: var(--cartao); border-color: var(--cartao); color: var(--verde-fundo);
 }
 
-main { padding: 12px 16px 0; }
+main { padding: var(--e4) var(--e4) 0; }
 
-/* ---- trilha ---- */
-.trilha { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+/* ---- trilha: o momento de display ---- */
+.trilha { display: flex; align-items: center; gap: var(--e3); margin-bottom: var(--e4); }
 .voltar {
-  padding: 7px 12px; font: inherit; font-size: 14px; font-weight: 600;
-  border: 1px solid var(--borda); border-radius: 999px;
+  display: grid; place-items: center; width: 40px; height: 40px; flex: 0 0 auto;
+  padding: 0; border: 1px solid var(--papel-linha); border-radius: 50%;
   background: var(--cartao); color: var(--verde); cursor: pointer;
 }
-.trilha__titulo { margin: 0; font-family: var(--display); font-size: 20px; color: var(--verde); }
-
-/* ---- índices (cards de categoria e barraca) ---- */
-.indice { display: grid; gap: 8px; }
-.card {
-  display: grid; grid-template-columns: 44px 1fr auto 16px; align-items: center;
-  gap: 10px; padding: 12px 14px; background: var(--cartao); border-radius: var(--raio);
-  text-decoration: none; color: var(--texto); box-shadow: 0 1px 2px rgba(0,0,0,.1);
+.voltar__seta { transform: rotate(180deg); }
+.trilha__titulo {
+  margin: 0; font-family: var(--display); font-weight: 400; font-size: 23px;
+  line-height: 1.1; letter-spacing: .01em; color: var(--verde-fundo);
+  text-wrap: balance;
 }
-.card__icone { font-size: 26px; text-align: center; }
+
+/* ---- índices ---- */
+.indice { display: grid; gap: var(--e2); }
+.card {
+  display: grid; grid-template-columns: 44px 1fr auto 18px; align-items: center;
+  gap: var(--e3); padding: var(--e3) var(--e4); background: var(--cartao);
+  border-radius: var(--raio); box-shadow: var(--sombra-2);
+  text-decoration: none; color: var(--tinta);
+  transition: box-shadow .16s ease, transform .16s ease;
+}
+.card:active { transform: translateY(1px); box-shadow: var(--sombra-1); }
+.card__icone {
+  display: grid; place-items: center; width: 44px; height: 44px;
+  border-radius: 50%; background: var(--verde-suave); color: var(--verde);
+}
 .card__numero {
-  display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%;
-  background: var(--verde); color: #fff; font-weight: 700; font-size: 14px;
+  display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--dourado); color: #3A2A12;
+  font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums;
 }
 .card__nome { font-weight: 600; line-height: 1.25; }
-.card__contagem { color: var(--suave); font-size: 13px; font-variant-numeric: tabular-nums; }
-.card__chevron { color: var(--vermelho-logo); font-size: 22px; line-height: 1; }
+.card__contagem {
+  color: var(--tinta-fraca); font-size: 13px; font-variant-numeric: tabular-nums;
+}
+.card__chevron { display: grid; place-items: center; color: var(--papel-linha); }
 
-/* ---- filtros de preço ---- */
-.filtros { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 10px; }
+/* ---- filtros ---- */
+.filtros {
+  display: flex; gap: 6px; overflow-x: auto; padding-bottom: var(--e3);
+  scrollbar-width: none;
+}
+.filtros::-webkit-scrollbar { display: none; }
 .filtros button {
-  flex: 0 0 auto; padding: 7px 13px; font: inherit; font-size: 13px; font-weight: 600;
-  border: 1px solid var(--borda); border-radius: 999px;
-  background: var(--cartao); color: var(--suave); cursor: pointer;
+  flex: 0 0 auto; padding: 7px var(--e3); font: inherit; font-size: 13px; font-weight: 600;
+  border: 1px solid var(--papel-linha); border-radius: 999px;
+  background: var(--cartao); color: var(--tinta-fraca); cursor: pointer;
 }
 .filtros button[aria-pressed="true"] {
-  background: var(--vermelho-logo); border-color: var(--vermelho-logo); color: #fff;
+  background: var(--vermelho); border-color: var(--vermelho); color: #fff;
 }
-.contador { margin: 0 0 10px; font-size: 13px; color: var(--suave); }
+.contador {
+  margin: 0 0 var(--e3); font-size: 12px; font-weight: 600; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--tinta-fraca);
+}
 
-/* ---- lista de pratos ---- */
-.lista { display: grid; gap: 8px; }
+/* ---- pratos ---- */
+.lista { display: grid; gap: var(--e2); }
 .prato {
-  padding: 12px 14px; background: var(--cartao); border-radius: var(--raio);
-  box-shadow: 0 1px 2px rgba(0,0,0,.1);
+  padding: var(--e3) var(--e4); background: var(--cartao);
+  border-radius: var(--raio); box-shadow: var(--sombra-2);
 }
-.prato__topo { display: flex; align-items: baseline; gap: 10px; }
+.prato__topo { display: flex; align-items: baseline; gap: var(--e3); }
 .prato__titulo {
-  margin: 0; flex: 1; font-size: 16px; font-weight: 700; color: var(--verde);
-  line-height: 1.25;
+  margin: 0; flex: 1; font-size: 16px; font-weight: 700; line-height: 1.3;
+  color: var(--verde); text-wrap: balance;
 }
 .prato__faixa {
-  font-weight: 700; color: var(--verde); white-space: nowrap;
+  font-size: 15px; font-weight: 700; color: var(--tinta); white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
-.prato__desc { margin: 4px 0 0; font-size: 14px; color: var(--texto); }
-.prato__toggle {
-  margin-top: 8px; padding: 5px 11px; font: inherit; font-size: 13px; font-weight: 600;
-  border: 1px solid var(--borda); border-radius: 999px;
-  background: transparent; color: var(--suave); cursor: pointer;
-}
+.prato__desc { margin: var(--e1) 0 0; font-size: 14px; color: var(--tinta-fraca); }
 .prato__onde {
-  display: grid; grid-template-columns: 30px 1fr; align-items: center; gap: 8px;
-  margin: 8px 0 0; font-size: 14px;
+  display: grid; grid-template-columns: 26px 1fr; align-items: center; gap: var(--e2);
+  margin: var(--e3) 0 0; padding-top: var(--e2);
+  border-top: 1px solid var(--papel); font-size: 13px;
 }
-.ofertas { display: none; margin: 8px 0 0; padding: 0; list-style: none; }
+.prato__toggle {
+  margin-top: var(--e3); padding: 5px var(--e3); font: inherit; font-size: 13px;
+  font-weight: 600; border: 1px solid var(--papel-linha); border-radius: 999px;
+  background: transparent; color: var(--tinta-fraca); cursor: pointer;
+}
+.ofertas { display: none; margin: var(--e3) 0 0; padding: 0; list-style: none; }
 .prato__toggle[aria-expanded="true"] + .ofertas { display: block; }
 .oferta {
-  display: grid; grid-template-columns: 30px 1fr auto; align-items: center; gap: 8px;
-  padding: 6px 0; border-top: 1px solid var(--borda); font-size: 14px;
+  display: grid; grid-template-columns: 26px 1fr auto; align-items: center; gap: var(--e2);
+  padding: var(--e2) 0; border-top: 1px solid var(--papel); font-size: 14px;
 }
-.oferta__num {
-  display: grid; place-items: center; height: 22px; border-radius: 999px;
-  background: var(--bege); color: var(--verde-escuro); font-size: 11px; font-weight: 700;
+.oferta__num, .prato__onde .oferta__num {
+  display: grid; place-items: center; width: 26px; height: 22px; border-radius: 999px;
+  background: var(--dourado); color: #3A2A12;
+  font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums;
 }
-.oferta__nome { color: var(--suave); line-height: 1.2; }
+.oferta__nome { color: var(--tinta-fraca); line-height: 1.2; }
 .oferta__preco { font-weight: 700; font-variant-numeric: tabular-nums; }
 
-/* Dentro de uma barraca o preço daquela barraca vai para o topo (o JS
-   reescreve .prato__faixa); repetir o nome da barraca em cada prato seria
-   redundante com a trilha. */
+/* dentro de uma barraca o preço vai para o topo; repetir o nome dela em cada
+   prato seria redundante com a trilha */
 body[data-barraca-ativa] .lista .prato__toggle,
 body[data-barraca-ativa] .lista .prato__onde,
 body[data-barraca-ativa] .lista .ofertas { display: none !important; }
 
-.vazio { padding: 24px 0; text-align: center; color: var(--suave); }
+.vazio { padding: var(--e6) 0; text-align: center; color: var(--tinta-fraca); }
 .limpar {
-  margin-top: 10px; padding: 8px 16px; font: inherit; font-weight: 600;
+  margin-top: var(--e3); padding: 9px var(--e5); font: inherit; font-weight: 700;
   border: 0; border-radius: 999px; background: var(--verde); color: #fff; cursor: pointer;
 }
 
-/* ---- convite para compartilhar ---- */
+/* ---- convite ---- */
 .convite {
-  margin: 18px 0 0; padding: 16px; border-radius: var(--raio);
-  background: var(--verde); color: #fff; text-align: center;
+  margin-top: var(--e5); padding: var(--e5) var(--e4); border-radius: var(--raio);
+  background: var(--verde-fundo); color: var(--papel); text-align: center;
+  box-shadow: var(--sombra-3);
 }
-.convite__titulo { margin: 0; font-family: var(--display); font-size: 19px; }
-.convite__texto { margin: 4px 0 12px; font-size: 14px; opacity: .9; }
+.convite__titulo {
+  margin: 0; font-family: var(--display); font-weight: 400; font-size: 21px;
+  line-height: 1.15; color: #fff; text-wrap: balance;
+}
+.convite__texto { margin: var(--e2) 0 var(--e4); font-size: 14px; opacity: .85; }
 .botao-share {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 11px 20px; border-radius: 999px; background: #fff; color: var(--verde);
-  font-weight: 700; text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--e2);
+  padding: 12px var(--e5); border-radius: 999px; background: var(--cartao);
+  color: var(--verde-fundo); font-weight: 700; text-decoration: none;
 }
 .botao-share--icone {
   /* 44x44 é o alvo de toque mínimo recomendado */
@@ -426,20 +513,27 @@ body[data-barraca-ativa] .lista .ofertas { display: none !important; }
 }
 
 /* ---- rodapé ---- */
-.rodape { margin-top: 22px; padding: 18px 16px 28px; text-align: center; font-size: 13px; }
-.rodape__local { margin: 0 0 10px; font-weight: 600; }
-.rodape__credito { margin: 0 0 12px; }
-.rodape__aviso { margin: 0; color: var(--suave); font-size: 12px; line-height: 1.5; }
+.rodape {
+  margin-top: var(--e6); padding: var(--e5) var(--e4) var(--e6);
+  border-top: 1px solid var(--papel-linha); text-align: center; font-size: 13px;
+}
+.rodape__local { margin: 0 0 var(--e3); font-weight: 600; }
+.rodape__credito { margin: 0 0 var(--e4); }
+.rodape__aviso {
+  margin: 0; color: var(--tinta-fraca); font-size: 12px; line-height: 1.5;
+  max-width: 46ch; margin-inline: auto;
+}
 
-/* sem JS o índice não navega, então a lista completa fica visível */
-.js .lista, .js .filtros, .js .contador { }
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
 
 @media (min-width: 768px) {
-  .marca, .ferramentas, main, .rodape { max-width: 760px; margin-inline: auto; }
+  .marca, .ferramentas, main, .rodape { max-width: 780px; margin-inline: auto; }
   .ferramentas { border-radius: 0 0 var(--raio) var(--raio); }
-  .marca__logo { height: 76px; }
+  .marca__logo { height: 72px; }
   .indice { grid-template-columns: 1fr 1fr; }
-  .prato__titulo { font-size: 17px; }
+  .trilha__titulo { font-size: 27px; }
 }
 """
 
@@ -696,6 +790,12 @@ def otimizar_assets():
     im.thumbnail((742, 742), Image.LANCZOS)
     saida = destino / "logo.webp"
     im.save(saida, "WEBP", quality=88, method=6)
+
+    # a display é self-hosted: sem requisição externa e sem fallback silencioso
+    fontes = destino / "fonts"
+    fontes.mkdir(exist_ok=True)
+    for f in (RAIZ / "assets" / "fonts").iterdir():
+        shutil.copy2(f, fontes / f.name)
     return origem.stat().st_size, saida.stat().st_size
 
 
