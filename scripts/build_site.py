@@ -21,6 +21,11 @@ DIST = RAIZ / "dist"
 # propagar esse endereço no compartilhamento.
 SITE = "https://marcelojrfarias.github.io/festa-italiana-de-sao-caetano-do-sul/"
 UTM = "?utm_source=whatsapp&utm_medium=share&utm_campaign=cardapio-33a"
+# Só o link, nunca o número em texto: raspador de página varre dígito solto e
+# o número vira lista de spam. O wa.me carrega o destino e a mensagem já pronta.
+CONTATO = "5511974067164"
+CONTATO_MSG = ("Oi! Tenho uma dúvida/sugestão sobre o Cardápio Digital da "
+               "Festa Italiana de SCS:")
 LINKEDIN = "https://www.linkedin.com/in/marcelojrfarias/"
 
 # Ícones desenhados com primitivas simples (arco, linha, polígono). Emoji foram
@@ -560,6 +565,7 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao,
            "decidir o que comer e pode te ajudar também: " + SITE + UTM)
     from urllib.parse import quote
     wa = "https://wa.me/?text=" + quote(msg, safe="")
+    wa_contato = f"https://wa.me/{CONTATO}?text=" + quote(CONTATO_MSG, safe="")
 
     dados_js = json.dumps({"dias": evento["dias"], "horarios": evento["horarios"]},
                           ensure_ascii=False)
@@ -681,6 +687,8 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao,
   <p class="rodape__local"><a href="{e(mapa)}" target="_blank" rel="noopener">{e(endereco)}</a></p>
   <p class="rodape__credito">Desenvolvido com 🖤 por
     <a href="{e(LINKEDIN)}" target="_blank" rel="noopener">Marcelo Farias</a></p>
+  <p class="rodape__contato">Encontrou um problema ou tem sugestão?</p>
+  <a class="rodape__fale" href="{e(wa_contato)}" target="_blank" rel="noopener">Fale comigo no WhatsApp</a>
   <p class="rodape__aviso">Projeto voluntário e independente, sem vínculo com a Prefeitura
     de São Caetano do Sul ou com a organização da Festa Italiana. Cardápio e programação
     extraídos do material oficial; preços e atrações podem mudar.<br>Medimos acessos de forma anônima, sem cookies.</p>
@@ -993,7 +1001,17 @@ body[data-barraca-ativa] .lista .ofertas { display: none !important; }
   border-top: 1px solid var(--papel-linha); text-align: center; font-size: 13px;
 }
 .rodape__local { margin: 0 0 var(--e3); font-weight: 600; }
-.rodape__credito { margin: 0 0 var(--e4); }
+.rodape__credito { margin: 0 0 var(--e2); }
+.rodape__contato { margin: 0 0 var(--e2); }
+/* botão, não link no meio da frase: quem vai tocar nisto está relatando um
+   problema, e o alvo precisa dos 44px inteiros */
+.rodape__fale {
+  display: inline-flex; align-items: center; min-height: 44px;
+  margin: 0 auto var(--e4); padding: 0 var(--e4);
+  border: 1px solid var(--papel-linha); border-radius: 999px;
+  background: var(--cartao); color: var(--verde);
+  font-weight: 600; text-decoration: none;
+}
 .rodape__aviso {
   margin: 0; color: var(--tinta-fraca); font-size: 12px; line-height: 1.5;
   max-width: 46ch; margin-inline: auto;
@@ -1196,9 +1214,24 @@ JS = r"""(function () {
     history.replaceState(atual, '', location.href);
   }
 
+  function profundidade() {
+    return (history.state && history.state.d) || 0;
+  }
+
+  /* Desce um degrau substituindo a entrada em vez de empilhar: empilhando, a
+     seta seguinte veria profundidade 1, chamaria history.back() e voltaria
+     para a tela de onde acabou de sair. */
+  function substituir() {
+    var novo = {}; for (var k in estado) novo[k] = estado[k];
+    novo.y = 0; novo.d = profundidade();
+    history.replaceState(novo, '', montarURL());
+    aplicar();
+  }
+
   function navegar(push) {
     if (push !== false) {
       var novo = {}; for (var k in estado) novo[k] = estado[k]; novo.y = 0;
+      novo.d = profundidade() + 1;
       history.pushState(novo, '', montarURL());
     }
     aplicar();
@@ -1258,7 +1291,15 @@ JS = r"""(function () {
       return;
     }
     if (ev.target.closest('.voltar')) {
-      history.back();
+      if (profundidade() > 0) { history.back(); return; }
+      // sem histórico interno: desce o degrau à mão, em vez de sair do site
+      if (estado.fam) estado.fam = '';
+      else if (estado.barraca) { estado.barraca = ''; estado.modo = 'barraca'; }
+      else if (estado.cat) estado.cat = '';
+      else return;
+      estado.q = ''; estado.preco = '';
+      substituir();
+      window.scrollTo(0, 0);
       return;
     }
     if (ev.target.closest('.limpar')) {
@@ -1272,7 +1313,9 @@ JS = r"""(function () {
     clearTimeout(timer);
     timer = setTimeout(function () {
       estado.q = busca.value;
-      history.replaceState(estado, '', montarURL());
+      var comQ = {}; for (var k in estado) comQ[k] = estado[k];
+      comQ.d = profundidade();
+      history.replaceState(comQ, '', montarURL());
       aplicar();
     }, 120);
   });
@@ -1335,7 +1378,12 @@ JS = r"""(function () {
   })();
 
   lerURL();
-  history.replaceState(estado, '', montarURL());
+  // Quem chega por link compartilhado entra direto em ?cat=massas: essa é a
+  // primeira entrada do histórico, profundidade 0, e history.back() dali sai
+  // do site. O contador diz quando há degrau interno para descer.
+  var inicial = {}; for (var k in estado) inicial[k] = estado[k];
+  inicial.d = 0;
+  history.replaceState(inicial, '', montarURL());
   aplicar();
 })();
 """
