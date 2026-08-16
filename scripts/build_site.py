@@ -273,8 +273,8 @@ def render_html(cardapio, categorias, evento, pratos):
     <button type="button" class="limpar">limpar filtros</button></p>
 
   <aside class="convite">
-    <p class="convite__titulo">Manda pro grupo da família 🖤</p>
-    <p class="convite__texto">Alguém aí ainda está decidindo o que comer.</p>
+    <p class="convite__titulo">Manda pra quem vai contigo 😉</p>
+    <p class="convite__texto">Vale mandar pra amigo, família e até no grupo do prédio</p>
     <a class="botao-share" href="{e(wa)}" target="_blank" rel="noopener">
       Compartilhar no WhatsApp</a>
   </aside>
