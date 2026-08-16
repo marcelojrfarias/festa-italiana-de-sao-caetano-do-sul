@@ -269,6 +269,15 @@ def render_html(cardapio, categorias, evento, pratos):
 <meta property="og:description" content="{total} pratos e bebidas de {len(cardapio['barracas'])} barracas, com preço. Procure o que quer comer.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{e(SITE)}">
+<meta property="og:site_name" content="33ª Festa Italiana de São Caetano do Sul">
+<meta property="og:locale" content="pt_BR">
+<!-- URL absoluta: o WhatsApp não resolve caminho relativo no preview -->
+<meta property="og:image" content="{e(SITE)}assets/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logo da 33ª Festa Italiana de São Caetano do Sul">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="{e(SITE)}">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🍝</text></svg>">
@@ -864,12 +873,25 @@ def otimizar_assets():
     saida = destino / "logo.webp"
     im.save(saida, "WEBP", quality=88, method=6)
 
+    # Imagem do card de compartilhamento. Precisa ser PNG ou JPEG (WhatsApp não
+    # é confiável com WebP em preview) e o logo é composto sobre fundo sólido —
+    # ele tem canal alfa e ficaria ilegível sobre o fundo escuro do app.
+    cartao = Image.new("RGB", (1200, 630), (239, 228, 212))
+    marca = Image.open(origem).convert("RGBA")
+    largura = 760
+    marca = marca.resize((largura, round(marca.height * largura / marca.width)), Image.LANCZOS)
+    cartao.paste(marca, ((1200 - marca.width) // 2, (630 - marca.height) // 2 - 24), marca)
+    faixa = Image.new("RGB", (1200, 26), (8, 53, 26))
+    cartao.paste(faixa, (0, 630 - 26))
+    og = destino / "og.png"
+    cartao.save(og, "PNG", optimize=True)
+
     # a display é self-hosted: sem requisição externa e sem fallback silencioso
     fontes = destino / "fonts"
     fontes.mkdir(exist_ok=True)
     for f in (RAIZ / "assets" / "fonts").iterdir():
         shutil.copy2(f, fontes / f.name)
-    return origem.stat().st_size, saida.stat().st_size
+    return origem.stat().st_size, saida.stat().st_size, og.stat().st_size
 
 
 def main():
@@ -884,7 +906,7 @@ def main():
     (DIST / "style.css").write_text(CSS, encoding="utf-8")
     (DIST / "app.js").write_text(JS, encoding="utf-8")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
-    antes, depois = otimizar_assets()
+    antes, depois, tam_og = otimizar_assets()
 
     itens = sum(len(p["ofertas"]) for p in pratos)
     kb = lambda p: p.stat().st_size / 1024
@@ -893,6 +915,7 @@ def main():
     print(f"  style.css   {kb(DIST/'style.css'):7.1f} KB")
     print(f"  app.js      {kb(DIST/'app.js'):7.1f} KB")
     print(f"  logo.webp   {depois/1024:7.1f} KB  (era {antes/1024:.1f} KB PNG)")
+    print(f"  og.png      {tam_og/1024:7.1f} KB  (card do WhatsApp, 1200x630)")
 
 
 if __name__ == "__main__":
