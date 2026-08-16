@@ -959,7 +959,9 @@ JS_MAPA = r"""
     var p = new URLSearchParams(location.search);
     p.delete('modo'); p.delete('cat');
     p.set('barraca', (barraca && barraca.chave) || numero);
-    history.pushState(null, '', '?' + p.toString());
+    // `y` no estado: o app guarda a rolagem ali para restaurar no voltar, e um
+    // pushState com estado nulo deixaria esse contrato pela metade
+    history.pushState({ y: 0 }, '', '?' + p.toString());
     window.dispatchEvent(new PopStateEvent('popstate'));
     window.scrollTo(0, 0);
   }
@@ -1009,7 +1011,7 @@ JS_MAPA = r"""
   verNoMapa.addEventListener('click', function () {
     var p = new URLSearchParams(location.search);
     p.set('modo', 'mapa');
-    history.pushState(null, '', '?' + p.toString());
+    history.pushState({ y: 0 }, '', '?' + p.toString());
     window.dispatchEvent(new PopStateEvent('popstate'));
   });
 
