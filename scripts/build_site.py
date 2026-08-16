@@ -14,9 +14,10 @@ RAIZ = pathlib.Path(__file__).resolve().parent.parent
 DADOS = RAIZ / "data"
 DIST = RAIZ / "dist"
 
-# Fallback para quem está sem JavaScript; com JS o app.js reescreve os links
-# de compartilhamento a partir da URL real da página, o que sobrevive a
-# renomeação do repositório (que já aconteceu uma vez).
+# Endereço canônico do site. Precisa ser declarado, não inferido: o GitHub
+# continua atendendo o caminho antigo depois de um rename, e derivar a URL de
+# location.pathname faria cada visitante que entrou pelo endereço legado
+# propagar esse endereço no compartilhamento.
 SITE = "https://marcelojrfarias.github.io/festa-italiana-de-sao-caetano-do-sul/"
 UTM = "?utm_source=whatsapp&utm_medium=share&utm_campaign=cardapio-33a"
 LINKEDIN = "https://www.linkedin.com/in/marcelojrfarias/"
@@ -173,6 +174,7 @@ def render_html(cardapio, categorias, evento, pratos):
 <meta property="og:description" content="{total} pratos e bebidas de {len(cardapio['barracas'])} barracas, com preço. Procure o que quer comer.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{e(SITE)}">
+<link rel="canonical" href="{e(SITE)}">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🍝</text></svg>">
 </head>
@@ -602,11 +604,13 @@ JS = r"""(function () {
     }, 120);
   });
 
-  /* Reescreve os links de compartilhamento com a URL real desta página. O
-     endereço fica codificado no HTML como fallback sem JS, e já ficou errado
-     uma vez quando o repositório foi renomeado. */
+  /* Monta os links de compartilhamento a partir do <link rel="canonical">.
+     Deliberadamente NÃO usa location.pathname: o GitHub segue atendendo o
+     caminho antigo depois de um rename, e quem entrasse por ele passaria a
+     espalhar o endereço legado. */
   (function share() {
-    var base = location.origin + location.pathname;
+    var canonical = document.querySelector('link[rel="canonical"]');
+    var base = canonical ? canonical.href : location.origin + location.pathname;
     var msg = 'Achei um cardápio digital da Festa Italiana de SCS — dá pra procurar ' +
               'prato e ver preço de todas as barracas. Tá me ajudando a decidir o que ' +
               'comer: ' + base + '?utm_source=whatsapp&utm_medium=share&utm_campaign=cardapio-33a';
