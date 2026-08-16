@@ -1040,7 +1040,14 @@ JS_MAPA = r"""
       return;
     }
     var filtrando = !!st.q;
-    if (croqui) croqui.destacar(filtrando ? Object.keys(vistas) : null);
+    if (croqui) {
+      // a seleção é só um reflexo da URL: sem `barraca` nela, nada fica verde.
+      // Antes ela era definida e nunca limpa, então ao voltar de uma barraca a
+      // pílula continuava acesa sem nada apagado em volta e sem trilha — um
+      // estado que não queria dizer coisa nenhuma.
+      croqui.selecionar(null);
+      croqui.destacar(filtrando ? Object.keys(vistas) : null);
+    }
     contador.textContent = filtrando
       ? n + (n === 1 ? ' barraca' : ' barracas')
       : window.FESTA_MAPA.barracas.length + ' barracas no mapa';
