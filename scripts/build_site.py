@@ -954,6 +954,10 @@ JS_MAPA = r"""
       croqui = null,
       falhou = false;
 
+  function semAcento(s) {
+    return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  }
+
   function estadoURL() {
     var p = new URLSearchParams(location.search);
     return { modo: p.get('modo') || '', barraca: p.get('barraca') || '',
@@ -993,11 +997,16 @@ JS_MAPA = r"""
     if (!noMapa) { verNoMapa.hidden = !st.barraca; return; }
     verNoMapa.hidden = true;
     lista.hidden = true;
+    filtros.hidden = true;
     montar();
 
-    var vistas = {}, n = 0;
+    // so a busca guia o mapa. O filtro de preco quase nao separa barraca nenhuma
+    // — ate "R$ 10" acende as 35, porque toda barraca vende algo barato —, entao
+    // ele nao aparece aqui e tambem nao entra nesta conta, para o que esta aceso
+    // corresponder ao que a tela mostra.
+    var q = semAcento(st.q.trim()), vistas = {}, n = 0;
     pratos.forEach(function (el) {
-      if (el.hidden) return;
+      if (q && el.dataset.busca.indexOf(q) === -1) return;
       el.dataset.barracas.trim().split(/\s+/).forEach(function (b) {
         if (!vistas[b]) { vistas[b] = 1; n++; }
       });
@@ -1010,12 +1019,10 @@ JS_MAPA = r"""
       var b = null;
       window.FESTA_MAPA.barracas.forEach(function (x) { if (x.chave === st.barraca) b = x; });
       if (croqui) { croqui.destacar([st.barraca]); croqui.selecionar(st.barraca); }
-      filtros.hidden = true;
       contador.textContent = 'barraca ' + ((b && (b.rotulo || b.numero)) || st.barraca);
       return;
     }
-    filtros.hidden = false;
-    var filtrando = !!(st.q || st.preco);
+    var filtrando = !!st.q;
     if (croqui) croqui.destacar(filtrando ? Object.keys(vistas) : null);
     contador.textContent = filtrando
       ? n + (n === 1 ? ' barraca' : ' barracas')
