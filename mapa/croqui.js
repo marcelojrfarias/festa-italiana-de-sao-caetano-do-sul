@@ -39,8 +39,7 @@ const SVG = 'http://www.w3.org/2000/svg';
   .croqui .barraca { fill:var(--dourado,#D6A25E); cursor:pointer; }
   .croqui .barraca.selecionada { fill:var(--verde,#0F5F28); }
   .croqui .barraca.apagada { fill:var(--papel-linha,#DFCEB4); }
-  .croqui .barraca-num { fill:#3A2A12; font:700 2.4px var(--corpo,system-ui),sans-serif; }
-  .croqui .barraca-num.pino { font-size:3.2px;
+  .croqui .barraca-num { fill:#3A2A12; font:700 4px var(--corpo,system-ui),sans-serif;
     text-anchor:middle; dominant-baseline:central; pointer-events:none; }
   .croqui .barraca.selecionada ~ .barraca-num { fill:#FFFFFF; }
   .croqui .barraca.apagada ~ .barraca-num { fill:var(--tinta-fraca,#7B6E5D); }
@@ -64,6 +63,7 @@ const SVG = 'http://www.w3.org/2000/svg';
   
     let selecionada = null;
     let filtro = null;              // Set de números em destaque, ou null
+    let vb = null;                  // viewBox corrente, em metros
   
     // --- projeção metros -> tela (y invertido) --------------------------------
     const P = ([x, y]) => `${x},${-y}`;
@@ -143,20 +143,29 @@ const SVG = 'http://www.w3.org/2000/svg';
       }
     }
   
-    // Um retangulo de 4 m tem ~6 px quando o quadro inteiro cabe na tela. Abaixo
-    // desse zoom a barraca vira pino numerado; ao aproximar, volta a escala real.
-    const LIMIAR_PINO_M = 90;
-  
+    /** Quanto o quadro cresceu desde o enquadramento inicial. */
+    function fatorPino() {
+      return (vb ? vb.w : AJUSTE.w) / AJUSTE.w;
+    }
+
+    /**
+     * A pilula acompanha o zoom para manter o mesmo tamanho na tela, como
+     * marcador de mapa. Sem isso ela cresceria junto com o desenho e o engoliria.
+     * So o transform muda — nada de refazer 35 grupos por quadro.
+     */
+    function ajustarEscalaPinos() {
+      if (editavel) return;
+      const f = fatorPino();
+      for (const grupo of camadas.barracas.children) {
+        grupo.setAttribute('transform', `${grupo.dataset.base} scale(${f})`);
+      }
+    }
+
     function desenharBarracas() {
       const g = camadas.barracas;
       g.replaceChildren();
-      const pino = (vb?.w ?? Infinity) > LIMIAR_PINO_M;
       for (const b of mapa.barracas) {
         const [cx, cy] = b.centro;
-        const grupo = el('g', {
-          transform: `translate(${cx},${-cy}) rotate(${(b.azimute || 0) - 90})`,
-          'data-numero': b.numero,
-        });
         const apagada = filtro && !filtro.has(b.numero) &&
           !(b.chave && filtro.has(b.chave)) &&
           !b.numeros.some((n) => filtro.has(String(n)));
@@ -164,37 +173,49 @@ const SVG = 'http://www.w3.org/2000/svg';
           (selecionada === b.numero || selecionada === b.chave ||
            b.numeros.some((n) => String(n) === String(selecionada)));
         const classe = `barraca${eSelecionada ? ' selecionada' : ''}${apagada ? ' apagada' : ''}`;
-        if (pino) {
-          // a barraca dupla tem rotulo "20/21": o pino cresce com o texto, senao corta
-          const texto = b.rotulo || b.numero;
-          const larg = Math.max(8.4, 2.5 * texto.length + 3);
-          grupo.append(el('rect', { class: classe, x: -larg / 2, y: -4.2,
-                                    width: larg, height: 8.4, rx: 4.2 }));
-          const rot = el('text', {
-            class: 'barraca-num pino', 'font-size': texto.length > 2 ? 3.4 : 4,
+        const texto = b.rotulo || b.numero;
+
+        if (editavel) {
+          // no editor a barraca e desenhada como e: retangulo em escala real,
+          // virado para o azimute, porque e isso que se esta ajustando ali
+          const grupo = el('g', {
+            transform: `translate(${cx},${-cy}) rotate(${(b.azimute || 0) - 90})`,
+            'data-numero': b.numero,
+          });
+          grupo.append(el('rect', {
+            class: classe,
+            x: -(b.profundidade_m || 3) / 2, y: -(b.largura_m || 4) / 2,
+            width: b.profundidade_m || 3, height: b.largura_m || 4, rx: 0.4,
+          }));
+          const t = el('text', {
+            class: 'barraca-num', 'font-size': 2.2,
             transform: `rotate(${90 - (b.azimute || 0)})`,
           });
-          rot.textContent = texto;
-          grupo.append(rot);
+          t.textContent = texto;
+          grupo.append(t);
           ligarPonteiro(grupo, b);
           g.append(grupo);
           continue;
         }
-        grupo.append(el('rect', {
-          class: `barraca${b.numero === selecionada ? ' selecionada' : ''}${apagada ? ' apagada' : ''}`,
-          x: -(b.profundidade_m || 3) / 2, y: -(b.largura_m || 4) / 2,
-          width: b.profundidade_m || 3, height: b.largura_m || 4, rx: 0.4,
-        }));
-        const t = el('text', { class: 'barraca-num', transform: `rotate(${90 - (b.azimute || 0)})` });
-        t.textContent = b.rotulo || b.numero;
+
+        // No mapa e sempre a pilula das listas. Retangulo "em escala real" daria
+        // ideia de precisao que este mapa nao tem: as posicoes carregam ~20% de
+        // incerteza e os 4x3 m sao valor padrao, nao medida de ninguem.
+        const base = `translate(${cx},${-cy})`;
+        const grupo = el('g', { transform: base, 'data-numero': b.numero });
+        grupo.dataset.base = base;
+        const larg = Math.max(8.4, 2.5 * texto.length + 3);
+        grupo.append(el('rect', { class: classe, x: -larg / 2, y: -4.2,
+                                  width: larg, height: 8.4, rx: 4.2 }));
+        const t = el('text', { class: 'barraca-num', 'font-size': texto.length > 2 ? 3.4 : 4 });
+        t.textContent = texto;
         grupo.append(t);
         ligarPonteiro(grupo, b);
         g.append(grupo);
       }
+      ajustarEscalaPinos();
     }
-  
-    let vb = null;
-  
+
     const TOLERANCIA_TOQUE = 8;   // px: acima disso o dedo estava navegando, nao tocando
 
     function ligarPonteiro(grupo, barraca) {
@@ -269,11 +290,16 @@ const SVG = 'http://www.w3.org/2000/svg';
     const MIN_M = 12;                       // nao adianta passar disso: barraca tem 4 m
     const MAX_M = AJUSTE.w * 1.6;
 
+    /** Prende o centro do quadro ao conteudo: sem isto da para navegar ate o
+     *  vazio e perder o mapa de vista, sem pista de como voltar. */
+    function limitar(q) {
+      const cx = Math.min(AJUSTE.x + AJUSTE.w, Math.max(AJUSTE.x, q.x + q.w / 2));
+      const cy = Math.min(AJUSTE.y + AJUSTE.h, Math.max(AJUSTE.y, q.y + q.h / 2));
+      return { x: cx - q.w / 2, y: cy - q.h / 2, w: q.w, h: q.h };
+    }
+
     const aplicar = () => svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
 
-    function redesenharSePassouDoLimiar(antes) {
-      if (antes !== vb.w > LIMIAR_PINO_M) desenharBarracas();
-    }
 
     const ativos = new Map();               // pointerId -> {x, y} em coordenadas de tela
     let ancora = null;
@@ -314,14 +340,13 @@ const SVG = 'http://www.w3.org/2000/svg';
       let w = Math.min(MAX_M, Math.max(MIN_M, ancora.vb.w * k));
       k = w / ancora.vb.w;                                          // k depois do limite
       const h = ancora.vb.h * k;
-      const antes = vb.w > LIMIAR_PINO_M;
-      vb = {
+      vb = limitar({
         x: mundo.x - (m.meio.x - r.left) * w / r.width,
         y: mundo.y - (m.meio.y - r.top) * h / r.height,
         w, h,
-      };
+      });
       aplicar();
-      redesenharSePassouDoLimiar(antes);
+      ajustarEscalaPinos();
     }
 
     function aoSoltar(ev) {
@@ -354,14 +379,13 @@ const SVG = 'http://www.w3.org/2000/svg';
       const alvo = vb.w * (ev.deltaY > 0 ? 1.12 : 1 / 1.12);
       const w = Math.min(MAX_M, Math.max(MIN_M, alvo));
       const h = vb.h * (w / vb.w);
-      const antes = vb.w > LIMIAR_PINO_M;
-      vb = {
+      vb = limitar({
         x: mundo.x - (ev.clientX - r.left) * w / r.width,
         y: mundo.y - (ev.clientY - r.top) * h / r.height,
         w, h,
-      };
+      });
       aplicar();
-      redesenharSePassouDoLimiar(antes);
+      ajustarEscalaPinos();
     }, { passive: false });
 
     function selecionar(numero, porToque) {
