@@ -1416,14 +1416,22 @@ JS_MAPA = r"""
              q: p.get('q') || '', preco: p.get('preco') || '' };
   }
 
+  /* Toda entrada do histórico carrega a própria profundidade — é dela que a
+     seta de voltar depende para saber se tem degrau interno para descer. O
+     mapa empilhava sem esse campo, e a seta caía no caminho manual: o primeiro
+     toque só limpava o filtro e o segundo despencava para a lista de barracas.
+     `y` é o outro campo do contrato: o app guarda ali a rolagem. */
+  function empilhar(p) {
+    history.pushState({ y: 0, d: ((history.state && history.state.d) || 0) + 1 },
+                      '', '?' + p.toString());
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  }
+
   function irPara(numero, barraca) {
     var p = new URLSearchParams(location.search);
-    p.delete('modo'); p.delete('cat');
+    p.delete('modo'); p.delete('cat'); p.delete('fam');
     p.set('barraca', (barraca && barraca.chave) || numero);
-    // `y` no estado: o app guarda a rolagem ali para restaurar no voltar, e um
-    // pushState com estado nulo deixaria esse contrato pela metade
-    history.pushState({ y: 0 }, '', '?' + p.toString());
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    empilhar(p);
     window.scrollTo(0, 0);
   }
 
@@ -1495,19 +1503,17 @@ JS_MAPA = r"""
     if (!a || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return;
     ev.preventDefault();
     var p = new URLSearchParams(location.search);
-    p.delete('cat');
+    p.delete('cat'); p.delete('fam');
     p.set('modo', 'mapa');
     p.set('barraca', a.dataset.irMapa);
-    history.pushState({ y: 0 }, '', '?' + p.toString());
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    empilhar(p);
     window.scrollTo(0, 0);
   });
 
   verNoMapa.addEventListener('click', function () {
     var p = new URLSearchParams(location.search);
     p.set('modo', 'mapa');
-    history.pushState({ y: 0 }, '', '?' + p.toString());
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    empilhar(p);
   });
 
   window.addEventListener('popstate', sincronizar);
