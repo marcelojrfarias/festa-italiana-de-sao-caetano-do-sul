@@ -47,9 +47,9 @@ def retangulo(x0, y0, x1, y1):
 # serve de eixo de orientação, e eixo torto não orienta.
 VIAS = [
     {"id": "mariano-pamplona", "nome": "R. Mariano Pamplona", "largura_m": 9,
-     "eixo": [[-27.0, 88.0], [2.5, -42.0]]},
+     "eixo": [[-32.0, 110.0], [21.3, -125.0]]},
     {"id": "vinte-e-oito-de-julho", "nome": "R. Vinte e Oito de Julho", "largura_m": 9,
-     "eixo": [[-26.0, 0.0], [52.0, 0.0]]},
+     "eixo": [[-11.0, 0.0], [60.0, 0.0]]},
 ]
 
 # --- áreas de contexto ------------------------------------------------------
@@ -123,6 +123,11 @@ def projetar(eixo, ponto):
 
 FOLGA_CALCADA_M = 1.5
 
+# A 01 nao fica na calcada: ela fecha o fim da R. Mariano Pamplona, plantada no
+# meio do leito. Encostar ela na guia como as outras seria fiel a regra e infiel
+# a rua.
+NO_EIXO = {"1"}
+
 
 def encostar(centro, azimute, via, profundidade):
     """Empurra a barraca para fora do leito, ate a calcada.
@@ -149,7 +154,9 @@ def main():
             largura = LARGURA_PADRAO_M * len(numeros)  # a barraca dupla 20/21 é maior
             centro = list(m(px, py))
             via = next((v for v in VIAS if v["id"] == via_id), None)
-            if via:
+            if via and numero in NO_EIXO:
+                centro = [round(c, 1) for c in projetar(via["eixo"], centro)[0]]
+            elif via:
                 centro = encostar(centro, azimute, via, PROFUNDIDADE_PADRAO_M)
             barracas.append({
                 "numero": numero,

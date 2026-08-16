@@ -26,7 +26,7 @@ const SVG = 'http://www.w3.org/2000/svg';
     display:block; width:100%; height:100%; }
   /* o asfalto e o unico cinza do projeto: a paleta do app e toda quente e a rua
      precisa se separar do papel e do largo sem virar mais um tom de bege */
-  .croqui .via { fill:none; stroke:#CFCBC5; stroke-linecap:round; stroke-linejoin:round; }
+  .croqui .via { fill:none; stroke:#CFCBC5; stroke-linecap:butt; stroke-linejoin:round; }
   .croqui .via-nome { fill:var(--tinta-fraca,#7B6E5D); font:600 3px var(--corpo,system-ui),sans-serif;
     letter-spacing:.12px; text-anchor:middle;
     stroke:#CFCBC5; stroke-width:.9; paint-order:stroke; }
@@ -92,6 +92,28 @@ const SVG = 'http://www.w3.org/2000/svg';
     }
   
     // --- desenho --------------------------------------------------------------
+    /** Ponto da via, dentro do quadro, mais longe de qualquer barraca. */
+    function pousoDoNome(via) {
+      const cx = via.eixo, q = limites(), folga = 12;
+      let melhor = null, maiorDist = -1;
+      for (let i = 1; i < cx.length; i++) {
+        const [a, b] = [cx[i - 1], cx[i]];
+        for (let k = 0; k <= 40; k++) {
+          const u = k / 40;
+          const pt = [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u];
+          if (pt[0] < q.x + folga || pt[0] > q.x + q.w - folga) continue;
+          if (-pt[1] < q.y + folga || -pt[1] > q.y + q.h - folga) continue;
+          let d = Infinity;
+          for (const bar of mapa.barracas) d = Math.min(d, Math.hypot(pt[0] - bar.centro[0], pt[1] - bar.centro[1]));
+          if (d > maiorDist) {
+            maiorDist = d;
+            melhor = { meio: pt, ang: (Math.atan2(-(b[1] - a[1]), b[0] - a[0]) * 180) / Math.PI };
+          }
+        }
+      }
+      return melhor || { meio: null, ang: 0 };
+    }
+
     function desenharVias() {
       const g = camadas.vias;
       g.replaceChildren();
@@ -101,17 +123,14 @@ const SVG = 'http://www.w3.org/2000/svg';
       }
       for (const via of mapa.vias || []) {
         if (!via.nome) continue;
-        // meio do trecho central, nao o vertice: numa rua de dois pontos o
-        // vertice do meio E o ponto final, e o nome saia cortado na borda
-        const eixo = via.eixo;
-        const i = Math.max(1, Math.floor(eixo.length / 2));
-        const [a, b] = [eixo[i - 1], eixo[i]];
-        const meio = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
-        const ang = (Math.atan2(-(b[1] - a[1]), b[0] - a[0]) * 180) / Math.PI;
-        const t = el('text', {
-          class: 'via-nome', x: 0, y: 1.1,
-          transform: `translate(${P(meio)}) rotate(${((ang + 90) % 180) - 90})`,
-        });
+        // O nome vai no trecho mais vazio da rua que ainda esteja dentro do
+        // quadro. Fixar no meio da linha punha o rotulo bem no cruzamento,
+        // por cima das barracas, justo onde a rua e mais cheia.
+        const { meio, ang } = pousoDoNome(via);
+        if (!meio) continue;
+        const baseVia = `translate(${P(meio)}) rotate(${((ang + 90) % 180) - 90})`;
+        const t = el('text', { class: 'via-nome', x: 0, y: 1.1, transform: baseVia });
+        t.dataset.base = baseVia;
         t.textContent = via.nome;
         g.append(t);
       }
@@ -133,7 +152,9 @@ const SVG = 'http://www.w3.org/2000/svg';
         if (!a.nome) continue;
         if (a.ponto) {
           g.append(el('circle', { class: 'referencia', cx: a.ponto[0], cy: -a.ponto[1], r: 1.6 }));
-          const t = el('text', { class: 'referencia-nome', x: a.ponto[0], y: -a.ponto[1] - 3 });
+          const baseRef = `translate(${a.ponto[0]},${-a.ponto[1] - 3})`;
+          const t = el('text', { class: 'referencia-nome', transform: baseRef });
+          t.dataset.base = baseRef;
           t.textContent = a.nome;
           g.append(t);
         } else if (a.rotulo && a.poligono) {
@@ -144,7 +165,9 @@ const SVG = 'http://www.w3.org/2000/svg';
             a.poligono.reduce((s, q) => s + q[0], 0) / n,
             a.poligono.reduce((s, q) => s + q[1], 0) / n,
           ];
-          const t = el('text', { class: 'area-nome', x: cx, y: -cy });
+          const baseArea = `translate(${cx},${-cy})`;
+          const t = el('text', { class: 'area-nome', transform: baseArea });
+          t.dataset.base = baseArea;
           t.textContent = a.nome;
           g.append(t);
         }
@@ -162,10 +185,12 @@ const SVG = 'http://www.w3.org/2000/svg';
      * So o transform muda — nada de refazer 35 grupos por quadro.
      */
     function ajustarEscalaPinos() {
-      if (editavel) return;
       const f = fatorPino();
-      for (const grupo of camadas.barracas.children) {
-        grupo.setAttribute('transform', `${grupo.dataset.base} scale(${f})`);
+      for (const camada of [camadas.barracas, camadas.vias, camadas.referencias]) {
+        for (const no of camada.children) {
+          if (!no.dataset || !no.dataset.base) continue;
+          no.setAttribute('transform', `${no.dataset.base} scale(${f})`);
+        }
       }
     }
 
@@ -211,7 +236,7 @@ const SVG = 'http://www.w3.org/2000/svg';
         // incerteza e os 4x3 m sao valor padrao, nao medida de ninguem.
         const base = `translate(${cx},${-cy})`;
         const grupo = el('g', { transform: base, 'data-numero': b.numero });
-        grupo.dataset.base = base;
+        grupo.dataset.base = base;   // `ajustarEscalaPinos` recompoe com o scale
         const larg = Math.max(8.4, 2.5 * texto.length + 3);
         grupo.append(el('rect', { class: classe, x: -larg / 2, y: -4.2,
                                   width: larg, height: 8.4, rx: 4.2 }));
@@ -255,6 +280,7 @@ const SVG = 'http://www.w3.org/2000/svg';
     function redesenhar() {
       desenharAreas();
       desenharVias();
+      ajustarEscalaPinos();
       desenharReferencias();
       desenharBarracas();
     }
