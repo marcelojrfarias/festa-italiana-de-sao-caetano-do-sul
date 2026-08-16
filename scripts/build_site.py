@@ -290,9 +290,9 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
     mapa = "https://www.google.com/maps/search/?api=1&query=" + \
            re.sub(r"\s+", "+", f'{ev["endereco"]} {ev["bairro"]} {ev["cidade"]}')
 
-    msg = ("Achei um cardápio digital da Festa Italiana de SCS — dá pra procurar "
-           "prato e ver preço de todas as barracas. Tá me ajudando a decidir o que "
-           "comer: " + SITE + UTM)
+    msg = ("Achei um cardápio digital da Festa Italiana de SCS. Dá pra buscar por "
+           "prato, comparar preço e ver em qual barraca está. Tá me ajudando a "
+           "decidir o que comer e pode te ajudar também: " + SITE + UTM)
     from urllib.parse import quote
     wa = "https://wa.me/?text=" + quote(msg, safe="")
 
@@ -898,9 +898,10 @@ JS = r"""(function () {
   (function share() {
     var canonical = document.querySelector('link[rel="canonical"]');
     var base = canonical ? canonical.href : location.origin + location.pathname;
-    var msg = 'Achei um cardápio digital da Festa Italiana de SCS — dá pra procurar ' +
-              'prato e ver preço de todas as barracas. Tá me ajudando a decidir o que ' +
-              'comer: ' + base + '?utm_source=whatsapp&utm_medium=share&utm_campaign=cardapio-33a';
+    var msg = 'Achei um cardápio digital da Festa Italiana de SCS. Dá pra buscar por ' +
+              'prato, comparar preço e ver em qual barraca está. Tá me ajudando a ' +
+              'decidir o que comer e pode te ajudar também: ' +
+              base + '?utm_source=whatsapp&utm_medium=share&utm_campaign=cardapio-33a';
     var href = 'https://wa.me/?text=' + encodeURIComponent(msg);
     document.querySelectorAll('.botao-share').forEach(function (a) { a.href = href; });
   })();
