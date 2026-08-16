@@ -93,6 +93,10 @@ def sem_acento(s):
                    if unicodedata.category(c) != "Mn").lower()
 
 
+def slug(texto):
+    return re.sub(r"[^a-z0-9]+", "-", sem_acento(texto)).strip("-")
+
+
 def chave_barraca(numero):
     """Identificador estável de barraca, usado na URL e nos data-attributes.
 
@@ -198,6 +202,94 @@ def conferir_sinonimos(cardapio):
     if orfas:
         raise SystemExit("grafias sem correspondência no cardápio: "
                          + ", ".join(repr(o) for o in orfas))
+
+
+# ---- famílias dentro de uma categoria ----
+#
+# Massas tem 84 pratos e Doces 107. Rolar 84 cards para achar o gnocchi é o
+# mesmo problema que as categorias resolveram um nível acima, então a categoria
+# ganha mais uma etapa: Categorias -> Massas -> Gnocchi -> os 6 pratos. A
+# família sai do próprio nome do prato, porque quase todo título começa pelo
+# tipo — Spaghetti, Penne, Crostata, Cannoli.
+#
+# Três regras seguram o resultado. Família não pode aninhar: "Spaghetti Al Sugo"
+# entra em "Spaghetti", senão tocar em Spaghetti esconderia spaghetti. Família
+# com menos de 3 pratos não vira card — uma tela a mais para chegar a 1 prato é
+# trabalho, não atalho. E a etapa só existe onde a categoria é grande o
+# bastante: em Lanches, 25 dos 28 pratos são panino, e a tela do meio seria um
+# pedágio. Sobram Massas, Doces e Pizzas e Fogazza.
+FAM_MIN = 3
+FAM_CAT_MIN = 40
+FAM_FAMILIAS_MIN = 3
+LIGACAO = {"al", "alla", "ai", "alle", "allo", "di", "de", "con", "e", "a",
+           "da", "ao", "com", "ou", "in", "della", "dei", "del"}
+
+
+def _rotulo_familia(prefixo, membros):
+    """Estende o rótulo até onde os membros concordam. A chave do filtro
+    continua sendo o prefixo curto; só o texto do chip cresce. "Panna" vira
+    "Panna Cotta", que é o que está escrito na barraca."""
+    palavras = membros[0].split()
+    for m in membros[1:]:
+        w = m.split()
+        palavras = palavras[:next((i for i, (a, b) in enumerate(zip(palavras, w))
+                                   if sem_acento(a) != sem_acento(b)), min(len(palavras), len(w)))]
+    while palavras and sem_acento(palavras[-1]) in LIGACAO:
+        palavras.pop()
+    rotulo = " ".join(palavras)
+    return rotulo if len(rotulo) >= len(prefixo) else prefixo
+
+
+def familias_da_categoria(titulos):
+    contagem = collections.Counter()
+    for t in titulos:
+        w = t.split()
+        for n in range(1, min(4, len(w)) + 1):
+            if sem_acento(w[n - 1]) in LIGACAO:
+                continue
+            contagem[" ".join(w[:n])] += 1
+    # prefixo mais curto primeiro — é ele que absorve os mais longos
+    candidatos = sorted((p for p, n in contagem.items() if n >= FAM_MIN),
+                        key=lambda p: (len(p.split()), -contagem[p], sem_acento(p)))
+    familias, usados = [], set()
+    for pref in candidatos:
+        membros = [t for t in titulos
+                   if (t == pref or t.startswith(pref + " ")) and t not in usados]
+        if len(membros) >= FAM_MIN:
+            usados.update(membros)
+            familias.append({"chave": slug(pref), "prefixo": pref,
+                             "rotulo": _rotulo_familia(pref, sorted(membros)),
+                             "total": len(membros), "titulos": set(membros)})
+    familias.sort(key=lambda f: (-f["total"], sem_acento(f["rotulo"])))
+    if len(familias) < FAM_FAMILIAS_MIN:
+        return []
+    # o que não coube em família nenhuma vai para "Outros": sem isso a tela do
+    # meio esconderia 24 doces, e nenhum caminho levaria ao tiramisù
+    sobra = sorted(set(titulos) - {t for f in familias for t in f["titulos"]})
+    if sobra:
+        familias.append({"chave": "outros", "prefixo": "", "rotulo": "Outros",
+                         "total": len(sobra), "titulos": set(sobra)})
+    return familias
+
+
+def mapear_familias(pratos):
+    """Devolve (familias_por_categoria, familia_de_cada_titulo)."""
+    por_cat = collections.defaultdict(list)
+    for p in pratos:
+        por_cat[p["categoria"]].append(p["titulo"])
+    catalogo, de_titulo = {}, {}
+    for cid, titulos in sorted(por_cat.items()):
+        if len(titulos) < FAM_CAT_MIN:
+            continue
+        fs = familias_da_categoria(titulos)
+        if not fs:
+            continue
+        catalogo[cid] = [{"chave": f["chave"], "rotulo": f["rotulo"], "total": f["total"]}
+                         for f in fs]
+        for f in fs:
+            for t in f["titulos"]:
+                de_titulo[t] = f["chave"]
+    return catalogo, de_titulo
 
 
 def agrupar_pratos(cardapio, categorias):
@@ -360,7 +452,7 @@ def expandir_titulo(item):
     return list(zip(titulos, descs if descs else [desc] * len(titulos)))
 
 
-def render_prato(p):
+def render_prato(p, familia_de=None):
     # "Spaghetti / Penne Rigati / Farfalle Al Sugo" ocupava cinco linhas. O
     # primeiro segmento é o nome reconhecível do prato; os demais são as
     # alternativas, e a descrição já explica todas em português.
@@ -396,6 +488,7 @@ def render_prato(p):
     return (
         f'<article class="prato" data-cat="{e(p["categoria"])}" '
         f'data-barracas=" {e(nums)} " data-precos=" {e(buckets)} " '
+        f'data-fam="{e((familia_de or {}).get(p["titulo"], ""))}" '
         f'data-busca="{e(p["busca"])}" '
         f'data-ord-pop="{p["ord_pop"]}" data-ord-preco="{p["ord_preco"]}" '
         f'data-ord-nome="{p["ord_nome"]}">'
@@ -405,7 +498,7 @@ def render_prato(p):
         f'{onde}<ul class="ofertas">{ofertas}</ul></article>')
 
 
-def render_indices(cardapio, categorias, pratos):
+def render_indices(cardapio, categorias, pratos, fam_catalogo):
     por_cat = collections.Counter(p["categoria"] for p in pratos)
     nomes = {c["id"]: c["nome"] for c in categorias["categorias"]}
     cards_cat = "".join(
@@ -424,12 +517,26 @@ def render_indices(cardapio, categorias, pratos):
         f'<span class="card__contagem">{b["total_itens"]}</span>'
         f'<span class="card__chevron">{usar("seta", 18)}</span></a>'
         for b in sorted(cardapio["barracas"], key=lambda x: x["numeros"][0]))
-    return cards_cat, cards_bar
+
+    # todos os tipos de todas as categorias no mesmo bloco; o cliente esconde
+    # os que não são da categoria aberta. São 35 cards no total — separar em
+    # seções por categoria só multiplicaria elemento para o mesmo efeito.
+    cards_fam = "".join(
+        f'<a class="card card--tipo" href="?cat={e(cid)}&amp;fam={e(f["chave"])}" '
+        f'data-cat="{e(cid)}" data-fam="{e(f["chave"])}">'
+        f'<span class="card__nome">{e(f["rotulo"])}</span>'
+        f'<span class="card__contagem">{f["total"]}</span>'
+        f'<span class="card__chevron">{usar("seta", 18)}</span></a>'
+        for cid in ORDEM if cid in fam_catalogo
+        for f in fam_catalogo[cid])
+    return cards_cat, cards_bar, cards_fam
 
 
-def render_html(cardapio, categorias, evento, pratos, geo, versao):
-    cards_cat, cards_bar = render_indices(cardapio, categorias, pratos)
-    lista = "".join(render_prato(p) for p in pratos)
+def render_html(cardapio, categorias, evento, pratos, geo, versao,
+                fam_catalogo, fam_de_titulo):
+    cards_cat, cards_bar, cards_fam = render_indices(cardapio, categorias, pratos,
+                                                     fam_catalogo)
+    lista = "".join(render_prato(p, fam_de_titulo) for p in pratos)
     ev = evento["local"]
     endereco = f'{ev["endereco"]} — {ev["bairro"]}, {ev["cidade"]}/{ev["uf"]}'
     mapa = "https://www.google.com/maps/search/?api=1&query=" + \
@@ -522,6 +629,7 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
 
   <section class="indice" id="idx-categoria" aria-label="Categorias">{cards_cat}</section>
   <section class="indice" id="idx-barraca" aria-label="Barracas" hidden>{cards_bar}</section>
+  <section class="indice" id="idx-familia" aria-label="Tipos de prato" hidden>{cards_fam}</section>
 
   <div class="filtros" id="filtros" hidden>
     <button type="button" data-preco="ate10">até R$ 10</button>
@@ -742,6 +850,8 @@ main { padding: var(--e4) var(--e4) 0; }
   color: var(--tinta-fraca); font-size: 13px; font-variant-numeric: tabular-nums;
 }
 .card__chevron { display: grid; place-items: center; color: var(--papel-linha); }
+/* o tipo não tem ícone próprio: sem a primeira coluna o nome ocupa a largura */
+.card--tipo { grid-template-columns: 1fr auto 18px; min-height: 60px; }
 
 /* ---- filtros ---- */
 .filtros {
@@ -900,7 +1010,8 @@ JS = r"""(function () {
       lista = document.getElementById('lista'),
       pratos = Array.prototype.slice.call(lista.children),
       idx = { categoria: document.getElementById('idx-categoria'),
-              barraca: document.getElementById('idx-barraca') },
+              barraca: document.getElementById('idx-barraca'),
+              familia: document.getElementById('idx-familia') },
       trilha = document.getElementById('trilha'),
       trilhaTitulo = document.getElementById('trilha-titulo'),
       filtros = document.getElementById('filtros'),
@@ -914,13 +1025,18 @@ JS = r"""(function () {
   document.querySelectorAll('#idx-categoria .card').forEach(function (c) {
     nomes['cat:' + c.dataset.cat] = c.querySelector('.card__nome').textContent;
   });
+  document.querySelectorAll('#idx-familia .card').forEach(function (c) {
+    nomes['fam:' + c.dataset.cat + ':' + c.dataset.fam] =
+      c.querySelector('.card__nome').textContent;
+  });
   document.querySelectorAll('#idx-barraca .card').forEach(function (c) {
     nomes['barraca:' + c.dataset.barraca] =
       c.querySelector('.card__numero').textContent + ' · ' +
       c.querySelector('.card__nome').textContent;
   });
 
-  var estado = { modo: 'categoria', cat: '', barraca: '', q: '', preco: '', ord: 'pop' };
+  var estado = { modo: 'categoria', cat: '', barraca: '', q: '', preco: '', fam: '', ord: 'pop' };
+  var FAMILIAS = window.FESTA_FAMILIAS || {};
   var ordAplicada = null;   // reordenar 376 cards só quando a ordem muda
 
   // faixa original ("R$ 20,00 a R$ 30,00") para restaurar ao sair da barraca
@@ -940,6 +1056,7 @@ JS = r"""(function () {
     estado.barraca = p.get('barraca') || '';
     estado.q = p.get('q') || '';
     estado.preco = p.get('preco') || '';
+    estado.fam = p.get('fam') || '';
     estado.ord = p.get('ord') || 'pop';
     if (p.get('modo') === 'tudo') estado.modo = 'tudo';
   }
@@ -951,15 +1068,26 @@ JS = r"""(function () {
     if (estado.barraca) p.set('barraca', estado.barraca);
     if (estado.q) p.set('q', estado.q);
     if (estado.preco) p.set('preco', estado.preco);
+    if (estado.fam) p.set('fam', estado.fam);
     if (estado.ord && estado.ord !== 'pop') p.set('ord', estado.ord);
     var s = p.toString();
     return s ? '?' + s : location.pathname;
   }
 
+  /* Categorias grandes ganham uma parada antes da lista: Massas mostra
+     Spaghetti, Penne, Gnocchi… em vez de 84 cards de uma vez. Busca e filtro de
+     preço pulam a parada — quem digitou "gnocchi" já disse o que quer. */
+  function noIndiceTipos() {
+    return estado.modo === 'categoria' && !!estado.cat && !estado.barraca &&
+           !estado.fam && !estado.q && !estado.preco && !!FAMILIAS[estado.cat];
+  }
+
   /* Mostrar a lista, e não o índice, quando há busca, filtro de preço, ou
      quando a pessoa entrou numa categoria/barraca. */
   function emLista() {
-    return !!(estado.q || estado.preco || estado.cat || estado.barraca || estado.modo === 'tudo');
+    if (noIndiceTipos()) return false;
+    return !!(estado.q || estado.preco || estado.fam || estado.cat || estado.barraca ||
+              estado.modo === 'tudo');
   }
 
   function aplicar() {
@@ -972,6 +1100,7 @@ JS = r"""(function () {
           el.dataset.barracas.indexOf(' ' + estado.barraca + ' ') === -1) ok = false;
       if (ok && estado.preco &&
           el.dataset.precos.indexOf(' ' + estado.preco + ' ') === -1) ok = false;
+      if (ok && estado.fam && el.dataset.fam !== estado.fam) ok = false;
       if (ok && q && el.dataset.busca.indexOf(q) === -1) ok = false;
       el.hidden = !ok;
       if (ok) visiveis++;
@@ -999,8 +1128,15 @@ JS = r"""(function () {
     }
 
     var listando = emLista();
-    idx.categoria.hidden = listando || estado.modo !== 'categoria';
+    var tipos = noIndiceTipos();
+    idx.categoria.hidden = listando || tipos || estado.modo !== 'categoria';
     idx.barraca.hidden = listando || estado.modo !== 'barraca';
+    idx.familia.hidden = !tipos;
+    if (tipos) {
+      idx.familia.querySelectorAll('.card').forEach(function (c) {
+        c.hidden = c.dataset.cat !== estado.cat;
+      });
+    }
     lista.hidden = !listando;
     filtros.hidden = !listando;
     ordenacao.hidden = !listando;
@@ -1012,6 +1148,10 @@ JS = r"""(function () {
 
     var rotulo = estado.cat ? nomes['cat:' + estado.cat]
                : estado.barraca ? nomes['barraca:' + estado.barraca] : '';
+    // o título carrega os dois degraus: de onde veio e onde está
+    if (rotulo && estado.cat && estado.fam) {
+      rotulo += ' · ' + (nomes['fam:' + estado.cat + ':' + estado.fam] || '');
+    }
     trilha.hidden = !rotulo;
     trilhaTitulo.textContent = rotulo || '';
 
@@ -1057,7 +1197,7 @@ JS = r"""(function () {
     b.addEventListener('click', function () {
       guardarRolagem();
       estado.modo = b.dataset.modo;
-      estado.cat = estado.barraca = estado.preco = '';
+      estado.cat = estado.barraca = estado.preco = estado.fam = '';
       navegar();
       window.scrollTo(0, 0);
     });
@@ -1068,8 +1208,15 @@ JS = r"""(function () {
     if (card) {
       ev.preventDefault();
       guardarRolagem();
-      if (card.dataset.cat) { estado.cat = card.dataset.cat; estado.modo = 'categoria'; }
-      else { estado.barraca = card.dataset.barraca; estado.modo = 'barraca'; }
+      if (card.dataset.fam) {
+        estado.cat = card.dataset.cat; estado.fam = card.dataset.fam;
+        estado.modo = 'categoria';
+      } else if (card.dataset.cat) {
+        // o tipo escolhido é de outra categoria: manter filtraria tudo para fora
+        estado.cat = card.dataset.cat; estado.fam = ''; estado.modo = 'categoria';
+      } else {
+        estado.barraca = card.dataset.barraca; estado.fam = ''; estado.modo = 'barraca';
+      }
       navegar();
       window.scrollTo(0, 0);
       return;
@@ -1097,7 +1244,7 @@ JS = r"""(function () {
       return;
     }
     if (ev.target.closest('.limpar')) {
-      estado.q = ''; estado.preco = '';
+      estado.q = ''; estado.preco = ''; estado.fam = '';
       navegar();
     }
   });
@@ -1369,10 +1516,13 @@ def main():
         shutil.rmtree(DIST)
     DIST.mkdir(parents=True)
 
+    fam_catalogo, fam_de_titulo = mapear_familias(pratos)
     mapa_js = ("window.FESTA_MAPA = "
-               + json.dumps(mapa, ensure_ascii=False, separators=(",", ":")) + ";\n")
+               + json.dumps(mapa, ensure_ascii=False, separators=(",", ":")) + ";\n"
+               + "window.FESTA_FAMILIAS = "
+               + json.dumps(fam_catalogo, ensure_ascii=False, separators=(",", ":")) + ";\n")
     css_txt = CSS + CSS_ONDE + CSS_MAPA
-    js_txt = JS + mapa_js + fontes_mapa + JS_MAPA
+    js_txt = mapa_js + JS + fontes_mapa + JS_MAPA
     # style.css e app.js tem nome fixo, entao quem ja visitou o site pode receber
     # o index.html novo com o app.js velho do cache — foi o que fez a aba Mapa
     # aparecer sem nada dentro. A assinatura do conteudo na URL corta isso.
@@ -1380,7 +1530,9 @@ def main():
               for k, t in (("css", css_txt), ("js", js_txt))}
 
     (DIST / "index.html").write_text(
-        render_html(cardapio, categorias, evento, pratos, mapa, versao), encoding="utf-8")
+        render_html(cardapio, categorias, evento, pratos, mapa, versao,
+                    fam_catalogo, fam_de_titulo),
+        encoding="utf-8")
     (DIST / "style.css").write_text(css_txt, encoding="utf-8")
     (DIST / "app.js").write_text(js_txt, encoding="utf-8")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
