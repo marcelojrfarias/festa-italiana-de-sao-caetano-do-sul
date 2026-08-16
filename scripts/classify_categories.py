@@ -59,10 +59,17 @@ def classificar(item):
         return "bebidas-com-alcool" if re.search(ALCOOL, texto) else "bebidas-sem-alcool"
     if cid in ("dolci", "gelato"):
         return "doces"
-    if cid == "panini":
-        return "lanches"
+    # Focaccia fica com Fogazza por decisão de produto, não por técnica. As
+    # descrições as separam — fogazza é "Massa Frita recheada", focaccia é
+    # "Lanche preparado com Focaccia", e o preço vai de R$ 18–22 para R$ 35–50 —
+    # mas as palavras são primas e o público as trata como a mesma família.
+    # Antes de panini: o PDF lista fatia de pizza salgada dentro de "Panini"
+    # (Fetta di Pizza, Trancio di Pizza di Sfoglia), e a regra de panini vindo
+    # primeiro mandava pizza para Lanches.
     if cid in ("pizza", "fogazza") or re.search(PIZZA, titulo):
         return "pizzas-e-fogazza"
+    if cid == "panini":
+        return "lanches"
     if re.search(MASSA, texto):
         return "massas"
     if cid in ("antipasti", "porzioni", "accompagnamenti", "insalata"):

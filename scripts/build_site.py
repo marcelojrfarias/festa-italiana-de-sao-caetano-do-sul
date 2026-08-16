@@ -103,13 +103,13 @@ def agrupar_pratos(cardapio, categorias):
     grupos = {}
     for barraca in cardapio["barracas"]:
         for item in barraca["itens"]:
-            chave = sem_acento(item["titulo"])
+          for titulo_expandido in expandir_titulo(item):
+            chave = sem_acento(titulo_expandido)
             g = grupos.setdefault(chave, {
-                "titulo": item["titulo"], "cats": collections.Counter(),
+                "titulo": titulo_expandido, "cats": collections.Counter(),
                 "ofertas": [], "descricoes": [],
                 # o PDF lista sabores e formatos de massa num título só, separados
                 # por "/"; o extrator já os separou e o gerador ignorava o campo
-                "variacoes": item.get("variacoes") or [],
             })
             g["cats"][atrib[item["id"]]] += 1
             g["ofertas"].append({
@@ -124,7 +124,6 @@ def agrupar_pratos(cardapio, categorias):
         g["ofertas"].sort(key=lambda o: o["preco"])
         pratos.append({
             "titulo": g["titulo"],
-            "variacoes": g["variacoes"],
             "categoria": g["cats"].most_common(1)[0][0],
             "ofertas": g["ofertas"],
             "min": min(precos), "max": max(precos),
@@ -148,43 +147,60 @@ def bucket_preco(v):
     return "ate10" if v <= 10 else "11a20" if v <= 20 else "21a30" if v <= 30 else "31mais"
 
 
-def titulo_e_variantes(p):
-    """Separa o nome do prato das suas alternativas.
+PREPOSICOES = {"al", "alla", "ai", "alle", "con", "in"}
+
+# Casos em que a regra de expansão produz nome ruim. Conferidos à mão contra os
+# 17 itens com variação; hoje só um precisa. A regra deriva o prefixo da
+# primeira preposição do primeiro segmento, e aqui não há preposição nenhuma —
+# "Merlot" e "Chardonnay" sairiam soltos, sem a palavra "Vinho".
+EXPANSAO_MANUAL = {
+    "27-17-vinho-fino-cabernet-merlot-chardonnay-copo": [
+        "Vinho Fino Cabernet (Copo)",
+        "Vinho Fino Merlot (Copo)",
+        "Vinho Fino Chardonnay (Copo)",
+    ],
+}
+
+
+def expandir_titulo(item):
+    """Um item por sabor ou formato de massa.
 
     O PDF junta variações num título só, separadas por "/", em dois formatos:
 
       sabor   "Cannoli Alla Crema / Nutella / Fior di Latte"
-              -> o primeiro segmento é o prato, o resto são recheios
+              -> o primeiro segmento traz o prato; os demais são só o recheio,
+                 e precisam receber o nome do prato de volta
 
       formato "Spaghetti / Penne Rigati / Farfalle Al Sugo"
-              -> os segmentos são formatos de massa e o molho vem grudado no
-                 último; usar só o primeiro deixaria cinco pratos chamados
-                 "Spaghetti", indistinguíveis na lista
+              -> os segmentos são formatos e o molho vem grudado no último;
+                 cada formato precisa receber o molho
 
-    O que separa os dois casos é o tamanho: no formato de massa o primeiro
-    segmento tem menos palavras que o último, porque o último carrega o molho.
-    A regra foi conferida contra os 17 itens com variação do cardápio.
+    O que separa os dois é o tamanho: no formato de massa o primeiro segmento
+    tem menos palavras que o último, porque o último carrega o molho.
     """
-    v = p.get("variacoes") or []
+    if item["id"] in EXPANSAO_MANUAL:
+        return EXPANSAO_MANUAL[item["id"]]
+    v = item.get("variacoes") or []
     if len(v) < 2:
-        return p["titulo"], []
+        return [item["titulo"]]
+
     primeiro, ultimo = v[0].split(), v[-1].split()
     if len(primeiro) < len(ultimo):
-        sufixo = " ".join(ultimo[1:])          # o molho, comum a todos
-        return f"{v[0]} {sufixo}", v[1:-1] + [ultimo[0]]
-    return v[0], v[1:]
+        sufixo = " ".join(ultimo[1:])
+        return [f"{x} {sufixo}" for x in v[:-1]] + [f"{ultimo[0]} {sufixo}"]
+
+    base = ""
+    for i, palavra in enumerate(primeiro):
+        if palavra.lower() in PREPOSICOES:
+            base = " ".join(primeiro[:i])
+            break
+    return [v[0]] + [f"{base} {x}".strip() for x in v[1:]]
 
 
 def render_prato(p):
     # "Spaghetti / Penne Rigati / Farfalle Al Sugo" ocupava cinco linhas. O
     # primeiro segmento é o nome reconhecível do prato; os demais são as
     # alternativas, e a descrição já explica todas em português.
-    titulo, variantes = titulo_e_variantes(p)
-    chips = ""
-    if variantes:
-        chips = ('<p class="variacoes"><span class="variacoes__ou">ou</span>'
-                 + "".join(f'<span class="variacao">{e(v)}</span>' for v in variantes)
-                 + "</p>")
 
     nums = " ".join(chave_barraca(o["num"]) for o in p["ofertas"])
     buckets = " ".join(sorted({bucket_preco(o["preco"]) for o in p["ofertas"]}))
@@ -211,9 +227,9 @@ def render_prato(p):
         f'<article class="prato" data-cat="{e(p["categoria"])}" '
         f'data-barracas=" {e(nums)} " data-precos=" {e(buckets)} " '
         f'data-busca="{e(p["busca"])}">'
-        f'<div class="prato__topo"><h3 class="prato__titulo">{e(titulo)}</h3>'
+        f'<div class="prato__topo"><h3 class="prato__titulo">{e(p["titulo"])}</h3>'
         f'<span class="prato__faixa">{e(faixa_preco(p))}</span></div>'
-        f'<p class="prato__desc">{e(p["descricao"])}</p>{chips}'
+        f'<p class="prato__desc">{e(p["descricao"])}</p>'
         f'{onde}<ul class="ofertas">{ofertas}</ul></article>')
 
 
@@ -255,7 +271,9 @@ def render_html(cardapio, categorias, evento, pratos):
 
     dados_js = json.dumps({"dias": evento["dias"], "horarios": evento["horarios"]},
                           ensure_ascii=False)
-    total = sum(len(p["ofertas"]) for p in pratos)
+    # o número anunciado é o do cardápio oficial, que o validate_menu.py
+    # confere contra o PDF; expandir variações infla a contagem interna
+    total = sum(len(b["itens"]) for b in cardapio["barracas"])
 
     return f"""<!doctype html>
 <html lang="pt-BR">
@@ -522,19 +540,6 @@ main { padding: var(--e4) var(--e4) 0; }
   font-variant-numeric: tabular-nums;
 }
 .prato__desc { margin: var(--e1) 0 0; font-size: 14px; color: var(--tinta-fraca); }
-.variacoes {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 5px;
-  margin: var(--e2) 0 0;
-}
-.variacoes__ou {
-  font-size: 11px; font-weight: 700; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--tinta-fraca);
-}
-.variacao {
-  padding: 3px 9px; border-radius: 999px; background: var(--verde-suave);
-  color: var(--verde); font-size: 13px; font-weight: 600;
-}
-
 .prato__onde {
   display: grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--e2);
   margin: var(--e3) 0 0; padding-top: var(--e2);
@@ -623,6 +628,12 @@ body[data-barraca-ativa] .lista .ofertas { display: none !important; }
 JS = r"""(function () {
   'use strict';
   document.documentElement.classList.add('js');
+
+  /* Com scrollRestoration em 'auto' o navegador devolve, ao voltar, a posição
+     de rolagem que ele guardou — que pode ser maior que o documento novo,
+     porque aqui todas as telas são o mesmo documento com conteúdo trocado. O
+     resultado é papel em branco abaixo do rodapé. Assumimos o controle. */
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
   var body = document.body,
       lista = document.getElementById('lista'),
@@ -739,18 +750,36 @@ JS = r"""(function () {
       b.setAttribute('aria-pressed', String(b.dataset.preco === estado.preco));
     });
     if (busca.value !== estado.q) busca.value = estado.q;
+
+    // se o conteúdo encolheu e a rolagem ficou além do fim, puxa de volta
+    var limite = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    if (window.scrollY > limite) window.scrollTo(0, limite);
+  }
+
+  function guardarRolagem() {
+    var atual = history.state || {};
+    atual.y = window.scrollY;
+    history.replaceState(atual, '', location.href);
   }
 
   function navegar(push) {
-    if (push !== false) history.pushState(estado, '', montarURL());
+    if (push !== false) {
+      var novo = {}; for (var k in estado) novo[k] = estado[k]; novo.y = 0;
+      history.pushState(novo, '', montarURL());
+    }
     aplicar();
   }
 
   /* voltar do sistema (Android) e do navegador devolvem ao nível anterior */
-  window.addEventListener('popstate', function () { lerURL(); aplicar(); });
+  window.addEventListener('popstate', function (ev) {
+    lerURL();
+    aplicar();
+    window.scrollTo(0, (ev.state && ev.state.y) || 0);
+  });
 
   document.querySelectorAll('.modos button').forEach(function (b) {
     b.addEventListener('click', function () {
+      guardarRolagem();
       estado.modo = b.dataset.modo;
       estado.cat = estado.barraca = estado.preco = '';
       navegar();
@@ -762,6 +791,7 @@ JS = r"""(function () {
     var card = ev.target.closest('.indice .card');
     if (card) {
       ev.preventDefault();
+      guardarRolagem();
       if (card.dataset.cat) { estado.cat = card.dataset.cat; estado.modo = 'categoria'; }
       else { estado.barraca = card.dataset.barraca; estado.modo = 'barraca'; }
       navegar();
@@ -896,6 +926,10 @@ def otimizar_assets():
 
 def main():
     cardapio, categorias, evento = carregar()
+    ids = {i["id"] for b in cardapio["barracas"] for i in b["itens"]}
+    orfas = set(EXPANSAO_MANUAL) - ids
+    if orfas:
+        raise SystemExit(f"EXPANSAO_MANUAL aponta para id inexistente: {sorted(orfas)}")
     pratos = agrupar_pratos(cardapio, categorias)
 
     if DIST.exists():
@@ -908,9 +942,11 @@ def main():
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
     antes, depois, tam_og = otimizar_assets()
 
-    itens = sum(len(p["ofertas"]) for p in pratos)
+    itens = sum(len(b["itens"]) for b in cardapio["barracas"])
+    linhas = sum(len(p["ofertas"]) for p in pratos)
     kb = lambda p: p.stat().st_size / 1024
-    print(f"{itens} itens em {len(pratos)} pratos, {len(cardapio['barracas'])} barracas")
+    print(f"{itens} itens do PDF -> {linhas} linhas (variações expandidas) "
+          f"em {len(pratos)} pratos, {len(cardapio['barracas'])} barracas")
     print(f"  index.html  {kb(DIST/'index.html'):7.1f} KB")
     print(f"  style.css   {kb(DIST/'style.css'):7.1f} KB")
     print(f"  app.js      {kb(DIST/'app.js'):7.1f} KB")
