@@ -319,7 +319,12 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
                           ensure_ascii=False)
     # o número anunciado é o do cardápio oficial, que o validate_menu.py
     # confere contra o PDF; expandir variações infla a contagem interna
+    # "itens" são as linhas do cardápio oficial, que o validate_menu.py confere
+    # contra o PDF. "pratos" são os cards da tela — o mesmo prato vendido em 11
+    # barracas é um card só. Usar a mesma palavra para os dois fazia o card do
+    # WhatsApp prometer 645 e a tela mostrar 376.
     total = sum(len(b["itens"]) for b in cardapio["barracas"])
+    distintos = len(pratos)
     nota_mapa = ("Posições conforme o mapa oficial das entidades. Toque numa barraca "
                  "para ver o cardápio dela."
                  if geo["_status"] != "aproximado" else
@@ -334,7 +339,7 @@ def render_html(cardapio, categorias, evento, pratos, geo, versao):
 <meta name="description" content="Cardápio completo da 33ª Festa Italiana de São Caetano do Sul: {total} itens de {len(cardapio['barracas'])} barracas, com preço e busca por prato.">
 <meta name="theme-color" content="#196B24">
 <meta property="og:title" content="Cardápio da 33ª Festa Italiana">
-<meta property="og:description" content="{total} pratos e bebidas de {len(cardapio['barracas'])} barracas, com preço. Procure o que quer comer.">
+<meta property="og:description" content="O cardápio completo das {len(cardapio['barracas'])} barracas: {distintos} pratos, com preço. Procure o que quer comer.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{e(SITE)}">
 <meta property="og:site_name" content="33ª Festa Italiana de São Caetano do Sul">
