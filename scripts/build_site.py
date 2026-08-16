@@ -338,10 +338,15 @@ def render_html(cardapio, categorias, evento, pratos):
     <a href="{e(LINKEDIN)}" target="_blank" rel="noopener">Marcelo Farias</a></p>
   <p class="rodape__aviso">Projeto voluntário e independente, sem vínculo com a Prefeitura
     de São Caetano do Sul ou com a organização da Festa Italiana. Cardápio e programação
-    extraídos do material oficial; preços e atrações podem mudar.</p>
+    extraídos do material oficial; preços e atrações podem mudar.<br>Medimos acessos de forma anônima, sem cookies.</p>
 </footer>
 
 <script src="app.js"></script>
+<!-- Cloudflare Web Analytics: sem cookie e sem dado pessoal, então não exige
+     banner de consentimento. type=module já adia a execução. O beacon rastreia
+     pushState sozinho, que é como toda a navegação interna funciona aqui. -->
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon='{{"token": "e88175fb06234c31a1a44aea5455f6e8"}}'></script>
 </body>
 </html>
 """
