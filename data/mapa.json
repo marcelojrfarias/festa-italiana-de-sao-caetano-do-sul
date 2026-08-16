@@ -116,21 +116,181 @@
   ],
   "areas": [
     {
-      "id": "paroquia",
+      "id": "quadra-paroquia",
       "nome": "Paróquia São Caetano",
-      "tipo": "referencia",
-      "ponto": [
-        -47.2,
-        25.2
+      "tipo": "edificado",
+      "rotulo": true,
+      "aproximado": true,
+      "poligono": [
+        [
+          -63.5,
+          34.1
+        ],
+        [
+          -42.0,
+          36.8
+        ],
+        [
+          -23.6,
+          32.5
+        ],
+        [
+          -23.1,
+          9.4
+        ],
+        [
+          -52.5,
+          7.9
+        ],
+        [
+          -64.0,
+          13.1
+        ]
+      ]
+    },
+    {
+      "id": "quadra-oeste",
+      "nome": null,
+      "tipo": "edificado",
+      "aproximado": true,
+      "poligono": [
+        [
+          -96.1,
+          17.8
+        ],
+        [
+          -71.4,
+          21.0
+        ],
+        [
+          -70.3,
+          -8.4
+        ],
+        [
+          -95.0,
+          -10.5
+        ]
+      ]
+    },
+    {
+      "id": "quadra-nordeste",
+      "nome": null,
+      "tipo": "edificado",
+      "aproximado": true,
+      "poligono": [
+        [
+          4.7,
+          36.8
+        ],
+        [
+          42.0,
+          37.8
+        ],
+        [
+          42.5,
+          6.3
+        ],
+        [
+          5.2,
+          5.2
+        ]
+      ]
+    },
+    {
+      "id": "quadra-sudeste",
+      "nome": null,
+      "tipo": "edificado",
+      "aproximado": true,
+      "poligono": [
+        [
+          3.1,
+          -2.6
+        ],
+        [
+          42.0,
+          -1.6
+        ],
+        [
+          42.5,
+          -36.8
+        ],
+        [
+          3.7,
+          -37.8
+        ]
+      ]
+    },
+    {
+      "id": "patio-sudeste",
+      "nome": null,
+      "tipo": "pavimento",
+      "aproximado": true,
+      "poligono": [
+        [
+          -15.8,
+          -40.9
+        ],
+        [
+          37.8,
+          -40.4
+        ],
+        [
+          38.3,
+          -88.2
+        ],
+        [
+          -15.2,
+          -88.7
+        ]
+      ]
+    },
+    {
+      "id": "largo",
+      "nome": null,
+      "tipo": "pavimento",
+      "aproximado": true,
+      "poligono": [
+        [
+          -99.8,
+          8.4
+        ],
+        [
+          -20.5,
+          8.9
+        ],
+        [
+          -19.9,
+          -27.8
+        ],
+        [
+          -99.2,
+          -28.3
+        ]
       ]
     },
     {
       "id": "parque-treviso",
       "nome": "Parque Província de Treviso",
-      "tipo": "referencia",
-      "ponto": [
-        -84.0,
-        -58.8
+      "tipo": "verde",
+      "rotulo": true,
+      "aproximado": true,
+      "poligono": [
+        [
+          -105.5,
+          -28.3
+        ],
+        [
+          -19.9,
+          -27.8
+        ],
+        [
+          -19.4,
+          -104.0
+        ],
+        [
+          -105.0,
+          -104.5
+        ]
       ]
     }
   ],

@@ -19,14 +19,23 @@ const ESTILO = `
 .croqui { --verde:#196B24; --verde-escuro:#095A34; --vermelho:#EE0000;
   --vermelho-logo:#BB2121; --bege:#E5B67E; --papel:#FFF8EE; --tinta:#2B1D10;
   --asfalto:#E8DCC8; --meio-fio:#CBB795;
+  --edificado:#DCD3C6; --verde-area:#C3D6B0; --pavimento:#EDE1CD;
   background:var(--papel); touch-action:none; display:block; width:100%; height:100%; }
 @media (prefers-color-scheme: dark) { .croqui {
   --papel:#14100B; --tinta:#F3E7D4; --asfalto:#2A2318; --meio-fio:#3D3423;
-  --verde:#4CAF5B; --verde-escuro:#2E7D46; --vermelho:#FF5A4D; --bege:#4A3B27; } }
+  --verde:#4CAF5B; --verde-escuro:#2E7D46; --vermelho:#FF5A4D; --bege:#4A3B27;
+  --edificado:#241D14; --verde-area:#1E2C1B; --pavimento:#1C1710; } }
 .croqui .via-base { stroke:var(--meio-fio); stroke-linecap:round; stroke-linejoin:round; fill:none; }
 .croqui .via { stroke:var(--asfalto); stroke-linecap:round; stroke-linejoin:round; fill:none; }
-.croqui .via-nome { fill:var(--tinta); opacity:.55; font:600 3px system-ui,sans-serif;
-  letter-spacing:.12px; text-anchor:middle; }
+.croqui .via-nome { fill:var(--tinta); opacity:.6; font:600 3px system-ui,sans-serif;
+  letter-spacing:.12px; text-anchor:middle;
+  stroke:var(--asfalto); stroke-width:.9; paint-order:stroke; }
+.croqui .area { stroke:none; }
+.croqui .area.edificado { fill:var(--edificado); }
+.croqui .area.verde { fill:var(--verde-area); }
+.croqui .area.pavimento { fill:var(--pavimento); }
+.croqui .area-nome { fill:var(--tinta); opacity:.75; font:600 3.2px system-ui,sans-serif;
+  text-anchor:middle; stroke:var(--papel); stroke-width:1.1; paint-order:stroke; }
 .croqui .referencia { fill:var(--verde-escuro); opacity:.75; }
 .croqui .referencia-nome { fill:var(--verde-escuro); font:600 3.4px system-ui,sans-serif;
   text-anchor:middle; opacity:.85; }
@@ -50,7 +59,7 @@ export function criarCroqui(hospedeiro, mapa, opcoes = {}) {
   folha.textContent = ESTILO;
   svg.append(folha);
   const camadas = {};
-  for (const nome of ['vias', 'referencias', 'barracas', 'voce']) {
+  for (const nome of ['areas', 'vias', 'referencias', 'barracas', 'voce']) {
     camadas[nome] = el('g', { class: `camada-${nome}` });
     svg.append(camadas[nome]);
   }
@@ -68,6 +77,7 @@ export function criarCroqui(hospedeiro, mapa, opcoes = {}) {
     const pts = [];
     for (const b of mapa.barracas) pts.push(...cantosDaBarraca(b));
     for (const a of mapa.areas || []) if (a.ponto) pts.push(a.ponto);
+    for (const a of mapa.areas || []) if (a.poligono) pts.push(...a.poligono);
     const xs = pts.map((p) => p[0]);
     const ys = pts.map((p) => p[1]);
     return {
@@ -107,15 +117,33 @@ export function criarCroqui(hospedeiro, mapa, opcoes = {}) {
     }
   }
 
+  function desenharAreas() {
+    const g = camadas.areas;
+    g.replaceChildren();
+    for (const a of mapa.areas || []) {
+      if (!a.poligono) continue;
+      g.append(el('polygon', { class: `area ${a.tipo || ''}`, points: a.poligono.map(P).join(' ') }));
+    }
+  }
+
   function desenharReferencias() {
     const g = camadas.referencias;
     g.replaceChildren();
     for (const a of mapa.areas || []) {
-      if (!a.ponto) continue;
-      g.append(el('circle', { class: 'referencia', cx: a.ponto[0], cy: -a.ponto[1], r: 1.6 }));
-      const t = el('text', { class: 'referencia-nome', x: a.ponto[0], y: -a.ponto[1] - 3 });
-      t.textContent = a.nome;
-      g.append(t);
+      if (!a.nome) continue;
+      if (a.ponto) {
+        g.append(el('circle', { class: 'referencia', cx: a.ponto[0], cy: -a.ponto[1], r: 1.6 }));
+        const t = el('text', { class: 'referencia-nome', x: a.ponto[0], y: -a.ponto[1] - 3 });
+        t.textContent = a.nome;
+        g.append(t);
+      } else if (a.rotulo && a.poligono) {
+        const n = a.poligono.length;
+        const cx = a.poligono.reduce((s, q) => s + q[0], 0) / n;
+        const cy = a.poligono.reduce((s, q) => s + q[1], 0) / n;
+        const t = el('text', { class: 'area-nome', x: cx, y: -cy });
+        t.textContent = a.nome;
+        g.append(t);
+      }
     }
   }
 
@@ -175,6 +203,7 @@ export function criarCroqui(hospedeiro, mapa, opcoes = {}) {
   }
 
   function redesenhar() {
+    desenharAreas();
     desenharVias();
     desenharReferencias();
     desenharBarracas();

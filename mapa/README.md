@@ -44,11 +44,27 @@ fundo, alinhe-a pelas ruas (escala, giro, e botão direito para arrastar) e
 ajuste as barracas. Cada uma que você tocar perde o `aproximado`; quando não
 sobrar nenhuma, o `_status` exportado vira `conferido` e o aviso some sozinho.
 
-O que mais ajudaria aqui é **o arquivo original da arte do banner** (PDF ou PNG,
-com os organizadores). Com ele dá para largar o traçado vetorial e usar a
-própria ilustração oficial como fundo do mapa, com as barracas viradas áreas
-clicáveis por cima — mais bonito, já familiar para quem viu o banner na rua, e
-sem nenhum palpite de escala.
+### Sobre a escala, e por que ela pode ficar como está
+
+A arte original do banner não deve aparecer, então o traçado vetorial é o que
+temos — e para o uso real ele basta. Duas estimativas independentes cercam o
+valor adotado de 0,105 m/px: o espaçamento da fila 12-28-27-22 (quatro tendas
+vizinhas, ~7 m de passo) dá 0,088–0,101, e a largura do leito da R. Mariano
+Pamplona dá 0,110–0,146. A incerteza fica em torno de ±20%.
+
+Isso não atrapalha achar barraca: ninguém navega por metro absoluto, navega pelo
+arranjo relativo — que é o oficial e está exato. **Só atrapalha o ponto azul.**
+±20% sobre 170 m desloca a ponta do mapa em ~34 m, então, se um dia houver
+georreferência, trate a posição como orientação grosseira e não como precisão de
+GPS.
+
+### O entorno é desenho próprio
+
+`areas` traz os quarteirões, o largo e o parque como polígonos simplificados,
+traçados a olho sobre a foto do banner e marcados `aproximado: true`. Servem para
+a pessoa se situar — "estou do lado da igreja", "isso aqui é o parque" — e não
+como levantamento. A ilustração do banner é dos organizadores; o que está aqui é
+redesenho simplificado.
 
 ## O contrato com o app do cardápio
 
