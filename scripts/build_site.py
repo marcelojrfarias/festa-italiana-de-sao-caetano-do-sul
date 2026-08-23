@@ -185,6 +185,11 @@ SINONIMOS = {
     "copo vinho tinto": "Vinho Tinto (Copo)",
     "copo vinho quente": "Vinho Quente (Copo)",
     "chopp vinho": "Chopp de Vinho",
+    # uma barraca escreve só "Cerveja"; é a mesma lata das outras
+    "cerveja original": "Cerveja 350 ml Original",
+    "cerveja heineken": "Cerveja 350 ml Heineken",
+    # uma barraca escreve a marca com hífen
+    "refrigerante 350 ml coca-cola": "Refrigerante 350 ml Coca Cola",
     "cannoli nutella": "Cannoli Alla Nutella",
     # doce de leite em três línguas
     "cannoli dulce di latte": "Cannoli Dolce di Latte",
@@ -199,6 +204,16 @@ def canonizar(titulo):
     palavras = [CORRECOES.get(sem_acento(w), w) for w in titulo.split()]
     corrigido = " ".join(palavras)
     return SINONIMOS.get(sem_acento(corrigido), corrigido)
+
+
+def conferir_expansao_manual(cardapio):
+    """Id que não existe mais no cardápio não separa nada e não avisa. Foi o que
+    aconteceu com a piadina: id errado, item seguiu inteiro, ninguém soube."""
+    ids = {it["id"] for b in cardapio["barracas"] for it in b["itens"]}
+    orfas = sorted(set(EXPANSAO_MANUAL) - ids)
+    if orfas:
+        raise SystemExit("expansão manual sem item correspondente: "
+                         + ", ".join(repr(o) for o in orfas))
 
 
 def conferir_sinonimos(cardapio):
@@ -312,6 +327,7 @@ def agrupar_pratos(cardapio, categorias):
     responde "onde tem tiramisù e por quanto" sem obrigar a varrer a lista.
     """
     atrib = categorias["atribuicoes"]
+    conferir_expansao_manual(cardapio)
     conferir_sinonimos(cardapio)
     grupos = {}
     for barraca in cardapio["barracas"]:
@@ -388,11 +404,24 @@ PREPOSICOES = {"al", "alla", "ai", "alle", "con", "in"}
 # 17 itens com variação; hoje só um precisa. A regra deriva o prefixo da
 # primeira preposição do primeiro segmento, e aqui não há preposição nenhuma —
 # "Merlot" e "Chardonnay" sairiam soltos, sem a palavra "Vinho".
+# Uma entrada pode ser só o título (a descrição do item vale para todos) ou o
+# par (título, descrição), quando cada variação precisa da sua.
 EXPANSAO_MANUAL = {
     "27-17-vinho-fino-cabernet-merlot-chardonnay-copo": [
         "Vinho Fino Cabernet (Copo)",
         "Vinho Fino Merlot (Copo)",
         "Vinho Fino Chardonnay (Copo)",
+    ],
+    # "recheada com Chocolate Tradicional ou Creme de Avelã" são dois recheios,
+    # dois pratos. Nenhuma regra separa isto com segurança: a piadina de
+    # mortadela da mesma barraca diz "com Mortadela e Requeijão ou Muçarela", e
+    # ali o "ou" escolhe o queijo de um prato só. A diferença está no sentido,
+    # não na forma.
+    "9-10-piadina-al-cioccolato": [
+        ("Piadina Al Cioccolato",
+         "Massa Italiana assada na Chapa recheada com Chocolate Tradicional"),
+        ("Piadina Alla Crema di Nocciole",
+         "Massa Italiana assada na Chapa recheada com Creme de Avelã"),
     ],
 }
 
@@ -506,6 +535,98 @@ def variacoes_por_virgula(titulo, descricao):
             [f"{d_cabeca} {x}".strip() for x in partes])
 
 
+# "sabores X, Y e Z" — a lista de sabores mora na descrição, e o título é um
+# nome só. Plural obrigatório: "sabor Cappuccino", no singular, descreve o
+# único sabor daquele prato e não abre lista nenhuma.
+MARCADOR_SABORES = re.compile(
+    r"(?:,\s*)?(?:dispon[ií]ve[li]s?\s+)?(?:n?os?\s+)?[–-]?\s*sabores\s+", re.I)
+
+# "Coca Cola Normal e Zero" é uma marca com duas versões, não duas marcas: o
+# "Normal e Zero" vira observação para o refrigerante de 31 barracas cair num
+# card só. Só a forma "as duas versões" entra aqui — "Heineken Zero", sozinho,
+# é outro produto e continua sendo um item separado.
+QUALIFICADOR_ZERO = re.compile(r"\s+(?:Normal\s+[eE]\s+Zero|[eE]\s+\S+\s+Zero)$")
+
+# Títulos em que o nome é a embalagem e o produto está na descrição. Lista à
+# mão de propósito: o travessão que separa marcas em "Amstel – Heineken" separa
+# volume de cervejaria em "500 ml – Germânia", e nenhuma regra de forma
+# distingue os dois. Fora desta lista, descrição com travessão fica intacta.
+SABOR_NA_DESCRICAO = {"refrigerante 350 ml", "cerveja 350 ml", "cerveja",
+                      "suco (lata)", "suco 200 ml", "h2o", "agua"}
+
+MEDIDA = re.compile(r"^\d+([.,]\d+)?\s*(ml|l|litros?)$", re.I)
+PARENTESE = re.compile(r"\s*\(([^)]*)\)\s*$")
+
+
+def _lista_enumerada(txt):
+    """'a, b, c e d' ou 'a, b ou c' -> [a, b, c, d]."""
+    partes = [x.strip(" .") for x in txt.split(",") if x.strip(" .")]
+    if partes:
+        for sep in (" ou ", " e "):
+            if sep in partes[-1]:
+                cabeca, _, fim = partes[-1].rpartition(sep)
+                partes = partes[:-1] + [cabeca.strip(), fim.strip()]
+                break
+    return [p for p in partes if p]
+
+
+def variacoes_por_descricao(titulo, descricao):
+    """Sabores que só existem na descrição, com o título genérico.
+
+    "Pizza Intera" com "sabores Muçarela, Calabresa, Três Queijos e Margherita"
+    é quatro pizzas num card só, e quem procura margherita não acha o card.
+    Vira um item por sabor, com a descrição refeita para falar do sabor dele.
+
+    Dois formatos:
+
+      marcador  a descrição anuncia "sabores" no plural e enumera em seguida
+      barras    a descrição é só a lista, "Coca Cola / Guaraná / Sprite",
+                sem nenhuma prosa em volta
+
+    O segundo exige trechos curtos justamente para não morder descrição de
+    comida, que usa "/" para outra coisa — "Mussarela Vegetariana com Tomate e
+    Manjericão/ Abobrinha" é longa e fica de fora.
+    """
+    if not descricao:
+        return None
+
+    m = MARCADOR_SABORES.search(descricao)
+    if m:
+        cabeca = descricao[:m.start()].strip(" ,–-")
+        itens = _lista_enumerada(descricao[m.end():])
+        if len(itens) < 2:
+            return None
+        return ([f"{titulo} {x}" for x in itens],
+                [f"{cabeca} sabor {x}" if cabeca else "" for x in itens])
+
+    if sem_acento(titulo) not in SABOR_NA_DESCRICAO:
+        return None
+
+    segmentos = [x.strip() for x in re.split(r"[/–]", descricao) if x.strip()]
+    # "Manga e Uva" e "Original e Limoneto" são duas coisas; já "Coca Cola
+    # Normal e Zero" é uma. O que separa é ter vindo de um segmento só: quando
+    # o corte por barra ou travessão já rendeu vários, o "e" que sobra é parte
+    # do nome.
+    if len(segmentos) == 1 and " e " in segmentos[0]:
+        segmentos = [x.strip() for x in segmentos[0].split(" e ") if x.strip()]
+    # "510 ml" em "Com Gás – 510 ml" é atributo da água, não outro sabor
+    medidas = [x for x in segmentos if MEDIDA.match(x)]
+    segmentos = [x for x in segmentos if not MEDIDA.match(x)]
+    if not segmentos:
+        return None
+
+    titulos, descricoes = [], []
+    for seg in segmentos:
+        base = QUALIFICADOR_ZERO.sub("", seg).strip()
+        nota = "Normal e Zero" if base != seg else ""
+        entre = PARENTESE.search(base)
+        if entre:
+            base, nota = PARENTESE.sub("", base).strip(), entre.group(1)
+        titulos.append(f"{titulo} {base}")
+        descricoes.append(", ".join(x for x in [nota] + medidas if x))
+    return titulos, descricoes
+
+
 def expandir_titulo(item):
     """Um item por sabor ou formato de massa.
 
@@ -532,12 +653,14 @@ def expandir_titulo(item):
         desc = ""
 
     if item["id"] in EXPANSAO_MANUAL:
-        return [(t, desc) for t in EXPANSAO_MANUAL[item["id"]]]
+        return [x if isinstance(x, tuple) else (x, desc)
+                for x in EXPANSAO_MANUAL[item["id"]]]
     v = item.get("variacoes") or []
     if len(v) < 2:
-        por_virgula = variacoes_por_virgula(item["titulo"], desc)
-        if por_virgula:
-            return list(zip(*por_virgula))
+        for regra in (variacoes_por_virgula, variacoes_por_descricao):
+            achou = regra(item["titulo"], desc)
+            if achou:
+                return list(zip(*achou))
         return [(item["titulo"], desc)]
 
     primeiro, ultimo = v[0].split(), v[-1].split()
