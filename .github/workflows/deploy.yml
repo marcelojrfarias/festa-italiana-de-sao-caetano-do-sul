@@ -37,6 +37,11 @@ jobs:
           python3 scripts/classify_categories.py
           git diff --exit-code data/categorias-site.json
 
+      # a expansão de sabores é decidida à mão; isto aponta item novo que
+      # talvez precise entrar na tabela, em vez de deixar passar em silêncio
+      - name: Conferir expansão de sabores
+        run: python3 scripts/revisar_expansao.py
+
       - name: Gerar site
         run: python3 scripts/build_site.py
 

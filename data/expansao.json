@@ -1,0 +1,1335 @@
+{
+ "_descricao": "Como cada item impresso do cardápio vira um ou mais pratos na tela. Decidido item a item, à mão: o cardápio é uma lista fechada de 645 itens e as formas de enumerar sabor nele não seguem regra. Item ausente daqui aparece como está impresso. scripts/revisar_expansao.py aponta o que talvez precise entrar.",
+ "itens": {
+  "1-06-cannoli-alla-crema-mousse-al-cioccolato-nutella-fior-di-latt": [
+   [
+    "Cannoli Alla Crema",
+    "Massa Crocante recheada com Creme"
+   ],
+   [
+    "Cannoli Mousse Al Cioccolato",
+    "Massa Crocante recheada com Mousse de Chocolate"
+   ],
+   [
+    "Cannoli Alla Nutella",
+    "Massa Crocante recheada com Nutella"
+   ],
+   [
+    "Cannoli Fior di Latte",
+    "Massa Crocante recheada com Creme de Leite"
+   ]
+  ],
+  "1-19-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "1-20-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "1-21-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Tônica",
+    "Normal e Zero"
+   ]
+  ],
+  "1-22-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ],
+   [
+    "Cerveja 350 ml Brahma",
+    ""
+   ],
+   [
+    "Cerveja 350 ml Skol",
+    ""
+   ]
+  ],
+  "10-06-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "10-07-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "11-04-cannoncini-alla-crema-kinder-pistacchio-malto-croccante": [
+   [
+    "Cannoncini Alla Crema Kinder",
+    "Massa Folhada recheada com Creme Kinder"
+   ],
+   [
+    "Cannoncini Pistacchio",
+    "Massa Folhada recheada com Pistache"
+   ],
+   [
+    "Cannoncini Malto Croccante",
+    "Massa Folhada recheada com Ovomaltine"
+   ]
+  ],
+  "11-05-cannoli-alla-crema-dolce-di-latte": [
+   [
+    "Cannoli Alla Crema",
+    "Massa Crocante recheada com Creme"
+   ],
+   [
+    "Cannoli Dolce di Latte",
+    "Massa Crocante recheada com Doce de Leite"
+   ]
+  ],
+  "11-10-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "11-11-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "11-12-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Sprite",
+    ""
+   ]
+  ],
+  "12-06-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "12-07-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "13-05-cannoli-alla-crema-cioccolato-dolce-di-latte": [
+   [
+    "Cannoli Alla Crema",
+    "Massa Crocante recheada com Creme"
+   ],
+   [
+    "Cannoli Cioccolato",
+    "Massa Crocante recheada com Chocolate"
+   ],
+   [
+    "Cannoli Dolce di Latte",
+    "Massa Crocante recheada com Doce de Leite"
+   ]
+  ],
+  "13-17-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "13-18-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "13-19-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Sprite",
+    ""
+   ],
+   [
+    "Refrigerante 350 ml Água Tônica",
+    ""
+   ]
+  ],
+  "13-20-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Original",
+    ""
+   ],
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "14-07-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "14-08-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "14-09-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "14-10-suco-del-valle": [
+   [
+    "Suco Del Valle Uva",
+    ""
+   ],
+   [
+    "Suco Del Valle Maracujá",
+    ""
+   ]
+  ],
+  "14-11-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Original",
+    ""
+   ],
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "15-09-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "15-10-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "15-11-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "15-12-cerveja": [
+   [
+    "Cerveja 350 ml Original",
+    ""
+   ],
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "16-06-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "16-07-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "16-08-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "16-10-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Heineken Zero",
+    "Sem álcool"
+   ]
+  ],
+  "17-14-cannoli-alla-crema-dolce-di-latte-nutella": [
+   [
+    "Cannoli Alla Crema",
+    "Massa Crocante recheada com Creme"
+   ],
+   [
+    "Cannoli Dolce di Latte",
+    "Massa Crocante recheada com Doce de Leite"
+   ],
+   [
+    "Cannoli Alla Nutella",
+    "Massa Crocante recheada com Nutella"
+   ]
+  ],
+  "17-16-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "17-17-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "17-18-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "17-21-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "18-14-cannoli-alla-crema-dolce-di-latte-nutella": [
+   [
+    "Cannoli Alla Crema",
+    "Massa Crocante recheada com Creme"
+   ],
+   [
+    "Cannoli Dolce di Latte",
+    "Massa Crocante recheada com Doce de Leite"
+   ],
+   [
+    "Cannoli Alla Nutella",
+    "Massa Crocante recheada com Nutella"
+   ]
+  ],
+  "18-16-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "18-17-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "18-18-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "18-21-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "19-17-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "19-18-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "19-19-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "2-09-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "2-10-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "2-11-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "2-12-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Amstel",
+    ""
+   ],
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "20-21-04-spaghetti-penne-rigati-farfalle-al-sugo": [
+   [
+    "Spaghetti Al Sugo",
+    "Macarrão Tipo Espaguete ao Molho de Tomate"
+   ],
+   [
+    "Penne Rigati Al Sugo",
+    "Macarrão Tipo Penne ao Molho de Tomate"
+   ],
+   [
+    "Farfalle Al Sugo",
+    "Macarrão Tipo \"Gravatinha\" ao Molho de Tomate"
+   ]
+  ],
+  "20-21-05-spaghetti-penne-rigate-farfalle-al-sugo-alla-salsiccia-calab": [
+   [
+    "Spaghetti Al Sugo Alla Salsiccia Calabrese",
+    "Macarrão Tipo Espaguete ao Molho de Tomate e Linguiça Calabresa"
+   ],
+   [
+    "Penne Rigate Al Sugo Alla Salsiccia Calabrese",
+    "Macarrão Tipo Penne ao Molho de Tomate e Linguiça Calabresa"
+   ],
+   [
+    "Farfalle Al Sugo Alla Salsiccia Calabrese",
+    "Macarrão Tipo \"Gravatinha\" ao Molho de Tomate e Linguiça Calabresa"
+   ]
+  ],
+  "20-21-06-spaghetti-penne-rigati-farfalle-alla-bolognese": [
+   [
+    "Spaghetti Alla Bolognese",
+    "Macarrão Tipo Espaguete ao Molho de Tomate com Carne"
+   ],
+   [
+    "Penne Rigati Alla Bolognese",
+    "Macarrão Tipo Penne ao Molho de Tomate com Carne"
+   ],
+   [
+    "Farfalle Alla Bolognese",
+    "Macarrão Tipo \"Gravatinha\" ao Molho de Tomate com Carne"
+   ]
+  ],
+  "20-21-07-spaghetti-penne-rigati-farfalle-alla-besciamella": [
+   [
+    "Spaghetti Alla Besciamella",
+    "Macarrão Tipo Espaguete ao Molho Branco"
+   ],
+   [
+    "Penne Rigati Alla Besciamella",
+    "Macarrão Tipo Penne ao Molho Branco"
+   ],
+   [
+    "Farfalle Alla Besciamella",
+    "Macarrão Tipo \"Gravatinha\" ao Molho Branco"
+   ]
+  ],
+  "20-21-08-spaghetti-penne-rigati-farfalle-con-caponata-di-melanzane-ve": [
+   [
+    "Spaghetti con Caponata Di Melanzane - Vegetariano",
+    "Macarrão Tipo Espaguete servido à Caponata de Berinjela"
+   ],
+   [
+    "Penne Rigati con Caponata Di Melanzane - Vegetariano",
+    "Macarrão Tipo Penne servido à Caponata de Berinjela"
+   ],
+   [
+    "Farfalle con Caponata Di Melanzane - Vegetariano",
+    "Macarrão Tipo \"Gravatinha\" servido à Caponata de Berinjela"
+   ]
+  ],
+  "20-21-09-gnochi-al-sugo-al-sugo-alla-salsiccia-calabrese-alla-bologne": [
+   [
+    "Gnocchi Al Sugo",
+    "Macarrão Tipo Nhoque ao Molho de Tomate"
+   ],
+   [
+    "Gnocchi Al Sugo Alla Salsiccia Calabrese",
+    "Macarrão Tipo Nhoque ao Molho de Tomate com Linguiça Calabresa"
+   ],
+   [
+    "Gnocchi Alla Bolognese",
+    "Macarrão Tipo Nhoque ao Molho de Tomate com Carne"
+   ],
+   [
+    "Gnocchi Alla Besciamella",
+    "Macarrão Tipo Nhoque ao Molho Branco"
+   ]
+  ],
+  "20-21-14-pizza-intera": [
+   [
+    "Pizza Intera Muçarela",
+    "Pizza Inteira sabor Muçarela"
+   ],
+   [
+    "Pizza Intera Calabresa",
+    "Pizza Inteira sabor Calabresa"
+   ],
+   [
+    "Pizza Intera Três Queijos",
+    "Pizza Inteira sabor Três Queijos"
+   ],
+   [
+    "Pizza Intera Margherita",
+    "Pizza Inteira sabor Margherita"
+   ]
+  ],
+  "20-21-17-fetta-di-pizza": [
+   [
+    "Fetta di Pizza Muçarela",
+    "Fatia de Pizza sabor Muçarela"
+   ],
+   [
+    "Fetta di Pizza Calabresa",
+    "Fatia de Pizza sabor Calabresa"
+   ],
+   [
+    "Fetta di Pizza Três Queijos",
+    "Fatia de Pizza sabor Três Queijos"
+   ],
+   [
+    "Fetta di Pizza Margherita",
+    "Fatia de Pizza sabor Margherita"
+   ]
+  ],
+  "20-21-19-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "20-21-20-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "20-21-21-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "22-07-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "22-08-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "22-09-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "23-10-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "23-11-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "23-12-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "23-13-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "24-11-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "24-12-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "24-13-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "24-15-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "25-17-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "25-18-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "25-19-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml",
+    ""
+   ]
+  ],
+  "25-20-suco-lata": [
+   [
+    "Suco de Manga (Lata)",
+    ""
+   ],
+   [
+    "Suco de Uva (Lata)",
+    ""
+   ]
+  ],
+  "26-05-pizza-tradizionale-18-cm-al-formaggio-alla-salsiccia-calabre": [
+   [
+    "Pizza Tradizionale 18 cm Al Formaggio",
+    "Pizza Tradicional 18 cm – Mussarela"
+   ],
+   [
+    "Pizza Tradizionale 18 cm Alla Salsiccia Calabrese",
+    "Pizza Tradicional 18 cm – Calabresa"
+   ],
+   [
+    "Pizza Tradizionale 18 cm Alla Salsiccia Calabrese e Formaggio",
+    "Pizza Tradicional 18 cm – Calabresa com Queijo"
+   ],
+   [
+    "Pizza Tradizionale 18 cm Alla Salsiccia Calabrese e Catupiry",
+    "Pizza Tradicional 18 cm – Calabresa com Catupiry"
+   ],
+   [
+    "Pizza Tradizionale 18 cm Margherita Ai Due Formaggi",
+    "Pizza Tradicional 18 cm – Mussarela com Tomate e Manjericão e Dois Queijos"
+   ]
+  ],
+  "26-06-pizza-vegana-18-cm-margherita-vegana-alle-zucchine-alla-sals": [
+   [
+    "Pizza Vegana 18 cm Margherita Vegana",
+    "Pizza Vegana 18 cm – Mussarela Vegetariana com Tomate e Manjericão"
+   ],
+   [
+    "Pizza Vegana 18 cm Alle Zucchine",
+    "Pizza Vegana 18 cm – Abobrinha"
+   ],
+   [
+    "Pizza Vegana 18 cm Alla Salsiccia Vegetale e Catupiry Vegetale",
+    "Pizza Vegana 18 cm – Calabresa de Soja com Catupiry"
+   ]
+  ],
+  "26-19-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "26-20-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "26-21-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    ""
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    ""
+   ],
+   [
+    "Refrigerante 350 ml Pepsi",
+    ""
+   ],
+   [
+    "Refrigerante 350 ml Fanta Laranja",
+    ""
+   ],
+   [
+    "Refrigerante 350 ml Fanta Uva",
+    ""
+   ],
+   [
+    "Refrigerante 350 ml Sprite",
+    ""
+   ]
+  ],
+  "26-23-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "27-07-cannoli": [
+   [
+    "Cannoli",
+    "Massa Crocante recheada com Creme"
+   ]
+  ],
+  "27-09-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "27-10-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "27-11-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml",
+    ""
+   ]
+  ],
+  "27-12-suco-200-ml": [
+   [
+    "Suco de Uva 200 ml",
+    "Tinto ou Branco"
+   ]
+  ],
+  "27-17-vinho-fino-cabernet-merlot-chardonnay-copo": [
+   [
+    "Vinho Fino Cabernet (Copo)",
+    "250 ml"
+   ],
+   [
+    "Vinho Fino Merlot (Copo)",
+    "250 ml"
+   ],
+   [
+    "Vinho Fino Chardonnay (Copo)",
+    "250 ml"
+   ]
+  ],
+  "29-10-cannoli": [
+   [
+    "Cannoli",
+    "Massa Crocante recheada com Creme"
+   ]
+  ],
+  "29-13-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "29-14-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "29-15-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    ""
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    ""
+   ]
+  ],
+  "29-16-suco-200-ml": [
+   [
+    "Suco de Uva 200 ml",
+    ""
+   ]
+  ],
+  "29-17-h2o": [
+   [
+    "H2o Original",
+    ""
+   ],
+   [
+    "H2o Limoneto",
+    ""
+   ]
+  ],
+  "3-04-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "3-05-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "3-07-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Brahma DP Malte",
+    ""
+   ],
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "30-09-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "30-10-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "30-11-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "30-13-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Heineken Zero",
+    "Sem álcool"
+   ]
+  ],
+  "31-06-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "31-07-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "31-08-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Fanta Laranja",
+    ""
+   ],
+   [
+    "Refrigerante 350 ml Soda Limonada",
+    ""
+   ]
+  ],
+  "32-25-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "32-26-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "32-27-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "33-23-gelato-al-cioccolato-alla-fragola-e-alla-crema": [
+   [
+    "Gelato Al Cioccolato",
+    "Sorvete Italiano sabor Chocolate"
+   ],
+   [
+    "Gelato Alla Fragola",
+    "Sorvete Italiano sabor Morango"
+   ],
+   [
+    "Gelato Alla Crema",
+    "Sorvete Italiano sabor Creme"
+   ]
+  ],
+  "33-24-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "33-25-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "33-26-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "34-16-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "34-17-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "34-18-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "35-17-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "35-18-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "35-19-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "35-20-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Original",
+    ""
+   ],
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "36-15-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "36-16-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "36-17-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "36-19-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Original",
+    ""
+   ],
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "4-07-frappe": [
+   [
+    "Frappè Morango",
+    "Um Milkshake Ultra Cremoso batido com Sorvete de Baunilha, sabor Morango"
+   ],
+   [
+    "Frappè Chocolate",
+    "Um Milkshake Ultra Cremoso batido com Sorvete de Baunilha, sabor Chocolate"
+   ],
+   [
+    "Frappè Oreo",
+    "Um Milkshake Ultra Cremoso batido com Sorvete de Baunilha, sabor Oreo"
+   ],
+   [
+    "Frappè Ninho",
+    "Um Milkshake Ultra Cremoso batido com Sorvete de Baunilha, sabor Ninho"
+   ],
+   [
+    "Frappè Ovomaltine",
+    "Um Milkshake Ultra Cremoso batido com Sorvete de Baunilha, sabor Ovomaltine"
+   ]
+  ],
+  "4-14-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "4-15-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "4-16-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "4-17-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "5-13-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "5-14-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "5-15-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "5-16-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ],
+   [
+    "Cerveja 350 ml Original",
+    ""
+   ]
+  ],
+  "6-06-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "6-07-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "6-08-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml H2o",
+    ""
+   ]
+  ],
+  "7-12-cannoli-alla-crema-mousse-al-cioccolato-dulce-di-latte": [
+   [
+    "Cannoli Alla Crema",
+    "Massa Crocante recheada com Creme"
+   ],
+   [
+    "Cannoli Mousse Al Cioccolato",
+    "Massa Crocante recheada com Mousse de Chocolate"
+   ],
+   [
+    "Cannoli Dolce di Latte",
+    "Massa Crocante recheada com Doce de Leite"
+   ]
+  ],
+  "7-20-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "7-21-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "7-22-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "7-23-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "8-07-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "8-08-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "8-09-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ],
+  "8-10-cerveja-350-ml": [
+   [
+    "Cerveja 350 ml Original",
+    ""
+   ],
+   [
+    "Cerveja 350 ml Heineken",
+    ""
+   ]
+  ],
+  "9-08-millefoglie-alla-crema-fior-di-latte": [
+   [
+    "Millefoglie Alla Crema",
+    "Massa Folhada recheada com Creme"
+   ],
+   [
+    "Millefoglie Fior di Latte",
+    "Massa Folhada recheada com Flor de Leite"
+   ]
+  ],
+  "9-10-piadina-al-cioccolato": [
+   [
+    "Piadina Al Cioccolato",
+    "Massa Italiana assada na Chapa recheada com Chocolate Tradicional"
+   ],
+   [
+    "Piadina Alla Crema di Nocciole",
+    "Massa Italiana assada na Chapa recheada com Creme de Avelã"
+   ]
+  ],
+  "9-11-cannoli-alla-crema-fior-di-latte-latte-in-polvere": [
+   [
+    "Cannoli Alla Crema",
+    "Massa Crocante recheada com Creme"
+   ],
+   [
+    "Cannoli Fior di Latte",
+    "Massa Crocante recheada com Flor de Leite"
+   ],
+   [
+    "Cannoli Latte in Polvere",
+    "Massa Crocante recheada com Leite em Pó"
+   ]
+  ],
+  "9-13-pastiera-di-grano-alla-crema-fior-di-latte": [
+   [
+    "Pastiera di Grano Alla Crema",
+    "Torta de Trigo recheada com Creme"
+   ],
+   [
+    "Pastiera di Grano Fior di Latte",
+    "Torta de Trigo recheada com Flor de Leite"
+   ]
+  ],
+  "9-14-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "9-15-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "9-16-refrigerante-350-ml": [
+   [
+    "Refrigerante 350 ml Coca Cola",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante 350 ml Guaraná",
+    "Normal e Zero"
+   ]
+  ]
+ }
+}
