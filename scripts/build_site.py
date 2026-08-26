@@ -392,19 +392,15 @@ def bucket_preco(v):
 
 
 # Como cada item impresso vira um ou mais pratos na tela. A decisão é dado, não
-# regra: está em data/expansao.json, escrita item a item.
+# regra: está em data/expansao.json, e a regra que a produziu, em prosa, está em
+# docs/curadoria.md. O cardápio é uma lista fechada de 645 itens escrita por 35
+# entidades; a decisão foi tomada item a item, lendo o PDF.
 #
-# Houve uma tentativa de deduzir isso do texto. Foram 214 linhas de expressão
-# regular para decidir 149 itens, e cada rodada revelava uma forma nova — barra,
-# vírgula, travessão, "sabores" no plural, "Normal e Zero" que funde mas "Zero"
-# que não, medida que não é sabor, o travessão que separa marcas na cerveja e
-# separa volume de cervejaria no chopp. O cardápio não segue regra nenhuma
-# porque foi escrito por 35 entidades, cada uma do seu jeito.
-#
-# Pior que o esforço era o modo de falha: regra errada produz prato errado em
-# silêncio. Cinco massas passaram meses dizendo "Espaguete, Penne ou Gravatinha"
-# no card da farfalle, e as pizzas de sabor ficaram inteiras sem ninguém notar.
-# Tabela errada, ao contrário, se lê.
+# Houve uma tentativa de deduzir isso do texto — 214 linhas de expressão regular
+# para 149 itens, e cada rodada revelava uma forma nova de enumerar. O custo
+# maior não era o esforço: regra errada produz prato errado em silêncio. Cinco
+# massas passaram meses dizendo "Espaguete, Penne ou Gravatinha" no card da
+# farfalle, e as pizzas de sabor ficaram inteiras sem ninguém notar.
 EXPANSAO = json.loads((DADOS / "expansao.json").read_text(encoding="utf-8"))["itens"]
 
 
