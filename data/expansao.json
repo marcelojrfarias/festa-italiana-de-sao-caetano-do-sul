@@ -34,29 +34,29 @@
   ],
   "1-21-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Tônica",
+    "Refrigerante Tônica (350 ml)",
     "Normal e Zero"
    ]
   ],
   "1-22-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ],
    [
-    "Cerveja 350 ml Brahma",
+    "Cerveja Brahma (350 ml)",
     ""
    ],
    [
-    "Cerveja 350 ml Skol",
+    "Cerveja Skol (350 ml)",
     ""
    ]
   ],
@@ -68,11 +68,11 @@
   ],
   "10-07-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
@@ -114,15 +114,15 @@
   ],
   "11-12-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Sprite",
+    "Refrigerante Sprite (350 ml)",
     ""
    ]
   ],
@@ -134,11 +134,11 @@
   ],
   "12-07-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
@@ -180,29 +180,29 @@
   ],
   "13-19-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Sprite",
+    "Refrigerante Sprite (350 ml)",
     ""
    ],
    [
-    "Refrigerante 350 ml Água Tônica",
+    "Refrigerante Água Tônica (350 ml)",
     ""
    ]
   ],
   "13-20-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Original",
+    "Cerveja Original (350 ml)",
     ""
    ],
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ]
   ],
@@ -220,11 +220,11 @@
   ],
   "14-09-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
@@ -240,11 +240,11 @@
   ],
   "14-11-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Original",
+    "Cerveja Original (350 ml)",
     ""
    ],
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ]
   ],
@@ -262,22 +262,40 @@
   ],
   "15-11-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
   "15-12-cerveja": [
    [
-    "Cerveja 350 ml Original",
+    "Cerveja Original (350 ml)",
     ""
    ],
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
+   ]
+  ],
+  "16-01-bruschetta-al-pomodoro-3-unita": [
+   [
+    "Bruschetta Al Pomodoro (3 unità)",
+    "Fatias de Pão Italiano com Tomate, Muçarela e Manjericão (3 unidades)"
+   ]
+  ],
+  "16-02-bruschetta-al-gorgonzola-e-miele-3-unita": [
+   [
+    "Bruschetta Al Gorgonzola e Miele (3 unità)",
+    "Fatias de Pão Italiano com Gongorzola e Mel (3 unidades)"
+   ]
+  ],
+  "16-03-cochiarella-1-unita": [
+   [
+    "Cochiarella (1 unità)",
+    "Salgado Frito recheado com Mortadela Italiana (1 unidade)"
    ]
   ],
   "16-06-agua": [
@@ -294,17 +312,17 @@
   ],
   "16-08-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
   "16-10-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Heineken Zero",
+    "Cerveja Heineken Zero (350 ml)",
     "Sem álcool"
    ]
   ],
@@ -346,17 +364,17 @@
   ],
   "17-18-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
   "17-21-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ]
   ],
@@ -408,17 +426,17 @@
   ],
   "18-18-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
   "18-21-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ]
   ],
@@ -456,11 +474,11 @@
   ],
   "19-19-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
@@ -488,21 +506,21 @@
   ],
   "2-11-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
   "2-12-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Amstel",
+    "Cerveja Amstel (350 ml)",
     ""
    ],
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ]
   ],
@@ -574,15 +592,15 @@
   ],
   "20-21-08-spaghetti-penne-rigati-farfalle-con-caponata-di-melanzane-ve": [
    [
-    "Spaghetti con Caponata Di Melanzane - Vegetariano",
+    "Spaghetti con Caponata Di Melanzane (Vegetariano)",
     "Macarrão Tipo Espaguete servido à Caponata de Berinjela"
    ],
    [
-    "Penne Rigati con Caponata Di Melanzane - Vegetariano",
+    "Penne Rigati con Caponata Di Melanzane (Vegetariano)",
     "Macarrão Tipo Penne servido à Caponata de Berinjela"
    ],
    [
-    "Farfalle con Caponata Di Melanzane - Vegetariano",
+    "Farfalle con Caponata Di Melanzane (Vegetariano)",
     "Macarrão Tipo \"Gravatinha\" servido à Caponata de Berinjela"
    ]
   ],
@@ -654,11 +672,11 @@
   ],
   "20-21-21-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
@@ -676,11 +694,11 @@
   ],
   "22-09-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
@@ -698,17 +716,17 @@
   ],
   "23-12-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
   "23-13-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ]
   ],
@@ -726,17 +744,17 @@
   ],
   "24-13-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
   "24-15-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ]
   ],
@@ -774,7 +792,7 @@
   ],
   "25-19-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml",
+    "Refrigerante (350 ml)",
     ""
    ]
   ],
@@ -796,38 +814,38 @@
   ],
   "26-05-pizza-tradizionale-18-cm-al-formaggio-alla-salsiccia-calabre": [
    [
-    "Pizza Tradizionale 18 cm Al Formaggio",
-    "Pizza Tradicional 18 cm – Mussarela"
+    "Pizza Tradizionale Al Formaggio (18 cm)",
+    "Pizza Tradicional – Mussarela"
    ],
    [
-    "Pizza Tradizionale 18 cm Alla Salsiccia Calabrese",
-    "Pizza Tradicional 18 cm – Calabresa"
+    "Pizza Tradizionale Alla Salsiccia Calabrese (18 cm)",
+    "Pizza Tradicional – Calabresa"
    ],
    [
-    "Pizza Tradizionale 18 cm Alla Salsiccia Calabrese e Formaggio",
-    "Pizza Tradicional 18 cm – Calabresa com Queijo"
+    "Pizza Tradizionale Alla Salsiccia Calabrese e Formaggio (18 cm)",
+    "Pizza Tradicional – Calabresa com Queijo"
    ],
    [
-    "Pizza Tradizionale 18 cm Alla Salsiccia Calabrese e Catupiry",
-    "Pizza Tradicional 18 cm – Calabresa com Catupiry"
+    "Pizza Tradizionale Alla Salsiccia Calabrese e Catupiry (18 cm)",
+    "Pizza Tradicional – Calabresa com Catupiry"
    ],
    [
-    "Pizza Tradizionale 18 cm Margherita Ai Due Formaggi",
-    "Pizza Tradicional 18 cm – Mussarela com Tomate e Manjericão e Dois Queijos"
+    "Pizza Tradizionale Margherita Ai Due Formaggi (18 cm)",
+    "Pizza Tradicional – Mussarela com Tomate e Manjericão e Dois Queijos"
    ]
   ],
   "26-06-pizza-vegana-18-cm-margherita-vegana-alle-zucchine-alla-sals": [
    [
-    "Pizza Vegana 18 cm Margherita Vegana",
-    "Pizza Vegana 18 cm – Mussarela Vegetariana com Tomate e Manjericão"
+    "Pizza Vegana Margherita Vegana (18 cm)",
+    "Pizza Vegana – Mussarela Vegetariana com Tomate e Manjericão"
    ],
    [
-    "Pizza Vegana 18 cm Alle Zucchine",
-    "Pizza Vegana 18 cm – Abobrinha"
+    "Pizza Vegana Alle Zucchine (18 cm)",
+    "Pizza Vegana – Abobrinha"
    ],
    [
-    "Pizza Vegana 18 cm Alla Salsiccia Vegetale e Catupiry Vegetale",
-    "Pizza Vegana 18 cm – Calabresa de Soja com Catupiry"
+    "Pizza Vegana Alla Salsiccia Vegetale e Catupiry Vegetale (18 cm)",
+    "Pizza Vegana – Calabresa de Soja com Catupiry"
    ]
   ],
   "26-19-agua": [
@@ -844,27 +862,27 @@
   ],
   "26-21-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     ""
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     ""
    ],
    [
-    "Refrigerante 350 ml Pepsi",
+    "Refrigerante Pepsi (350 ml)",
     ""
    ],
    [
-    "Refrigerante 350 ml Fanta Laranja",
+    "Refrigerante Fanta Laranja (350 ml)",
     ""
    ],
    [
-    "Refrigerante 350 ml Fanta Uva",
+    "Refrigerante Fanta Uva (350 ml)",
     ""
    ],
    [
-    "Refrigerante 350 ml Sprite",
+    "Refrigerante Sprite (350 ml)",
     ""
    ]
   ],
@@ -880,7 +898,7 @@
   ],
   "26-23-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ]
   ],
@@ -924,7 +942,7 @@
   ],
   "27-11-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml",
+    "Refrigerante (350 ml)",
     ""
    ]
   ],
@@ -936,6 +954,12 @@
    [
     "Suco de Uva Branco (Copo)",
     "200 ml"
+   ]
+  ],
+  "27-16-vinho-mesa-artesanal-copo": [
+   [
+    "Vinho de Mesa Artesanal (Copo)",
+    "250 ml"
    ]
   ],
   "27-17-vinho-fino-cabernet-merlot-chardonnay-copo": [
@@ -972,11 +996,11 @@
   ],
   "29-15-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     ""
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     ""
    ]
   ],
@@ -1004,21 +1028,21 @@
   ],
   "3-05-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
   "3-07-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Brahma DP Malte",
+    "Cerveja Brahma DP Malte (350 ml)",
     ""
    ],
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ]
   ],
@@ -1036,11 +1060,11 @@
   ],
   "30-11-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
@@ -1052,7 +1076,7 @@
   ],
   "30-13-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Heineken Zero",
+    "Cerveja Heineken Zero (350 ml)",
     "Sem álcool"
    ]
   ],
@@ -1084,19 +1108,19 @@
   ],
   "31-08-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Fanta Laranja",
+    "Refrigerante Fanta Laranja (350 ml)",
     ""
    ],
    [
-    "Refrigerante 350 ml Soda Limonada",
+    "Refrigerante Soda Limonada (350 ml)",
     ""
    ]
   ],
@@ -1113,11 +1137,17 @@
   "31-10-vinho-tinto-ou-branco-garrafa": [
    [
     "Vinho Tinto (Garrafa)",
-    "Garrafa"
+    ""
    ],
    [
     "Vinho Branco (Garrafa)",
-    "Garrafa"
+    ""
+   ]
+  ],
+  "32-01-bruschetta-al-pomodoro-3-unita": [
+   [
+    "Bruschetta Al Pomodoro (3 unità)",
+    "Fatias de Pão Italiano com Tomate, Muçarela e Manjericão (3 unidades)"
    ]
   ],
   "32-25-agua": [
@@ -1134,11 +1164,11 @@
   ],
   "32-27-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
@@ -1180,12 +1210,30 @@
   ],
   "33-26-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
+   ]
+  ],
+  "34-02-bruschetta-caprese-3-unita": [
+   [
+    "Bruschetta Caprese (3 unità)",
+    "Fatias de Pão Italiano com Tomate, Muçarela de Búfala, Azeite de Oliva e Manjericão (3 unidades)"
+   ]
+  ],
+  "34-03-bruschetta-alla-salsiccia-calabrese-3-unita": [
+   [
+    "Bruschetta Alla Salsiccia Calabrese (3 unità)",
+    "Fatias de Pão Italiano com Linguiça Calabresa, Cebola e Muçarela (3 unidades)"
+   ]
+  ],
+  "34-07-frittelle-di-baccala-8-unita": [
+   [
+    "Frittelle di Baccalà (8 unità)",
+    "Bolinhos de Bacalhau Fritos (8 unidades)"
    ]
   ],
   "34-16-agua": [
@@ -1202,11 +1250,11 @@
   ],
   "34-18-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
@@ -1224,21 +1272,21 @@
   ],
   "35-19-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
   "35-20-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Original",
+    "Cerveja Original (350 ml)",
     ""
    ],
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ]
   ],
@@ -1256,21 +1304,21 @@
   ],
   "36-17-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
   "36-19-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Original",
+    "Cerveja Original (350 ml)",
     ""
    ],
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ]
   ],
@@ -1310,17 +1358,17 @@
   ],
   "4-16-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
   "4-17-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ]
   ],
@@ -1348,21 +1396,21 @@
   ],
   "5-15-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
   "5-16-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ],
    [
-    "Cerveja 350 ml Original",
+    "Cerveja Original (350 ml)",
     ""
    ]
   ],
@@ -1410,15 +1458,15 @@
   ],
   "6-08-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml H2o",
+    "Refrigerante H2o (350 ml)",
     ""
    ]
   ],
@@ -1450,17 +1498,17 @@
   ],
   "7-22-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
   "7-23-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ]
   ],
@@ -1478,21 +1526,21 @@
   ],
   "8-09-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ],
   "8-10-cerveja-350-ml": [
    [
-    "Cerveja 350 ml Original",
+    "Cerveja Original (350 ml)",
     ""
    ],
    [
-    "Cerveja 350 ml Heineken",
+    "Cerveja Heineken (350 ml)",
     ""
    ]
   ],
@@ -1594,11 +1642,11 @@
   ],
   "9-16-refrigerante-350-ml": [
    [
-    "Refrigerante 350 ml Coca Cola",
+    "Refrigerante Coca Cola (350 ml)",
     "Normal e Zero"
    ],
    [
-    "Refrigerante 350 ml Guaraná",
+    "Refrigerante Guaraná (350 ml)",
     "Normal e Zero"
    ]
   ]

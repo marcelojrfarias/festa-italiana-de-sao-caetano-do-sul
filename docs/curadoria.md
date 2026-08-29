@@ -84,6 +84,20 @@ cardápio usa outra forma em outro lugar: como ele escreve "Suco de Uva (Copo)"
 em nove barracas, o suco de uva em lata é "Suco de Uva (Lata)", e não
 "Suco (Lata) Uva".
 
+**Quantificador e marcação vão entre parênteses, no fim, numa grafia só.**
+Recipiente, volume, tamanho, número de unidades e marcações como
+"(Vegetariano)" saem do meio do nome e viram sufixo. O cardápio escreve a
+mesma bruschetta de quatro jeitos — "- 3 Unità", "– 3 Unità", "– 3 unità" —
+e o nome do prato tem de ser um só para os cards juntarem.
+
+    Refrigerante 350 ml Coca Cola   ->  Refrigerante Coca Cola (350 ml)
+    Pizza Tradizionale 18 cm Al Formaggio -> Pizza Tradizionale Al Formaggio (18 cm)
+    Bruschetta Al Pomodoro – 3 Unità -> Bruschetta Al Pomodoro (3 unità)
+
+Recipiente com preço próprio fica no título porque é outra coisa de comprar:
+o copo de vinho custa R$ 10 e a garrafa R$ 35. Já a medida ("200 ml", "1
+litro") desce para a descrição, e não se repete lá o que o título já diz.
+
 **8. Não inventar.** Quando o cardápio anuncia sabores mas não diz quais
 ("Massa Crocante recheada com Creme – sabores"), o item fica um só e a frase
 pendurada sai. Quando a descrição é só a palavra "Sabores", o card fica sem
