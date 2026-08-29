@@ -310,6 +310,15 @@ def mapear_familias(pratos):
     return catalogo, de_titulo
 
 
+def _descricao_util(descricao, titulo):
+    """Com o título em português, a descrição às vezes vira eco dele: "Torta de
+    Limão" descrita como "Torta de Limão". Nesse caso o card fica sem ela."""
+    if not descricao:
+        return ""
+    d, t = sem_acento(descricao), sem_acento(titulo)
+    return "" if d in t or t in d else descricao
+
+
 def agrupar_pratos(cardapio, categorias):
     """Um prato = um título. 645 itens viram ~365 pratos com faixa de preço.
 
@@ -323,11 +332,14 @@ def agrupar_pratos(cardapio, categorias):
     for barraca in cardapio["barracas"]:
         for item in barraca["itens"]:
           for titulo_original, desc_expandida in expandir_titulo(item):
-            titulo_expandido = canonizar(titulo_original)
+            titulo_italiano = canonizar(titulo_original)
+            # dois nomes italianos que querem dizer a mesma coisa viram um card
+            titulo_expandido = NOMES_PT.get(titulo_italiano, titulo_italiano)
             chave = sem_acento(titulo_expandido)
             g = grupos.setdefault(chave, {
                 "titulo": titulo_expandido, "cats": collections.Counter(),
                 "ofertas": [], "descricoes": [], "grafias": set(),
+                "italianos": collections.Counter(),
                 # o PDF lista sabores e formatos de massa num título só, separados
                 # por "/"; o extrator já os separou e o gerador ignorava o campo
             })
@@ -340,20 +352,25 @@ def agrupar_pratos(cardapio, categorias):
             # quem lê "Gnochi" na placa da barraca digita "Gnochi". O card
             # mostra a grafia certa, mas a busca precisa aceitar a impressa.
             g["grafias"].add(titulo_original)
+            if titulo_italiano != titulo_expandido:
+                g["italianos"][titulo_italiano] += 1
 
     pratos = []
     for g in grupos.values():
         precos = [o["preco"] for o in g["ofertas"]]
         g["ofertas"].sort(key=lambda o: o["preco"])
+        italiano = g["italianos"].most_common(1)[0][0] if g["italianos"] else ""
         pratos.append({
             "titulo": g["titulo"],
+            "italiano": italiano,
             "categoria": g["cats"].most_common(1)[0][0],
             "ofertas": g["ofertas"],
             "min": min(precos), "max": max(precos),
-            "descricao": collections.Counter(g["descricoes"]).most_common(1)[0][0],
+            "descricao": _descricao_util(
+                collections.Counter(g["descricoes"]).most_common(1)[0][0], g["titulo"]),
             # sorted(): a ordem de iteração de um set de strings muda entre
             # processos (PYTHONHASHSEED), e sem isso o build não é reprodutível
-            "busca": sem_acento(" ".join(sorted(g["grafias"] | {g["titulo"]}))
+            "busca": sem_acento(" ".join(sorted(g["grafias"] | {g["titulo"]} | set(g["italianos"])))
                                  + " " + " ".join(sorted(set(g["descricoes"])))),
         })
     pratos.sort(key=lambda p: sem_acento(p["titulo"]))
@@ -400,6 +417,12 @@ def bucket_preco(v):
 # farfalle, e as pizzas de sabor ficaram inteiras sem ninguém notar.
 EXPANSAO = json.loads((DADOS / "expansao.json").read_text(encoding="utf-8"))["itens"]
 
+# O nome do prato em português. O italiano não some: vira campo próprio no
+# card, com bandeira, porque é o nome que está na placa da barraca e é por
+# ele que a pessoa vai pedir. O que ele não pode ser é a única porta de
+# entrada — quem procura "cabrito" não digita "capretto".
+NOMES_PT = json.loads((DADOS / "nomes-pt.json").read_text(encoding="utf-8"))["nomes"]
+
 
 def expandir_titulo(item):
     """Os pratos que saem de um item do cardápio.
@@ -430,6 +453,11 @@ def render_prato(p, familia_de=None):
         f'<span class="oferta__preco">{e(moeda(o["preco"]))}</span>'
         f'<span class="oferta__pin">{usar("pin", 15)}</span></a></li>'
         for o in p["ofertas"])
+    # a bandeira é decorativa; o nome já se lê. aria-hidden evita o leitor de
+    # tela anunciar "bandeira da Itália" antes de cada prato
+    italiano = (f'<p class="prato__italiano"><span aria-hidden="true">🇮🇹</span> '
+                f'{e(p["italiano"])}</p>') if p["italiano"] else ""
+    desc = f'<p class="prato__desc">{e(p["descricao"])}</p>' if p["descricao"] else ""
     n = len(p["ofertas"])
     # Com uma barraca só não há o que expandir, mas "onde encontro isto" é a
     # pergunta de quem está de pé na festa — então mostra direto. 302 dos 365
@@ -454,7 +482,7 @@ def render_prato(p, familia_de=None):
         f'data-ord-nome="{p["ord_nome"]}">'
         f'<div class="prato__topo"><h3 class="prato__titulo">{e(p["titulo"])}</h3>'
         f'<span class="prato__faixa">{e(faixa_preco(p))}</span></div>'
-        f'<p class="prato__desc">{e(p["descricao"])}</p>'
+        f'{italiano}{desc}'
         f'{onde}<ul class="ofertas">{ofertas}</ul></article>')
 
 
@@ -889,6 +917,12 @@ main { padding: var(--e4) var(--e4) 0; }
 .prato__faixa {
   font-size: 15px; font-weight: 700; color: var(--tinta); white-space: nowrap;
   font-variant-numeric: tabular-nums;
+}
+/* o nome italiano fica entre o título e a descrição, com peso e cor
+   intermediários: presente, mas sem competir com o nome que se lê */
+.prato__italiano {
+  margin: 3px 0 0; font-size: 14px; font-weight: 600; color: var(--tinta-fraca);
+  display: flex; align-items: baseline; gap: 6px;
 }
 .prato__desc { margin: var(--e1) 0 0; font-size: 14px; color: var(--tinta-fraca); }
 .prato__titulo, .prato__desc, .card__nome, .oferta__nome, .trilha__titulo {
