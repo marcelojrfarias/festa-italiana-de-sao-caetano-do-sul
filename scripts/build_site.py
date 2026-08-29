@@ -196,6 +196,16 @@ def canonizar(titulo):
     return SINONIMOS.get(sem_acento(corrigido), corrigido)
 
 
+def conferir_nomes(pratos):
+    """Nome ou descrição escrita para um prato que não existe mais fica sem
+    efeito e em silêncio. A mesma guarda dos sinônimos, para a outra tabela."""
+    titulos = {p["titulo"] for p in pratos}
+    orfas = sorted(set(DESCRICOES_PT) - titulos)
+    if orfas:
+        raise SystemExit("descrição escrita para prato inexistente: "
+                         + ", ".join(repr(o) for o in orfas))
+
+
 def conferir_expansao(cardapio):
     """Linha de expansão apontando para item que não existe mais não separa nada
     e não avisa. Já aconteceu: id errado, prato seguiu inteiro, em silêncio."""
@@ -336,6 +346,10 @@ EQUIVALENTES = {
 
 def _raiz(palavra):
     p = sem_acento(palavra)
+    # particípio no feminino é a mesma palavra: "recheada" e "recheado". Sem
+    # isto, quatro descrições de fatia de pizza escapavam do corte por dizerem
+    # "preparada" onde a lista de enchimento diz "preparado".
+    p = re.sub(r"(ad|id)[oa]s?$", r"\1o", p)
     for sufixo in ("os", "as", "es", "s"):
         if len(p) > 4 and p.endswith(sufixo):
             return p[:-len(sufixo)]
@@ -413,7 +427,8 @@ def agrupar_pratos(cardapio, categorias):
             "categoria": g["cats"].most_common(1)[0][0],
             "ofertas": g["ofertas"],
             "min": min(precos), "max": max(precos),
-            "descricao": _descricao_util(
+            "descricao": DESCRICOES_PT[g["titulo"]] if g["titulo"] in DESCRICOES_PT
+            else _descricao_util(
                 collections.Counter(g["descricoes"]).most_common(1)[0][0],
                 g["titulo"], italiano),
             # sorted(): a ordem de iteração de um set de strings muda entre
@@ -422,6 +437,7 @@ def agrupar_pratos(cardapio, categorias):
                                  + " " + " ".join(sorted(set(g["descricoes"])))),
         })
     pratos.sort(key=lambda p: sem_acento(p["titulo"]))
+    conferir_nomes(pratos)
 
     # Três ordens, gravadas como posição em cada card e aplicadas no cliente
     # via CSS order — sem reordenar o DOM.
@@ -469,7 +485,13 @@ EXPANSAO = json.loads((DADOS / "expansao.json").read_text(encoding="utf-8"))["it
 # card, com bandeira, porque é o nome que está na placa da barraca e é por
 # ele que a pessoa vai pedir. O que ele não pode ser é a única porta de
 # entrada — quem procura "cabrito" não digita "capretto".
-NOMES_PT = json.loads((DADOS / "nomes-pt.json").read_text(encoding="utf-8"))["nomes"]
+_NOMES = json.loads((DADOS / "nomes-pt.json").read_text(encoding="utf-8"))
+NOMES_PT = _NOMES["nomes"]
+
+# Descrição reescrita à mão quando a original começava repetindo o título:
+# "Sanduíche de Mortadela servido no Pão Francês" abaixo de "Sanduíche de
+# Mortadela" só acrescenta o pão, então é o pão que fica.
+DESCRICOES_PT = _NOMES.get("descricoes", {})
 
 
 def expandir_titulo(item):
