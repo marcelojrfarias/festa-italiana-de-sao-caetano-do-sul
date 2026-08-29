@@ -314,13 +314,56 @@ def mapear_familias(pratos):
     return catalogo, de_titulo
 
 
-def _descricao_util(descricao, titulo):
-    """Com o título em português, a descrição às vezes vira eco dele: "Torta de
-    Limão" descrita como "Torta de Limão". Nesse caso o card fica sem ela."""
+# Palavras que não carregam informação: ligação, verbo de servir, e o "sabor"
+# que o cardápio usa para anunciar o que o título já diz.
+ENCHIMENTO = {"de", "do", "da", "com", "e", "ao", "a", "o", "os", "as", "no", "na",
+              "em", "servido", "servida", "tipo", "um", "uma", "sabor", "recheado",
+              "preparado", "feito", "acompanha"}
+
+# Palavra que é só o nome em português do que o título já nomeia. "Macarrão Tipo
+# Espaguete ao Molho de Tomate" não acrescenta nada a "Spaghetti ao Molho de
+# Tomate". Já "gravatinha" e "talharim" acrescentam — dizem o formato de uma
+# massa cujo nome italiano não entrega —, então não entram aqui.
+EQUIVALENTES = {
+    "spaghetti": {"espaguete", "macarrao"}, "penne": {"macarrao"},
+    "fusilli": {"macarrao"}, "conchiglioni": {"macarrao", "conchiglione"},
+    "orecchiette": {"macarrao"}, "ravioli": {"macarrao"},
+    "cappelletti": {"macarrao"}, "nhoque": {"macarrao"}, "lasanha": {"macarrao"},
+    "farfalle": {"macarrao"}, "tagliatelle": {"macarrao"}, "bavette": {"macarrao"},
+    "polenta": {"polenta"}, "gelato": set(), "pizza": {"pizza"},
+}
+
+
+def _raiz(palavra):
+    p = sem_acento(palavra)
+    for sufixo in ("os", "as", "es", "s"):
+        if len(p) > 4 and p.endswith(sufixo):
+            return p[:-len(sufixo)]
+    return p
+
+
+def _conteudo(texto):
+    vazias = {_raiz(x) for x in ENCHIMENTO}
+    return {r for r in (_raiz(w) for w in re.findall(r"[\wÀ-ÿ']+", texto))
+            if r not in vazias and len(r) > 2}
+
+
+def _descricao_util(descricao, titulo, italiano=""):
+    """A descrição só aparece se disser algo que os dois nomes não dizem.
+
+    "Fatia de Torta de Chocolate" descrita como "Fatia de Torta sabor Chocolate"
+    é uma terceira linha repetindo a primeira. Menos é mais: 37 cards ficam sem
+    descrição, e nenhum perde informação.
+
+    O índice de busca é montado das descrições cruas, antes deste corte — quem
+    procura "espaguete" continua achando o spaghetti.
+    """
     if not descricao:
         return ""
-    d, t = sem_acento(descricao), sem_acento(titulo)
-    return "" if d in t or t in d else descricao
+    conhecido = _conteudo(titulo + " " + italiano)
+    for palavra in list(conhecido):
+        conhecido |= EQUIVALENTES.get(palavra, set())
+    return "" if not (_conteudo(descricao) - conhecido) else descricao
 
 
 def agrupar_pratos(cardapio, categorias):
@@ -371,7 +414,8 @@ def agrupar_pratos(cardapio, categorias):
             "ofertas": g["ofertas"],
             "min": min(precos), "max": max(precos),
             "descricao": _descricao_util(
-                collections.Counter(g["descricoes"]).most_common(1)[0][0], g["titulo"]),
+                collections.Counter(g["descricoes"]).most_common(1)[0][0],
+                g["titulo"], italiano),
             # sorted(): a ordem de iteração de um set de strings muda entre
             # processos (PYTHONHASHSEED), e sem isso o build não é reprodutível
             "busca": sem_acento(" ".join(sorted(g["grafias"] | {g["titulo"]} | set(g["italianos"])))

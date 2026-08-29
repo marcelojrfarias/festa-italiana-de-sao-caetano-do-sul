@@ -130,10 +130,14 @@ O teste para traduzir ou não é um só: **como o brasileiro chama isso?**
                          Fetta -> Fatia        Porzioni -> Porção
                          Cono -> Casquinha     Tartufo -> Trufa
 
-**Nome de massa fica em italiano.** É por ele que se pede aqui: spaghetti,
-penne, farfalle, ravioli, cappelletti, gnocchi, conchiglioni, orecchiette,
-bavette, fusilli, sfogliati. A única exceção é a lasanha, que no Brasil se
-escreve assim em todo cardápio e em toda embalagem de supermercado.
+**Nome de massa quase sempre fica em italiano**, porque é por ele que se pede
+aqui: spaghetti, penne, farfalle, ravioli, cappelletti, conchiglioni,
+orecchiette, bavette, fusilli, sfogliati. As exceções são as duas que o
+brasileiro escreve em português em todo cardápio e em toda embalagem de
+supermercado: nhoque e lasanha.
+
+Sfogliati fica em italiano não por ser conhecido, e sim por não ter nome em
+português — vale a mesma regra dos doces sem tradução.
 
 O molho, sim, traduz: "Alla Bolognese" vira "à Bolonhesa", "Al Sugo" vira "ao
 Molho de Tomate", "Alla Besciamella" vira "ao Molho Branco". A barreira está
@@ -147,10 +151,20 @@ querem dizer a mesma coisa viram um card sozinhos: "Panino Al Manzo
 Sfilacciato" e "Panino Alla Carne Sfilacciata" são o mesmo "Sanduíche de
 Carne Desfiada". A busca aceita os dois idiomas.
 
-Todo prato de comida tem descrição. Os únicos com descrição curta são bebidas,
-onde o nome já se explica sozinho. E descrição que vira eco do título em
-português sai do card: "Torta de Limão" não precisa dizer "Torta de Limão"
-embaixo.
+**A descrição só aparece se disser algo que os dois nomes não dizem.** Com o
+título em português e o nome italiano ao lado, muita descrição virou terceira
+linha repetindo a primeira: "Fatia de Torta de Chocolate" descrita como "Fatia
+de Torta sabor Chocolate". Menos é mais — 75 cards ficaram sem descrição, e
+nenhum perdeu informação.
+
+Vale para a palavra que é só o nome em português do que o título já nomeia:
+"Macarrão Tipo Espaguete ao Molho de Tomate" não acrescenta nada a "Spaghetti
+ao Molho de Tomate". Mas "gravatinha" e "talharim" acrescentam — dizem o
+formato de uma massa cujo nome italiano não entrega —, e ficam. "Spaghetti à
+Bolonhesa" também mantém a sua, porque ela explica o que é bolonhesa.
+
+O índice de busca é montado das descrições cruas, antes desse corte: quem
+procura "espaguete" continua achando o spaghetti.
 
 **10. A categoria é parte da curadoria.** Bolinho de bacalhau é petisco, não
 carne; as duas sopas do cardápio ficam juntas; combo não é massa. Quando a
