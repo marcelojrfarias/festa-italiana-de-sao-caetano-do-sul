@@ -336,6 +336,10 @@ EQUIVALENTES = {
 
 def _raiz(palavra):
     p = sem_acento(palavra)
+    # particípio no feminino é a mesma palavra: "recheada" e "recheado". Sem
+    # isto, quatro descrições de fatia de pizza escapavam do corte por dizerem
+    # "preparada" onde a lista de enchimento diz "preparado".
+    p = re.sub(r"(ad|id)[oa]s?$", r"\1o", p)
     for sufixo in ("os", "as", "es", "s"):
         if len(p) > 4 and p.endswith(sufixo):
             return p[:-len(sufixo)]
