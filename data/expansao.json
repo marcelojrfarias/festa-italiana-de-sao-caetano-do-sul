@@ -20,6 +20,12 @@
     "Massa Crocante recheada com Creme de Leite"
    ]
   ],
+  "1-10-crostata-di-fragole": [
+   [
+    "Crostata Alle Fragole",
+    "Torta de Morango com Creme e Massa Leve"
+   ]
+  ],
   "1-19-agua": [
    [
     "Água Sem Gás",
@@ -164,6 +170,12 @@
    [
     "Cannoli Dolce di Latte",
     "Massa Crocante recheada com Doce de Leite"
+   ]
+  ],
+  "13-08-crostata-alla-fragola": [
+   [
+    "Crostata Alle Fragole",
+    "Torta de Morango"
    ]
   ],
   "13-17-agua": [
@@ -624,37 +636,37 @@
   ],
   "20-21-14-pizza-intera": [
    [
-    "Pizza Intera Muçarela",
+    "Pizza Muçarela (Inteira)",
     "Pizza Inteira sabor Muçarela"
    ],
    [
-    "Pizza Intera Calabresa",
+    "Pizza Calabresa (Inteira)",
     "Pizza Inteira sabor Calabresa"
    ],
    [
-    "Pizza Intera Três Queijos",
+    "Pizza Três Queijos (Inteira)",
     "Pizza Inteira sabor Três Queijos"
    ],
    [
-    "Pizza Intera Margherita",
+    "Pizza Margherita (Inteira)",
     "Pizza Inteira sabor Margherita"
    ]
   ],
   "20-21-17-fetta-di-pizza": [
    [
-    "Fetta di Pizza Muçarela",
+    "Pizza Muçarela (Fatia)",
     "Fatia de Pizza sabor Muçarela"
    ],
    [
-    "Fetta di Pizza Calabresa",
+    "Pizza Calabresa (Fatia)",
     "Fatia de Pizza sabor Calabresa"
    ],
    [
-    "Fetta di Pizza Três Queijos",
+    "Pizza Três Queijos (Fatia)",
     "Fatia de Pizza sabor Três Queijos"
    ],
    [
-    "Fetta di Pizza Margherita",
+    "Pizza Margherita (Fatia)",
     "Fatia de Pizza sabor Margherita"
    ]
   ],
@@ -812,6 +824,30 @@
     "200 ml"
    ]
   ],
+  "26-01-spaghetti-piccoli-al-pesto": [
+   [
+    "Spaghetti Al Pesto (Pequeno)",
+    "Tamanho Pequeno de Macarrão Espaguete servido com Molho Pesto preparado com Manjericão, Azeite de Oliva, Queijo e Alho"
+   ]
+  ],
+  "26-02-spaghetti-grandi-al-pesto": [
+   [
+    "Spaghetti Al Pesto (Grande)",
+    "Tamanho Grande de Macarrão Espaguete servido com Molho Pesto preparado com Manjericão, Azeite de Oliva, Queijo e Alho"
+   ]
+  ],
+  "26-03-spaghetti-piccoli-alla-bolognese": [
+   [
+    "Spaghetti Alla Bolognese (Pequeno)",
+    "Tamanho Pequeno de Macarrão Espaguete servido com Molho de Tomate e Carne"
+   ]
+  ],
+  "26-04-spaghetti-grandi-alla-bolognese": [
+   [
+    "Spaghetti Alla Bolognese (Grande)",
+    "Tamanho Grande de Macarrão Espaguete servido com Molho de Tomate e Carne"
+   ]
+  ],
   "26-05-pizza-tradizionale-18-cm-al-formaggio-alla-salsiccia-calabre": [
    [
     "Pizza Tradizionale Al Formaggio (18 cm)",
@@ -846,6 +882,18 @@
    [
     "Pizza Vegana Alla Salsiccia Vegetale e Catupiry Vegetale (18 cm)",
     "Pizza Vegana – Calabresa de Soja com Catupiry"
+   ]
+  ],
+  "26-07-spaghetti-vegani-piccoli-al-pesto": [
+   [
+    "Spaghetti Vegani Al Pesto (Pequeno)",
+    "Tamanho Pequeno de Macarrão Espaguete (Sêmola de Trigo com Proteína da Ervilha) servido com Molho Pesto preparado com Manjericão, Azeite de Oliva, Queijo e Alho"
+   ]
+  ],
+  "26-08-spaghetti-vegani-grandi-al-pesto": [
+   [
+    "Spaghetti Vegani Al Pesto (Grande)",
+    "Tamanho Grande de Macarrão Espaguete (Sêmola de Trigo com Proteína da Ervilha) servido com Molho Pesto preparado com Manjericão, Azeite de Oliva, Queijo e Alho"
    ]
   ],
   "26-19-agua": [
@@ -920,6 +968,12 @@
    [
     "Vinho Tinto Suave (Garrafa)",
     "700 ml"
+   ]
+  ],
+  "27-01-frittella-di-baccala": [
+   [
+    "Frittella di Baccalà (1 unità)",
+    "Bolinho de Bacalhau Frito"
    ]
   ],
   "27-07-cannoli": [
@@ -1018,6 +1072,12 @@
    [
     "H2o Limoneto",
     ""
+   ]
+  ],
+  "3-02-fogazza-alla-calabrese-e-mozzarella": [
+   [
+    "Fogazza Alla Salsiccia Calabrese e Mozzarella",
+    "Massa Frita Recheada com Linguiça Calabresa e Muçarela"
    ]
   ],
   "3-04-agua": [
@@ -1232,7 +1292,7 @@
   ],
   "34-07-frittelle-di-baccala-8-unita": [
    [
-    "Frittelle di Baccalà (8 unità)",
+    "Frittella di Baccalà (8 unità)",
     "Bolinhos de Bacalhau Fritos (8 unidades)"
    ]
   ],
@@ -1468,6 +1528,12 @@
    [
     "Refrigerante H2o (350 ml)",
     ""
+   ]
+  ],
+  "7-11-panino-con-salsiccia-calabrese": [
+   [
+    "Panino Alla Salsiccia Calabrese",
+    "Sanduíche de Linguiça Calabresa servido no Pão Francês"
    ]
   ],
   "7-12-cannoli-alla-crema-mousse-al-cioccolato-dulce-di-latte": [

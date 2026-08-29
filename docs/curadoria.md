@@ -75,6 +75,13 @@ grafia ("Gnochi", "Sfitacciato", "Fomarggio"), palavra de ligação faltando
 ingrediente em outra língua ("Dulce de Leche" e "Dolce di Latte"). Não entra
 nome válido diferente: "Al Pesto" não é "Al Sugo", "Panino" não é "Piadina".
 
+O critério que decide os casos duvidosos: **se a descrição em português é a
+mesma, é o mesmo prato**. Foi assim que "Fogazza Alla Calabrese e Mozzarella"
+e "Fogazza Alla Salsiccia Calabrese e Mozzarella" viraram um card — as duas
+dizem "Massa Frita recheada com Linguiça Calabresa e Muçarela". E foi assim
+que "Fogazza Al Pollo con Catupiry" e "Fogazza Al Pollo Formaggio Cremoso"
+continuaram separadas: uma diz catupiry, a outra requeijão.
+
 Isto vive em `SINONIMOS` e `CORRECOES`, em `scripts/build_site.py`. A busca
 continua aceitando a grafia impressa — quem lê "Gnochi" na placa digita
 "Gnochi".
@@ -97,6 +104,27 @@ e o nome do prato tem de ser um só para os cards juntarem.
 Recipiente com preço próprio fica no título porque é outra coisa de comprar:
 o copo de vinho custa R$ 10 e a garrafa R$ 35. Já a medida ("200 ml", "1
 litro") desce para a descrição, e não se repete lá o que o título já diz.
+
+**Porção e tamanho seguem a mesma forma.** "Fetta di Pizza Margherita" e
+"Pizza Intera Margherita" são a mesma pizza da mesma barraca em duas medidas, e
+ficavam em pontos distantes da lista, começando por palavras diferentes. Viram
+"Pizza Margherita (Fatia)" e "Pizza Margherita (Inteira)", que é o que a pessoa
+compara. O mesmo para "(Pequeno)" e "(Grande)", e para a quantidade em
+"(1 unità)" e "(8 unità)".
+
+**9. Nome italiano fica; a descrição é que carrega o português.** "Capretto In
+Salsa Speciale" e "Caciocavallo Impanato e Fritto" não são traduzidos — é o
+nome impresso na barraca, e é por ele que a pessoa vai pedir. O que não pode
+faltar é a descrição em português, porque é ela que a busca indexa: quem
+digita "cabrito" ou "queijo empanado" chega no prato.
+
+Todo prato de comida tem descrição. Os únicos com descrição curta são bebidas,
+onde o nome já se explica sozinho.
+
+**10. A categoria é parte da curadoria.** Bolinho de bacalhau é petisco, não
+carne; as duas sopas do cardápio ficam juntas; combo não é massa. Quando a
+regra automática de `scripts/classify_categories.py` erra, a correção vai em
+`REVISAO_MANUAL`, com o motivo escrito.
 
 **8. Não inventar.** Quando o cardápio anuncia sabores mas não diz quais
 ("Massa Crocante recheada com Creme – sabores"), o item fica um só e a frase

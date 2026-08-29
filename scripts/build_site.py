@@ -1044,6 +1044,18 @@ JS = r"""(function () {
     return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   }
 
+  /* Cada palavra buscada tem de aparecer, em qualquer ordem e em qualquer
+     posição. Comparar a frase inteira como um pedaço só fazia "batata frita"
+     não achar "Batatas Fritas em Palito", e é assim que a pessoa digita —
+     é a descrição em português que torna achável o prato de nome italiano. */
+  function combina(texto, q) {
+    var termos = q.split(/\s+/);
+    for (var i = 0; i < termos.length; i++) {
+      if (termos[i] && texto.indexOf(termos[i]) === -1) return false;
+    }
+    return true;
+  }
+
   function lerURL() {
     var p = new URLSearchParams(location.search);
     estado.modo = p.get('modo') || (p.get('barraca') ? 'barraca' : p.get('cat') ? 'categoria' : 'categoria');
@@ -1097,7 +1109,7 @@ JS = r"""(function () {
           el.dataset.precos.indexOf(' ' + estado.preco + ' ') === -1) ok = false;
       if (ok && estado.fam && estado.fam !== 'todos' &&
           el.dataset.fam !== estado.fam) ok = false;
-      if (ok && q && el.dataset.busca.indexOf(q) === -1) ok = false;
+      if (ok && q && !combina(el.dataset.busca, q)) ok = false;
       el.hidden = !ok;
       if (ok) visiveis++;
     });
@@ -1426,7 +1438,9 @@ JS_MAPA = r"""
     // corresponder ao que a tela mostra.
     var q = semAcento(st.q.trim()), vistas = {}, n = 0;
     pratos.forEach(function (el) {
-      if (q && el.dataset.busca.indexOf(q) === -1) return;
+      if (q && q.split(/\s+/).some(function (t) {
+        return t && el.dataset.busca.indexOf(t) === -1;
+      })) return;
       el.dataset.barracas.trim().split(/\s+/).forEach(function (b) {
         if (!vistas[b]) { vistas[b] = 1; n++; }
       });
