@@ -125,15 +125,22 @@ O teste para traduzir ou não é um só: **como o brasileiro chama isso?**
                          Cannoli, Gelato, Panna Cotta, Tiramisù, Bruschetta,
                          Polenta, Caponata, Strudel, Antipasto
 
-    traduz               Gnocchi -> Nhoque      Panino -> Sanduíche
-                         Crostata -> Torta      Budino -> Pudim
-                         Capretto -> Cabrito    Lasagne -> Lasanha
-                         Fetta -> Fatia         Porzioni -> Porção
+    traduz               Panino -> Sanduíche   Crostata -> Torta
+                         Budino -> Pudim       Capretto -> Cabrito
+                         Fetta -> Fatia        Porzioni -> Porção
+                         Cono -> Casquinha     Tartufo -> Trufa
 
-Ninguém pede "gnocchi" aqui, mas também ninguém pede "espaguete à moda
-italiana" quando o nome é spaghetti. Prato sem nome corrente em português —
-Sfogliatella, Zuccotto, Crostoli, Panzanella — mantém o nome italiano e conta
-com a descrição.
+**Nome de massa fica em italiano.** É por ele que se pede aqui: spaghetti,
+penne, farfalle, ravioli, cappelletti, gnocchi, conchiglioni, orecchiette,
+bavette, fusilli, sfogliati. A única exceção é a lasanha, que no Brasil se
+escreve assim em todo cardápio e em toda embalagem de supermercado.
+
+O molho, sim, traduz: "Alla Bolognese" vira "à Bolonhesa", "Al Sugo" vira "ao
+Molho de Tomate", "Alla Besciamella" vira "ao Molho Branco". A barreira está
+no molho, não na massa.
+
+Prato sem nome corrente em português — Sfogliatella, Zuccotto, Crostoli,
+Panzanella — mantém o nome italiano e conta com a descrição.
 
 O nome em português é a chave de agrupamento, então dois nomes italianos que
 querem dizer a mesma coisa viram um card sozinhos: "Panino Al Manzo

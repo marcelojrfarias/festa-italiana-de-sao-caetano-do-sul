@@ -252,6 +252,10 @@ def _rotulo_familia(prefixo, membros):
         w = m.split()
         palavras = palavras[:next((i for i, (a, b) in enumerate(zip(palavras, w))
                                    if sem_acento(a) != sem_acento(b)), min(len(palavras), len(w)))]
+    # No máximo uma palavra a mais. Sem o limite, os três orecchiette — todos
+    # "ao Molho" de alguma coisa — davam a família "Orecchiette ao Molho", e a
+    # fatia de pizza folhada virava um rótulo de cinco palavras.
+    palavras = palavras[:len(prefixo.split()) + 1]
     while palavras and sem_acento(palavras[-1]) in LIGACAO:
         palavras.pop()
     rotulo = " ".join(palavras)
