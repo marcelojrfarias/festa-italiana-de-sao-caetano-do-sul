@@ -41,12 +41,23 @@ entre eles, ou recebe todos juntos?*
 
 - "Pizza Alla Salsiccia Calabrese, Cipolle e Catupiry" — recebe os três. Um item.
 - "Gelato Al Cioccolato, Alla Fragola e Alla Crema" — escolhe um. Três itens.
-- "Piadina com Mortadela e Requeijão ou Muçarela" — leva mortadela sempre, e o
-  queijo varia. Um item.
-- "Piadina recheada com Chocolate Tradicional ou Creme de Avelã" — escolhe.
-  Dois itens.
 
-Os quatro têm a mesma forma. Só o sentido separa.
+Os dois têm a mesma forma. Só o sentido separa: a vírgula da pizza lista o que
+vem junto, a do gelato lista o que se escolhe.
+
+**Escolher parte de um prato também é escolher.** Isto aqui já esteve errado
+neste documento, com o argumento de que a pessoa "leva mortadela de qualquer
+jeito":
+
+- "Piadina com Mortadela e Requeijão ou Muçarela" — dois itens, um com
+  requeijão e outro com muçarela.
+- "Vinho Seco ou Suave (Copo)" — dois itens.
+- "Suco Integral de Uva ou Laranja (Copo)" — dois itens.
+
+O que vale é se existe uma escolha a fazer na barraca, não se ela é do prato
+inteiro ou de um ingrediente dele. Antes dessa correção, oito barracas vendiam
+vinho seco sem que houvesse um card de vinho seco, e o suco de laranja não
+existia na tela.
 
 **4. Medida é atributo, tipo é item.** "Com Gás" e "Sem Gás" são escolha: dois
 itens. "510 ml" é quanto vem: desce para a descrição. Copo, garrafa, jarra e

@@ -142,6 +142,16 @@
     "Normal e Zero"
    ]
   ],
+  "12-09-vinho-tinto-seco-ou-suave-copo": [
+   [
+    "Vinho Tinto Seco (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Tinto Suave (Copo)",
+    "200 ml"
+   ]
+  ],
   "13-05-cannoli-alla-crema-cioccolato-dolce-di-latte": [
    [
     "Cannoli Alla Crema",
@@ -298,6 +308,16 @@
     "Sem álcool"
    ]
   ],
+  "16-12-vinho-suave-ou-seco-copo": [
+   [
+    "Vinho Suave (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Seco (Copo)",
+    "200 ml"
+   ]
+  ],
   "17-14-cannoli-alla-crema-dolce-di-latte-nutella": [
    [
     "Cannoli Alla Crema",
@@ -338,6 +358,26 @@
    [
     "Cerveja 350 ml Heineken",
     ""
+   ]
+  ],
+  "17-22-vinho-suave-ou-seco-copo": [
+   [
+    "Vinho Suave (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Seco (Copo)",
+    "200 ml"
+   ]
+  ],
+  "17-23-vinho-seco-ou-suave-garrafa": [
+   [
+    "Vinho Seco (Garrafa)",
+    "1 litro"
+   ],
+   [
+    "Vinho Suave (Garrafa)",
+    "1 litro"
    ]
   ],
   "18-14-cannoli-alla-crema-dolce-di-latte-nutella": [
@@ -382,6 +422,26 @@
     ""
    ]
   ],
+  "18-22-vinho-suave-ou-seco-copo": [
+   [
+    "Vinho Suave (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Seco (Copo)",
+    "200 ml"
+   ]
+  ],
+  "18-23-vinho-seco-ou-suave-garrafa": [
+   [
+    "Vinho Seco (Garrafa)",
+    "1 litro"
+   ],
+   [
+    "Vinho Suave (Garrafa)",
+    "1 litro"
+   ]
+  ],
   "19-17-agua": [
    [
     "Água Sem Gás",
@@ -402,6 +462,16 @@
    [
     "Refrigerante 350 ml Guaraná",
     "Normal e Zero"
+   ]
+  ],
+  "19-22-vinho-suave-ou-seco-copo": [
+   [
+    "Vinho Suave (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Seco (Copo)",
+    "200 ml"
    ]
   ],
   "2-09-agua": [
@@ -434,6 +504,16 @@
    [
     "Cerveja 350 ml Heineken",
     ""
+   ]
+  ],
+  "2-14-vinho-suave-ou-tinto-copo": [
+   [
+    "Vinho Suave (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Tinto (Copo)",
+    "200 ml"
    ]
   ],
   "20-21-04-spaghetti-penne-rigati-farfalle-al-sugo": [
@@ -660,6 +740,26 @@
     ""
    ]
   ],
+  "24-16-vinho-seco-ou-suave-copo": [
+   [
+    "Vinho Seco (Copo)",
+    "200 ml – Frade"
+   ],
+   [
+    "Vinho Suave (Copo)",
+    "200 ml – Frade"
+   ]
+  ],
+  "24-17-vinho-seco-ou-suave-garrafa": [
+   [
+    "Vinho Seco (Garrafa)",
+    "Frade"
+   ],
+   [
+    "Vinho Suave (Garrafa)",
+    "Frade"
+   ]
+  ],
   "25-17-agua": [
    [
     "Água Sem Gás",
@@ -686,6 +786,12 @@
    [
     "Suco de Uva (Lata)",
     ""
+   ]
+  ],
+  "25-21-suco-integral-de-uva": [
+   [
+    "Suco de Uva Integral (Copo)",
+    "200 ml"
    ]
   ],
   "26-05-pizza-tradizionale-18-cm-al-formaggio-alla-salsiccia-calabre": [
@@ -762,10 +868,40 @@
     ""
    ]
   ],
+  "26-22-suco-integral-de-uva-ou-laranja-copo": [
+   [
+    "Suco de Uva Integral (Copo)",
+    "200 ml"
+   ],
+   [
+    "Suco de Laranja Integral (Copo)",
+    "200 ml"
+   ]
+  ],
   "26-23-cerveja-350-ml": [
    [
     "Cerveja 350 ml Heineken",
     ""
+   ]
+  ],
+  "26-27-vinho-tinto-seco-ou-suave-copo": [
+   [
+    "Vinho Tinto Seco (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Tinto Suave (Copo)",
+    "200 ml"
+   ]
+  ],
+  "26-28-vinho-tinto-seco-ou-suave-garrafa": [
+   [
+    "Vinho Tinto Seco (Garrafa)",
+    "700 ml"
+   ],
+   [
+    "Vinho Tinto Suave (Garrafa)",
+    "700 ml"
    ]
   ],
   "27-07-cannoli": [
@@ -794,8 +930,12 @@
   ],
   "27-12-suco-200-ml": [
    [
-    "Suco de Uva 200 ml",
-    "Tinto ou Branco"
+    "Suco de Uva Tinto (Copo)",
+    "200 ml"
+   ],
+   [
+    "Suco de Uva Branco (Copo)",
+    "200 ml"
    ]
   ],
   "27-17-vinho-fino-cabernet-merlot-chardonnay-copo": [
@@ -842,8 +982,8 @@
   ],
   "29-16-suco-200-ml": [
    [
-    "Suco de Uva 200 ml",
-    ""
+    "Suco de Uva (Copo)",
+    "200 ml"
    ]
   ],
   "29-17-h2o": [
@@ -904,10 +1044,30 @@
     "Normal e Zero"
    ]
   ],
+  "30-12-suco-sabores": [
+   [
+    "Suco (Lata)",
+    ""
+   ]
+  ],
   "30-13-cerveja-350-ml": [
    [
     "Cerveja 350 ml Heineken Zero",
     "Sem álcool"
+   ]
+  ],
+  "30-16-vinho-tinto-seco-e-suave-branco-suave-copo": [
+   [
+    "Vinho Tinto Seco (Copo)",
+    "250 ml"
+   ],
+   [
+    "Vinho Tinto Suave (Copo)",
+    "250 ml"
+   ],
+   [
+    "Vinho Branco Suave (Copo)",
+    "250 ml"
    ]
   ],
   "31-06-agua": [
@@ -940,6 +1100,26 @@
     ""
    ]
   ],
+  "31-09-vinho-tinto-ou-branco-copo": [
+   [
+    "Vinho Tinto (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Branco (Copo)",
+    "200 ml"
+   ]
+  ],
+  "31-10-vinho-tinto-ou-branco-garrafa": [
+   [
+    "Vinho Tinto (Garrafa)",
+    "Garrafa"
+   ],
+   [
+    "Vinho Branco (Garrafa)",
+    "Garrafa"
+   ]
+  ],
   "32-25-agua": [
    [
     "Água Sem Gás",
@@ -960,6 +1140,16 @@
    [
     "Refrigerante 350 ml Guaraná",
     "Normal e Zero"
+   ]
+  ],
+  "32-32-suco-de-uva-ou-laranja-integral": [
+   [
+    "Suco de Uva Integral (Copo)",
+    "200 ml"
+   ],
+   [
+    "Suco de Laranja Integral (Copo)",
+    "200 ml"
    ]
   ],
   "33-23-gelato-al-cioccolato-alla-fragola-e-alla-crema": [
@@ -1134,6 +1324,16 @@
     ""
    ]
   ],
+  "4-18-vinho-seco-ou-suave-copo": [
+   [
+    "Vinho Seco (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Suave (Copo)",
+    "200 ml"
+   ]
+  ],
   "5-13-agua": [
    [
     "Água Sem Gás",
@@ -1164,6 +1364,36 @@
    [
     "Cerveja 350 ml Original",
     ""
+   ]
+  ],
+  "5-20-vinho-seco-ou-suave-copo": [
+   [
+    "Vinho Seco (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Suave (Copo)",
+    "200 ml"
+   ]
+  ],
+  "5-21-vinho-seco-ou-suave-1-2-garrafa": [
+   [
+    "Vinho Seco (1/2 Garrafa)",
+    "500 ml"
+   ],
+   [
+    "Vinho Suave (1/2 Garrafa)",
+    "500 ml"
+   ]
+  ],
+  "5-22-vinho-seco-ou-suave-garrafa": [
+   [
+    "Vinho Seco (Garrafa)",
+    "1 litro"
+   ],
+   [
+    "Vinho Suave (Garrafa)",
+    "1 litro"
    ]
   ],
   "6-06-agua": [
@@ -1266,6 +1496,46 @@
     ""
    ]
   ],
+  "8-15-vinho-seco-ou-suave-jarra": [
+   [
+    "Vinho Seco (Jarra)",
+    "500 ml"
+   ],
+   [
+    "Vinho Suave (Jarra)",
+    "500 ml"
+   ]
+  ],
+  "8-16-vinho-seco-ou-suave": [
+   [
+    "Vinho Seco (1/2 Garrafa)",
+    "500 ml – Garrafa Pet"
+   ],
+   [
+    "Vinho Suave (1/2 Garrafa)",
+    "500 ml – Garrafa Pet"
+   ]
+  ],
+  "8-17-vinho-seco-ou-suave": [
+   [
+    "Vinho Seco (Garrafa)",
+    "1 litro – Garrafa Pet"
+   ],
+   [
+    "Vinho Suave (Garrafa)",
+    "1 litro – Garrafa Pet"
+   ]
+  ],
+  "9-02-piadina-alla-mortadella-e-formaggio": [
+   [
+    "Piadina Alla Mortadella e Formaggio Cremoso",
+    "Massa Italiana assada na Chapa recheada com Mortadela e Requeijão"
+   ],
+   [
+    "Piadina Alla Mortadella e Mozzarella",
+    "Massa Italiana assada na Chapa recheada com Mortadela e Muçarela"
+   ]
+  ],
   "9-08-millefoglie-alla-crema-fior-di-latte": [
    [
     "Millefoglie Alla Crema",
@@ -1359,140 +1629,6 @@
   "1-23-suco-de-uva-natural-copo": "8a4b8de0431f",
   "1-24-vinho-tinto-copo": "91bbb64484c2",
   "1-25-vinho-quente-copo": "593e84058397",
-  "2-01-spaghetti-al-sugo": "a0e969c5586f",
-  "2-02-spaghetti-alla-calabrese": "5b4f58eb0d48",
-  "2-03-spaghetti-alla-romanesca": "f4e6fa5096f0",
-  "2-04-spaghetti-alla-bolognese": "6bff018e287d",
-  "2-05-spaghetti-fritti-al-sugo": "de805a675e68",
-  "2-06-spaghetti-fritti-alla-calabrese": "9e110ca69722",
-  "2-07-spaghetti-fritti-alla-romanesca": "245074ae4184",
-  "2-08-spaghetti-fritti-alla-bolognese": "d1d81df918fa",
-  "2-09-agua": "01eb86409a5a",
-  "2-10-agua": "a2a39cea8f61",
-  "2-11-refrigerante-350-ml": "14ff9f5bc644",
-  "2-12-cerveja-350-ml": "93166b5e8ba2",
-  "2-13-suco-de-uva-integral-copo": "bf666fbde114",
-  "2-14-vinho-suave-ou-tinto-copo": "afa4bce62729",
-  "3-01-fogazza-alla-mozzarella": "0caef5d76beb",
-  "3-02-fogazza-alla-calabrese-e-mozzarella": "2d8753d16147",
-  "3-03-fogazza-al-pollo-con-catupiry": "1d2209acb8e6",
-  "3-04-agua": "01eb86409a5a",
-  "3-05-refrigerante-350-ml": "8e24b39c55d5",
-  "3-06-suco-de-uva-integral-copo": "bf666fbde114",
-  "3-07-cerveja-350-ml": "272a8d1afc2a",
-  "3-08-vinho-suave-copo": "60d917611f5a",
-  "3-09-vinho-seco-copo": "e59b897a82f8",
-  "4-01-crema-ai-formaggi": "975707bbd1e0",
-  "4-02-zuppa-di-cappelletti": "206e4d48753a",
-  "4-03-panino-alla-carne-pazzesca": "45f106ec0b76",
-  "4-04-crostoli": "4b82d695e377",
-  "4-05-crostata-al-cioccolato-con-gelato": "cc1f73d03cbe",
-  "4-06-salame-di-cioccolato": "d2bd9cd22a1f",
-  "4-07-frappe": "d6cf4660484a",
-  "4-08-gelato-al-fior-di-latte": "30a48fb6479d",
-  "4-09-gelato-alla-nocciolato": "14aa8e119440",
-  "4-10-gelato-alla-fragola": "310c68960356",
-  "4-11-guarnizione-alla-nocciola": "174a0de23982",
-  "4-12-guarnizione-al-dulce-de-leche": "a27cfdaa1f44",
-  "4-13-zuccherini-colorati": "ffe375b99d21",
-  "4-14-agua": "01eb86409a5a",
-  "4-15-agua": "a2a39cea8f61",
-  "4-16-refrigerante-350-ml": "14ff9f5bc644",
-  "4-17-cerveja-350-ml": "a35637b345be",
-  "4-18-vinho-seco-ou-suave-copo": "a09aa08d29e2",
-  "4-19-suco-de-uva-integral-copo": "bf666fbde114",
-  "4-20-suco-de-uva-integral-garrafa": "eeb9e61479ac",
-  "5-01-crocchette-di-baccala": "69f2166bc35a",
-  "5-02-porzioni-di-polpette-di-carne": "ca4d48735b12",
-  "5-03-orecchiette-al-sugo-rosso-con-carne": "95c0e015bfc8",
-  "5-04-orecchiette-alla-besciamella": "244ff78e51e9",
-  "5-05-orecchiette-alla-salsa-mezzo-e-mezzo": "38da895c2f0e",
-  "5-06-spaghetti-al-sugo-rosso-con-carne": "7d5eef813ac7",
-  "5-07-spaghetti-alla-besciamella": "36c470b9f7cf",
-  "5-08-spaghetti-alla-salsa-mezzo-e-mezzo": "3c1f1f16e0bb",
-  "5-09-tartufo-al-cioccolato-con-nocciola": "14803fac58ce",
-  "5-10-tartufo-al-cioccolato-bianco": "cca051a95e61",
-  "5-11-tartufo-al-cioccolato-fondente": "bebc1ab498e4",
-  "5-12-tartufo-al-pistacchio": "9ced2bcad029",
-  "5-13-agua": "01eb86409a5a",
-  "5-14-agua": "a2a39cea8f61",
-  "5-15-refrigerante-350-ml": "14ff9f5bc644",
-  "5-16-cerveja-350-ml": "05ea8573fbe2",
-  "5-17-suco-de-uva-integral-copo": "bf666fbde114",
-  "5-18-suco-de-uva-integral-1-2-garrafa": "28352deea180",
-  "5-19-suco-de-uva-integral-garrafa": "eeb9e61479ac",
-  "5-20-vinho-seco-ou-suave-copo": "a09aa08d29e2",
-  "5-21-vinho-seco-ou-suave-1-2-garrafa": "531091c77fe4",
-  "5-22-vinho-seco-ou-suave-garrafa": "cac17f9750c8",
-  "6-01-tagliatelle-al-sugo": "d4a548d70ea6",
-  "6-02-tagliatelle-alla-bolognese": "e8048c5e24e8",
-  "6-03-pollo-fritto-con-polenta": "3938c5eccb43",
-  "6-04-porzioni-di-polenta-fritta": "6c23833af9f5",
-  "6-05-panino-al-maiale-sfilacciato": "45a487ffe9ba",
-  "6-06-agua": "01eb86409a5a",
-  "6-07-agua": "a2a39cea8f61",
-  "6-08-refrigerante-350-ml": "fb557e7dc489",
-  "6-09-suco-de-uva-integral-copo": "bf666fbde114",
-  "7-01-penne-al-sugo": "be47885bfffc",
-  "7-02-penne-alla-bolognese": "6a0e547a07d5",
-  "7-03-penne-alla-calabrese": "df309bfaec0d",
-  "7-04-spaghetti-al-sugo": "a0e969c5586f",
-  "7-05-spaghetti-alla-bolognese": "f27ad9bc3b47",
-  "7-06-spaghetti-alla-calabrese": "f45bfd8481a1",
-  "7-07-polenta-ai-quattro-formaggi": "3f6041dce99e",
-  "7-08-porzioni-di-maiale-sfilacciato": "45436a19906d",
-  "7-09-porzioni-di-salsiccia-calabrese": "e9eebcfbe680",
-  "7-10-panino-al-maiale-sfilacciato": "45a487ffe9ba",
-  "7-11-panino-con-salsiccia-calabrese": "b852fd5ff40e",
-  "7-12-cannoli-alla-crema-mousse-al-cioccolato-dulce-di-latte": "18395faa9aa8",
-  "7-13-crostoli": "4b82d695e377",
-  "7-14-crostata-alle-fragole": "0c010cf4e45c",
-  "7-15-crostata-al-limone-di-sicilia": "afb870ce8174",
-  "7-16-crostata-al-frutto-della-passione-e-noci": "90773de24585",
-  "7-17-fragole-al-cioccolato": "f7c8cc11aa23",
-  "7-18-salame-di-cioccolato": "3a9a0badf259",
-  "7-19-tiramisu": "58fe574e5355",
-  "7-20-agua": "01eb86409a5a",
-  "7-21-agua": "a2a39cea8f61",
-  "7-22-refrigerante-350-ml": "14ff9f5bc644",
-  "7-23-cerveja-350-ml": "a35637b345be",
-  "7-24-suco-de-uva-integral-copo": "bf666fbde114",
-  "7-25-vinho-copo": "5bca6310cbdc",
-  "7-26-vinho-quente-copo": "593e84058397",
-  "8-01-porzioni-di-maiale-sfitacciato-affumicata": "e2b562ff0676",
-  "8-02-porzioni-di-salsiccia-calabrese": "e9eebcfbe680",
-  "8-03-porzioni-di-salsiccia-calabrese-ripiena": "098d913ff3be",
-  "8-04-panino-alla-maiale-sfitacciato-affumicata": "2fe5ff431cad",
-  "8-05-panino-alla-salsiccia-calabrese": "e4e9b5489974",
-  "8-06-panino-alla-salsiccia-calabrese-ripiena": "b672be8931c3",
-  "8-07-agua": "01eb86409a5a",
-  "8-08-agua": "a2a39cea8f61",
-  "8-09-refrigerante-350-ml": "14ff9f5bc644",
-  "8-10-cerveja-350-ml": "4d1486ba8684",
-  "8-11-suco-de-uva-integral-copo": "bf666fbde114",
-  "8-12-suco-de-uva-integral-jarra": "1ebdedbcbfaa",
-  "8-13-vinho-copo": "5bca6310cbdc",
-  "8-14-vinho-quente-copo": "593e84058397",
-  "8-15-vinho-seco-ou-suave-jarra": "a0ac8dd65d01",
-  "8-16-vinho-seco-ou-suave": "b39fde9a8275",
-  "8-17-vinho-seco-ou-suave": "1a5a42477e56",
-  "9-01-piadina-al-pollo-e-formaggio-cremoso": "307686382a5d",
-  "9-02-piadina-alla-mortadella-e-formaggio": "a46d42663b93",
-  "9-03-piadina-margherita": "b1a272e40b6f",
-  "9-04-piadina-alla-salsiccia-calabrese-e-cipolla": "9cb75939093b",
-  "9-05-piadina-ai-cuori-di-palma-e-formaggio-cremoso": "acdbb4946549",
-  "9-06-piadina-alla-rucola-pomodori-secchi-e-formaggio-cremoso": "ffe4943537f4",
-  "9-07-porzioni-di-polenta-fritta": "6c23833af9f5",
-  "9-08-millefoglie-alla-crema-fior-di-latte": "35f9cf259f60",
-  "9-09-piadina-al-cioccolato-e-fragole": "72eadf2ba48f",
-  "9-10-piadina-al-cioccolato": "d52a8414cdf4",
-  "9-11-cannoli-alla-crema-fior-di-latte-latte-in-polvere": "fcd4bf5fc5bf",
-  "9-12-sfogliatella": "9e54b1cc6429",
-  "9-13-pastiera-di-grano-alla-crema-fior-di-latte": "acbd8841b066",
-  "9-14-agua": "01eb86409a5a",
-  "9-15-agua": "a2a39cea8f61",
-  "9-16-refrigerante-350-ml": "14ff9f5bc644",
-  "9-17-suco-de-uva-copo": "dfb189db5852",
   "10-01-focaccia-caprese": "cde61239571b",
   "10-02-focaccia-alla-mortadella": "c8cca4e4c09b",
   "10-03-focaccia-de-porchetta": "7159ea8c1e8a",
@@ -1656,6 +1792,20 @@
   "19-23-vinho-seco-garrafa": "d1e1c12e1e39",
   "19-24-chopp-claro": "4dee6e7abf98",
   "19-25-chopp-de-vinho": "03b3c0eede18",
+  "2-01-spaghetti-al-sugo": "a0e969c5586f",
+  "2-02-spaghetti-alla-calabrese": "5b4f58eb0d48",
+  "2-03-spaghetti-alla-romanesca": "f4e6fa5096f0",
+  "2-04-spaghetti-alla-bolognese": "6bff018e287d",
+  "2-05-spaghetti-fritti-al-sugo": "de805a675e68",
+  "2-06-spaghetti-fritti-alla-calabrese": "9e110ca69722",
+  "2-07-spaghetti-fritti-alla-romanesca": "245074ae4184",
+  "2-08-spaghetti-fritti-alla-bolognese": "d1d81df918fa",
+  "2-09-agua": "01eb86409a5a",
+  "2-10-agua": "a2a39cea8f61",
+  "2-11-refrigerante-350-ml": "14ff9f5bc644",
+  "2-12-cerveja-350-ml": "93166b5e8ba2",
+  "2-13-suco-de-uva-integral-copo": "bf666fbde114",
+  "2-14-vinho-suave-ou-tinto-copo": "afa4bce62729",
   "20-21-01-antipasto-di-sardella": "867b92e03334",
   "20-21-02-porzioni-di-salsiccia-calabrese-con-cipolle": "723f1721358f",
   "20-21-03-caponata-di-melanzane": "9d5e2324e1b7",
@@ -1816,6 +1966,15 @@
   "29-15-refrigerante-350-ml": "e66a4d32a831",
   "29-16-suco-200-ml": "d17c1a03c054",
   "29-17-h2o": "4b28600d25ee",
+  "3-01-fogazza-alla-mozzarella": "0caef5d76beb",
+  "3-02-fogazza-alla-calabrese-e-mozzarella": "2d8753d16147",
+  "3-03-fogazza-al-pollo-con-catupiry": "1d2209acb8e6",
+  "3-04-agua": "01eb86409a5a",
+  "3-05-refrigerante-350-ml": "8e24b39c55d5",
+  "3-06-suco-de-uva-integral-copo": "bf666fbde114",
+  "3-07-cerveja-350-ml": "272a8d1afc2a",
+  "3-08-vinho-suave-copo": "60d917611f5a",
+  "3-09-vinho-seco-copo": "e59b897a82f8",
   "30-01-calzone-al-pollo-e-formaggio-cremoso": "3fce9aeab25c",
   "30-02-calzone-margherita": "6915776bc874",
   "30-03-calzone-ai-due-formaggi": "25259b343ba4",
@@ -1978,6 +2137,117 @@
   "36-23-chopp-vinho": "385c00752854",
   "36-24-chocolate-quente-copo": "43dfdb829cf2",
   "36-25-chocolate-quente-com-amarula-copo": "9619d2222d16",
-  "36-26-chocolate-quente-com-conhaque-copo": "b6fc9540c8e1"
+  "36-26-chocolate-quente-com-conhaque-copo": "b6fc9540c8e1",
+  "4-01-crema-ai-formaggi": "975707bbd1e0",
+  "4-02-zuppa-di-cappelletti": "206e4d48753a",
+  "4-03-panino-alla-carne-pazzesca": "45f106ec0b76",
+  "4-04-crostoli": "4b82d695e377",
+  "4-05-crostata-al-cioccolato-con-gelato": "cc1f73d03cbe",
+  "4-06-salame-di-cioccolato": "d2bd9cd22a1f",
+  "4-07-frappe": "d6cf4660484a",
+  "4-08-gelato-al-fior-di-latte": "30a48fb6479d",
+  "4-09-gelato-alla-nocciolato": "14aa8e119440",
+  "4-10-gelato-alla-fragola": "310c68960356",
+  "4-11-guarnizione-alla-nocciola": "174a0de23982",
+  "4-12-guarnizione-al-dulce-de-leche": "a27cfdaa1f44",
+  "4-13-zuccherini-colorati": "ffe375b99d21",
+  "4-14-agua": "01eb86409a5a",
+  "4-15-agua": "a2a39cea8f61",
+  "4-16-refrigerante-350-ml": "14ff9f5bc644",
+  "4-17-cerveja-350-ml": "a35637b345be",
+  "4-18-vinho-seco-ou-suave-copo": "a09aa08d29e2",
+  "4-19-suco-de-uva-integral-copo": "bf666fbde114",
+  "4-20-suco-de-uva-integral-garrafa": "eeb9e61479ac",
+  "5-01-crocchette-di-baccala": "69f2166bc35a",
+  "5-02-porzioni-di-polpette-di-carne": "ca4d48735b12",
+  "5-03-orecchiette-al-sugo-rosso-con-carne": "95c0e015bfc8",
+  "5-04-orecchiette-alla-besciamella": "244ff78e51e9",
+  "5-05-orecchiette-alla-salsa-mezzo-e-mezzo": "38da895c2f0e",
+  "5-06-spaghetti-al-sugo-rosso-con-carne": "7d5eef813ac7",
+  "5-07-spaghetti-alla-besciamella": "36c470b9f7cf",
+  "5-08-spaghetti-alla-salsa-mezzo-e-mezzo": "3c1f1f16e0bb",
+  "5-09-tartufo-al-cioccolato-con-nocciola": "14803fac58ce",
+  "5-10-tartufo-al-cioccolato-bianco": "cca051a95e61",
+  "5-11-tartufo-al-cioccolato-fondente": "bebc1ab498e4",
+  "5-12-tartufo-al-pistacchio": "9ced2bcad029",
+  "5-13-agua": "01eb86409a5a",
+  "5-14-agua": "a2a39cea8f61",
+  "5-15-refrigerante-350-ml": "14ff9f5bc644",
+  "5-16-cerveja-350-ml": "05ea8573fbe2",
+  "5-17-suco-de-uva-integral-copo": "bf666fbde114",
+  "5-18-suco-de-uva-integral-1-2-garrafa": "28352deea180",
+  "5-19-suco-de-uva-integral-garrafa": "eeb9e61479ac",
+  "5-20-vinho-seco-ou-suave-copo": "a09aa08d29e2",
+  "5-21-vinho-seco-ou-suave-1-2-garrafa": "531091c77fe4",
+  "5-22-vinho-seco-ou-suave-garrafa": "cac17f9750c8",
+  "6-01-tagliatelle-al-sugo": "d4a548d70ea6",
+  "6-02-tagliatelle-alla-bolognese": "e8048c5e24e8",
+  "6-03-pollo-fritto-con-polenta": "3938c5eccb43",
+  "6-04-porzioni-di-polenta-fritta": "6c23833af9f5",
+  "6-05-panino-al-maiale-sfilacciato": "45a487ffe9ba",
+  "6-06-agua": "01eb86409a5a",
+  "6-07-agua": "a2a39cea8f61",
+  "6-08-refrigerante-350-ml": "fb557e7dc489",
+  "6-09-suco-de-uva-integral-copo": "bf666fbde114",
+  "7-01-penne-al-sugo": "be47885bfffc",
+  "7-02-penne-alla-bolognese": "6a0e547a07d5",
+  "7-03-penne-alla-calabrese": "df309bfaec0d",
+  "7-04-spaghetti-al-sugo": "a0e969c5586f",
+  "7-05-spaghetti-alla-bolognese": "f27ad9bc3b47",
+  "7-06-spaghetti-alla-calabrese": "f45bfd8481a1",
+  "7-07-polenta-ai-quattro-formaggi": "3f6041dce99e",
+  "7-08-porzioni-di-maiale-sfilacciato": "45436a19906d",
+  "7-09-porzioni-di-salsiccia-calabrese": "e9eebcfbe680",
+  "7-10-panino-al-maiale-sfilacciato": "45a487ffe9ba",
+  "7-11-panino-con-salsiccia-calabrese": "b852fd5ff40e",
+  "7-12-cannoli-alla-crema-mousse-al-cioccolato-dulce-di-latte": "18395faa9aa8",
+  "7-13-crostoli": "4b82d695e377",
+  "7-14-crostata-alle-fragole": "0c010cf4e45c",
+  "7-15-crostata-al-limone-di-sicilia": "afb870ce8174",
+  "7-16-crostata-al-frutto-della-passione-e-noci": "90773de24585",
+  "7-17-fragole-al-cioccolato": "f7c8cc11aa23",
+  "7-18-salame-di-cioccolato": "3a9a0badf259",
+  "7-19-tiramisu": "58fe574e5355",
+  "7-20-agua": "01eb86409a5a",
+  "7-21-agua": "a2a39cea8f61",
+  "7-22-refrigerante-350-ml": "14ff9f5bc644",
+  "7-23-cerveja-350-ml": "a35637b345be",
+  "7-24-suco-de-uva-integral-copo": "bf666fbde114",
+  "7-25-vinho-copo": "5bca6310cbdc",
+  "7-26-vinho-quente-copo": "593e84058397",
+  "8-01-porzioni-di-maiale-sfitacciato-affumicata": "e2b562ff0676",
+  "8-02-porzioni-di-salsiccia-calabrese": "e9eebcfbe680",
+  "8-03-porzioni-di-salsiccia-calabrese-ripiena": "098d913ff3be",
+  "8-04-panino-alla-maiale-sfitacciato-affumicata": "2fe5ff431cad",
+  "8-05-panino-alla-salsiccia-calabrese": "e4e9b5489974",
+  "8-06-panino-alla-salsiccia-calabrese-ripiena": "b672be8931c3",
+  "8-07-agua": "01eb86409a5a",
+  "8-08-agua": "a2a39cea8f61",
+  "8-09-refrigerante-350-ml": "14ff9f5bc644",
+  "8-10-cerveja-350-ml": "4d1486ba8684",
+  "8-11-suco-de-uva-integral-copo": "bf666fbde114",
+  "8-12-suco-de-uva-integral-jarra": "1ebdedbcbfaa",
+  "8-13-vinho-copo": "5bca6310cbdc",
+  "8-14-vinho-quente-copo": "593e84058397",
+  "8-15-vinho-seco-ou-suave-jarra": "a0ac8dd65d01",
+  "8-16-vinho-seco-ou-suave": "b39fde9a8275",
+  "8-17-vinho-seco-ou-suave": "1a5a42477e56",
+  "9-01-piadina-al-pollo-e-formaggio-cremoso": "307686382a5d",
+  "9-02-piadina-alla-mortadella-e-formaggio": "a46d42663b93",
+  "9-03-piadina-margherita": "b1a272e40b6f",
+  "9-04-piadina-alla-salsiccia-calabrese-e-cipolla": "9cb75939093b",
+  "9-05-piadina-ai-cuori-di-palma-e-formaggio-cremoso": "acdbb4946549",
+  "9-06-piadina-alla-rucola-pomodori-secchi-e-formaggio-cremoso": "ffe4943537f4",
+  "9-07-porzioni-di-polenta-fritta": "6c23833af9f5",
+  "9-08-millefoglie-alla-crema-fior-di-latte": "35f9cf259f60",
+  "9-09-piadina-al-cioccolato-e-fragole": "72eadf2ba48f",
+  "9-10-piadina-al-cioccolato": "d52a8414cdf4",
+  "9-11-cannoli-alla-crema-fior-di-latte-latte-in-polvere": "fcd4bf5fc5bf",
+  "9-12-sfogliatella": "9e54b1cc6429",
+  "9-13-pastiera-di-grano-alla-crema-fior-di-latte": "acbd8841b066",
+  "9-14-agua": "01eb86409a5a",
+  "9-15-agua": "a2a39cea8f61",
+  "9-16-refrigerante-350-ml": "14ff9f5bc644",
+  "9-17-suco-de-uva-copo": "dfb189db5852"
  }
 }

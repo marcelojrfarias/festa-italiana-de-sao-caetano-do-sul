@@ -187,9 +187,6 @@ SINONIMOS = {
     "chopp vinho": "Chopp de Vinho",
     # doce de leite escrito em espanhol
     "cannoli al dulce de leche": "Cannoli Dolce di Latte",
-    # só a vírgula
-    "vinho tinto, seco ou suave (copo)": "Vinho Tinto Seco ou Suave (Copo)",
-    "vinho tinto, seco ou suave (garrafa)": "Vinho Tinto Seco ou Suave (Garrafa)",
 }
 
 
