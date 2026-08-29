@@ -112,14 +112,38 @@ ficavam em pontos distantes da lista, começando por palavras diferentes. Viram
 compara. O mesmo para "(Pequeno)" e "(Grande)", e para a quantidade em
 "(1 unità)" e "(8 unità)".
 
-**9. Nome italiano fica; a descrição é que carrega o português.** "Capretto In
-Salsa Speciale" e "Caciocavallo Impanato e Fritto" não são traduzidos — é o
-nome impresso na barraca, e é por ele que a pessoa vai pedir. O que não pode
-faltar é a descrição em português, porque é ela que a busca indexa: quem
-digita "cabrito" ou "queijo empanado" chega no prato.
+**9. O título é em português; o nome italiano fica ao lado, com bandeira.**
+O objetivo do site é a pessoa achar o que quer comer, e o idioma não pode ser
+a barreira. Mas o nome italiano é o que está na placa da barraca, é por ele
+que ela vai pedir, e faz parte do que a festa é — então não some: vira campo
+próprio no card, entre o título e a descrição.
+
+O teste para traduzir ou não é um só: **como o brasileiro chama isso?**
+
+    fica em italiano     Spaghetti, Penne, Farfalle, Ravioli, Cappelletti,
+                         Pizza, Fogazza, Calzone, Piadina, Focaccia,
+                         Cannoli, Gelato, Panna Cotta, Tiramisù, Bruschetta,
+                         Polenta, Caponata, Strudel, Antipasto
+
+    traduz               Gnocchi -> Nhoque      Panino -> Sanduíche
+                         Crostata -> Torta      Budino -> Pudim
+                         Capretto -> Cabrito    Lasagne -> Lasanha
+                         Fetta -> Fatia         Porzioni -> Porção
+
+Ninguém pede "gnocchi" aqui, mas também ninguém pede "espaguete à moda
+italiana" quando o nome é spaghetti. Prato sem nome corrente em português —
+Sfogliatella, Zuccotto, Crostoli, Panzanella — mantém o nome italiano e conta
+com a descrição.
+
+O nome em português é a chave de agrupamento, então dois nomes italianos que
+querem dizer a mesma coisa viram um card sozinhos: "Panino Al Manzo
+Sfilacciato" e "Panino Alla Carne Sfilacciata" são o mesmo "Sanduíche de
+Carne Desfiada". A busca aceita os dois idiomas.
 
 Todo prato de comida tem descrição. Os únicos com descrição curta são bebidas,
-onde o nome já se explica sozinho.
+onde o nome já se explica sozinho. E descrição que vira eco do título em
+português sai do card: "Torta de Limão" não precisa dizer "Torta de Limão"
+embaixo.
 
 **10. A categoria é parte da curadoria.** Bolinho de bacalhau é petisco, não
 carne; as duas sopas do cardápio ficam juntas; combo não é massa. Quando a
