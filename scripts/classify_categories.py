@@ -36,6 +36,28 @@ REVISAO_MANUAL = {
     # Sobremesa que vive na categoria "Menù Vegano" do PDF e por isso não casa
     # com nenhuma regra de doce.
     "26-09-panna-cotta-vegana-ai-frutti-rossi": ("doces", "sobremesa listada em Menù Vegano"),
+
+    # Bolinho de bacalhau é petisco. Caíam em "Carnes e Polenta" porque a regra
+    # vê "baccalà" como proteína, e ficavam separados do irmão de outra barraca,
+    # a Crocchette di Baccalà, que já estava em Petiscos.
+    "27-01-frittella-di-baccala": ("petiscos-e-porcoes", "bolinho de bacalhau é petisco"),
+    "27-02-frittella-di-baccala-e-formaggio": ("petiscos-e-porcoes", "bolinho de bacalhau é petisco"),
+    "34-07-frittelle-di-baccala-8-unita": ("petiscos-e-porcoes", "bolinho de bacalhau é petisco"),
+
+    # "Outros pratos" era o depósito de quem não casou com regra nenhuma, e três
+    # dos quatro são petisco de mesa: queijo empanado, batata frita e creme de
+    # queijo com pão.
+    "27-03-caciocavallo-impanato-e-fritto": ("petiscos-e-porcoes", "queijo empanado servido de entrada"),
+    "27-04-patate-fritte-a-bastoncino": ("petiscos-e-porcoes", "porção de batata frita"),
+    "4-01-crema-ai-formaggi": ("petiscos-e-porcoes", "creme de queijo servido com pão"),
+
+    # As duas sopas do cardápio estavam em categorias diferentes. Não há
+    # categoria de sopa — dois itens não sustentam uma —, então ficam juntas
+    # onde já estava a Zuppa Toscana.
+    "4-02-zuppa-di-cappelletti": ("carnes-e-polenta", "sopa, junto da outra sopa do cardápio"),
+
+    # Combo de massa, doce e refrigerante: não é uma massa.
+    "25-13-menu-completo": ("outros-pratos", "combo, não é um prato de massa"),
 }
 
 ALCOOL = r"(cerveja|chopp|chope|vinho|caipir|amarula|conhaque|licor|aperol|spritz|whisky|vodka|gin\b|sangria|prosecco|espumante|campari|limoncell|grappa|cachac|alcoolic|quentao)"

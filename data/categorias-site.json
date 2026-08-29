@@ -18,7 +18,7 @@
       "id": "massas",
       "nome": "Massas",
       "ordem": 2,
-      "total": 121
+      "total": 119
     },
     {
       "id": "bebidas-com-alcool",
@@ -42,25 +42,57 @@
       "id": "petiscos-e-porcoes",
       "nome": "Petiscos e Porções",
       "ordem": 6,
-      "total": 29
+      "total": 35
     },
     {
       "id": "carnes-e-polenta",
       "nome": "Carnes e Polenta",
       "ordem": 7,
-      "total": 18
+      "total": 16
     },
     {
       "id": "outros-pratos",
       "nome": "Outros pratos",
       "ordem": 8,
-      "total": 4
+      "total": 2
     }
   ],
   "revisao_manual": {
+    "4-01-crema-ai-formaggi": {
+      "categoria": "petiscos-e-porcoes",
+      "motivo": "creme de queijo servido com pão"
+    },
+    "4-02-zuppa-di-cappelletti": {
+      "categoria": "carnes-e-polenta",
+      "motivo": "sopa, junto da outra sopa do cardápio"
+    },
+    "25-13-menu-completo": {
+      "categoria": "outros-pratos",
+      "motivo": "combo, não é um prato de massa"
+    },
     "26-09-panna-cotta-vegana-ai-frutti-rossi": {
       "categoria": "doces",
       "motivo": "sobremesa listada em Menù Vegano"
+    },
+    "27-01-frittella-di-baccala": {
+      "categoria": "petiscos-e-porcoes",
+      "motivo": "bolinho de bacalhau é petisco"
+    },
+    "27-02-frittella-di-baccala-e-formaggio": {
+      "categoria": "petiscos-e-porcoes",
+      "motivo": "bolinho de bacalhau é petisco"
+    },
+    "27-03-caciocavallo-impanato-e-fritto": {
+      "categoria": "petiscos-e-porcoes",
+      "motivo": "queijo empanado servido de entrada"
+    },
+    "27-04-patate-fritte-a-bastoncino": {
+      "categoria": "petiscos-e-porcoes",
+      "motivo": "porção de batata frita"
+    },
+    "34-07-frittelle-di-baccala-8-unita": {
+      "categoria": "petiscos-e-porcoes",
+      "motivo": "bolinho de bacalhau é petisco"
     }
   },
   "atribuicoes": {
@@ -351,7 +383,7 @@
     "25-10-ravioli-ai-quattro-formaggi-al-sugo": "massas",
     "25-11-ravioli-ai-quattro-formaggi-al-pesto": "massas",
     "25-12-ravioli-ai-quattro-formaggi-alla-romanesca": "massas",
-    "25-13-menu-completo": "massas",
+    "25-13-menu-completo": "outros-pratos",
     "25-14-crostata-de-leite-ninho-e-nutella": "doces",
     "25-15-panna-cotta-alla-salsa-di-fragole": "doces",
     "25-16-tiramisu": "doces",
@@ -388,10 +420,10 @@
     "26-26-chopp-de-vinho": "bebidas-com-alcool",
     "26-27-vinho-tinto-seco-ou-suave-copo": "bebidas-com-alcool",
     "26-28-vinho-tinto-seco-ou-suave-garrafa": "bebidas-com-alcool",
-    "27-01-frittella-di-baccala": "carnes-e-polenta",
-    "27-02-frittella-di-baccala-e-formaggio": "carnes-e-polenta",
-    "27-03-caciocavallo-impanato-e-fritto": "outros-pratos",
-    "27-04-patate-fritte-a-bastoncino": "outros-pratos",
+    "27-01-frittella-di-baccala": "petiscos-e-porcoes",
+    "27-02-frittella-di-baccala-e-formaggio": "petiscos-e-porcoes",
+    "27-03-caciocavallo-impanato-e-fritto": "petiscos-e-porcoes",
+    "27-04-patate-fritte-a-bastoncino": "petiscos-e-porcoes",
     "27-05-salsiccia-italiana-allo-spiedo": "carnes-e-polenta",
     "27-06-penne-al-sugo-nel-bicchiere": "massas",
     "27-07-cannoli": "doces",
@@ -533,7 +565,7 @@
     "34-04-polenta-al-sugo": "carnes-e-polenta",
     "34-05-polenta-alla-bolognese": "carnes-e-polenta",
     "34-06-polenta-al-sugo-con-salsiccia-calabrese": "carnes-e-polenta",
-    "34-07-frittelle-di-baccala-8-unita": "carnes-e-polenta",
+    "34-07-frittelle-di-baccala-8-unita": "petiscos-e-porcoes",
     "34-08-pizza-alla-mozzarella": "pizzas-e-fogazza",
     "34-09-pizza-toscana": "pizzas-e-fogazza",
     "34-10-pizza-ai-tre-formaggi": "pizzas-e-fogazza",
@@ -598,8 +630,8 @@
     "36-24-chocolate-quente-copo": "bebidas-sem-alcool",
     "36-25-chocolate-quente-com-amarula-copo": "bebidas-com-alcool",
     "36-26-chocolate-quente-com-conhaque-copo": "bebidas-com-alcool",
-    "4-01-crema-ai-formaggi": "outros-pratos",
-    "4-02-zuppa-di-cappelletti": "massas",
+    "4-01-crema-ai-formaggi": "petiscos-e-porcoes",
+    "4-02-zuppa-di-cappelletti": "carnes-e-polenta",
     "4-03-panino-alla-carne-pazzesca": "lanches",
     "4-04-crostoli": "doces",
     "4-05-crostata-al-cioccolato-con-gelato": "doces",

@@ -1,0 +1,2367 @@
+{
+ "_descricao": "Como cada item impresso do cardápio vira um ou mais pratos na tela. A regra está em docs/curadoria.md e foi aplicada item a item, lendo o PDF. Item ausente daqui aparece como está impresso.",
+ "_conferencia": "'itens' guarda a decisão; 'origem' guarda a impressão digital do texto de onde ela saiu, para todos os 645 itens. scripts/conferir_curadoria.py acusa o que mudou.",
+ "itens": {
+  "1-06-cannoli-alla-crema-mousse-al-cioccolato-nutella-fior-di-latt": [
+   [
+    "Cannoli Alla Crema",
+    "Massa Crocante recheada com Creme"
+   ],
+   [
+    "Cannoli Mousse Al Cioccolato",
+    "Massa Crocante recheada com Mousse de Chocolate"
+   ],
+   [
+    "Cannoli Alla Nutella",
+    "Massa Crocante recheada com Nutella"
+   ],
+   [
+    "Cannoli Fior di Latte",
+    "Massa Crocante recheada com Creme de Leite"
+   ]
+  ],
+  "1-10-crostata-di-fragole": [
+   [
+    "Crostata Alle Fragole",
+    "Torta de Morango com Creme e Massa Leve"
+   ]
+  ],
+  "1-19-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "1-20-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "1-21-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Tônica (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "1-22-cerveja-350-ml": [
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ],
+   [
+    "Cerveja Brahma (350 ml)",
+    ""
+   ],
+   [
+    "Cerveja Skol (350 ml)",
+    ""
+   ]
+  ],
+  "10-06-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "10-07-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "11-04-cannoncini-alla-crema-kinder-pistacchio-malto-croccante": [
+   [
+    "Cannoncini Alla Crema Kinder",
+    "Massa Folhada recheada com Creme Kinder"
+   ],
+   [
+    "Cannoncini Pistacchio",
+    "Massa Folhada recheada com Pistache"
+   ],
+   [
+    "Cannoncini Malto Croccante",
+    "Massa Folhada recheada com Ovomaltine"
+   ]
+  ],
+  "11-05-cannoli-alla-crema-dolce-di-latte": [
+   [
+    "Cannoli Alla Crema",
+    "Massa Crocante recheada com Creme"
+   ],
+   [
+    "Cannoli Dolce di Latte",
+    "Massa Crocante recheada com Doce de Leite"
+   ]
+  ],
+  "11-10-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "11-11-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "11-12-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Sprite (350 ml)",
+    ""
+   ]
+  ],
+  "12-06-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "12-07-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "12-09-vinho-tinto-seco-ou-suave-copo": [
+   [
+    "Vinho Tinto Seco (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Tinto Suave (Copo)",
+    "200 ml"
+   ]
+  ],
+  "13-05-cannoli-alla-crema-cioccolato-dolce-di-latte": [
+   [
+    "Cannoli Alla Crema",
+    "Massa Crocante recheada com Creme"
+   ],
+   [
+    "Cannoli Cioccolato",
+    "Massa Crocante recheada com Chocolate"
+   ],
+   [
+    "Cannoli Dolce di Latte",
+    "Massa Crocante recheada com Doce de Leite"
+   ]
+  ],
+  "13-08-crostata-alla-fragola": [
+   [
+    "Crostata Alle Fragole",
+    "Torta de Morango"
+   ]
+  ],
+  "13-17-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "13-18-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "13-19-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Sprite (350 ml)",
+    ""
+   ],
+   [
+    "Refrigerante Água Tônica (350 ml)",
+    ""
+   ]
+  ],
+  "13-20-cerveja-350-ml": [
+   [
+    "Cerveja Original (350 ml)",
+    ""
+   ],
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "14-07-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "14-08-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "14-09-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "14-10-suco-del-valle": [
+   [
+    "Suco Del Valle Uva",
+    ""
+   ],
+   [
+    "Suco Del Valle Maracujá",
+    ""
+   ]
+  ],
+  "14-11-cerveja-350-ml": [
+   [
+    "Cerveja Original (350 ml)",
+    ""
+   ],
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "15-09-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "15-10-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "15-11-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "15-12-cerveja": [
+   [
+    "Cerveja Original (350 ml)",
+    ""
+   ],
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "16-01-bruschetta-al-pomodoro-3-unita": [
+   [
+    "Bruschetta Al Pomodoro (3 unità)",
+    "Fatias de Pão Italiano com Tomate, Muçarela e Manjericão (3 unidades)"
+   ]
+  ],
+  "16-02-bruschetta-al-gorgonzola-e-miele-3-unita": [
+   [
+    "Bruschetta Al Gorgonzola e Miele (3 unità)",
+    "Fatias de Pão Italiano com Gongorzola e Mel (3 unidades)"
+   ]
+  ],
+  "16-03-cochiarella-1-unita": [
+   [
+    "Cochiarella (1 unità)",
+    "Salgado Frito recheado com Mortadela Italiana (1 unidade)"
+   ]
+  ],
+  "16-06-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "16-07-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "16-08-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "16-10-cerveja-350-ml": [
+   [
+    "Cerveja Heineken Zero (350 ml)",
+    "Sem álcool"
+   ]
+  ],
+  "16-12-vinho-suave-ou-seco-copo": [
+   [
+    "Vinho Suave (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Seco (Copo)",
+    "200 ml"
+   ]
+  ],
+  "17-14-cannoli-alla-crema-dolce-di-latte-nutella": [
+   [
+    "Cannoli Alla Crema",
+    "Massa Crocante recheada com Creme"
+   ],
+   [
+    "Cannoli Dolce di Latte",
+    "Massa Crocante recheada com Doce de Leite"
+   ],
+   [
+    "Cannoli Alla Nutella",
+    "Massa Crocante recheada com Nutella"
+   ]
+  ],
+  "17-16-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "17-17-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "17-18-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "17-21-cerveja-350-ml": [
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "17-22-vinho-suave-ou-seco-copo": [
+   [
+    "Vinho Suave (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Seco (Copo)",
+    "200 ml"
+   ]
+  ],
+  "17-23-vinho-seco-ou-suave-garrafa": [
+   [
+    "Vinho Seco (Garrafa)",
+    "1 litro"
+   ],
+   [
+    "Vinho Suave (Garrafa)",
+    "1 litro"
+   ]
+  ],
+  "18-14-cannoli-alla-crema-dolce-di-latte-nutella": [
+   [
+    "Cannoli Alla Crema",
+    "Massa Crocante recheada com Creme"
+   ],
+   [
+    "Cannoli Dolce di Latte",
+    "Massa Crocante recheada com Doce de Leite"
+   ],
+   [
+    "Cannoli Alla Nutella",
+    "Massa Crocante recheada com Nutella"
+   ]
+  ],
+  "18-16-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "18-17-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "18-18-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "18-21-cerveja-350-ml": [
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "18-22-vinho-suave-ou-seco-copo": [
+   [
+    "Vinho Suave (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Seco (Copo)",
+    "200 ml"
+   ]
+  ],
+  "18-23-vinho-seco-ou-suave-garrafa": [
+   [
+    "Vinho Seco (Garrafa)",
+    "1 litro"
+   ],
+   [
+    "Vinho Suave (Garrafa)",
+    "1 litro"
+   ]
+  ],
+  "19-17-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "19-18-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "19-19-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "19-22-vinho-suave-ou-seco-copo": [
+   [
+    "Vinho Suave (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Seco (Copo)",
+    "200 ml"
+   ]
+  ],
+  "2-09-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "2-10-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "2-11-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "2-12-cerveja-350-ml": [
+   [
+    "Cerveja Amstel (350 ml)",
+    ""
+   ],
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "2-14-vinho-suave-ou-tinto-copo": [
+   [
+    "Vinho Suave (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Tinto (Copo)",
+    "200 ml"
+   ]
+  ],
+  "20-21-04-spaghetti-penne-rigati-farfalle-al-sugo": [
+   [
+    "Spaghetti Al Sugo",
+    "Macarrão Tipo Espaguete ao Molho de Tomate"
+   ],
+   [
+    "Penne Rigati Al Sugo",
+    "Macarrão Tipo Penne ao Molho de Tomate"
+   ],
+   [
+    "Farfalle Al Sugo",
+    "Macarrão Tipo \"Gravatinha\" ao Molho de Tomate"
+   ]
+  ],
+  "20-21-05-spaghetti-penne-rigate-farfalle-al-sugo-alla-salsiccia-calab": [
+   [
+    "Spaghetti Al Sugo Alla Salsiccia Calabrese",
+    "Macarrão Tipo Espaguete ao Molho de Tomate e Linguiça Calabresa"
+   ],
+   [
+    "Penne Rigate Al Sugo Alla Salsiccia Calabrese",
+    "Macarrão Tipo Penne ao Molho de Tomate e Linguiça Calabresa"
+   ],
+   [
+    "Farfalle Al Sugo Alla Salsiccia Calabrese",
+    "Macarrão Tipo \"Gravatinha\" ao Molho de Tomate e Linguiça Calabresa"
+   ]
+  ],
+  "20-21-06-spaghetti-penne-rigati-farfalle-alla-bolognese": [
+   [
+    "Spaghetti Alla Bolognese",
+    "Macarrão Tipo Espaguete ao Molho de Tomate com Carne"
+   ],
+   [
+    "Penne Rigati Alla Bolognese",
+    "Macarrão Tipo Penne ao Molho de Tomate com Carne"
+   ],
+   [
+    "Farfalle Alla Bolognese",
+    "Macarrão Tipo \"Gravatinha\" ao Molho de Tomate com Carne"
+   ]
+  ],
+  "20-21-07-spaghetti-penne-rigati-farfalle-alla-besciamella": [
+   [
+    "Spaghetti Alla Besciamella",
+    "Macarrão Tipo Espaguete ao Molho Branco"
+   ],
+   [
+    "Penne Rigati Alla Besciamella",
+    "Macarrão Tipo Penne ao Molho Branco"
+   ],
+   [
+    "Farfalle Alla Besciamella",
+    "Macarrão Tipo \"Gravatinha\" ao Molho Branco"
+   ]
+  ],
+  "20-21-08-spaghetti-penne-rigati-farfalle-con-caponata-di-melanzane-ve": [
+   [
+    "Spaghetti con Caponata Di Melanzane (Vegetariano)",
+    "Macarrão Tipo Espaguete servido à Caponata de Berinjela"
+   ],
+   [
+    "Penne Rigati con Caponata Di Melanzane (Vegetariano)",
+    "Macarrão Tipo Penne servido à Caponata de Berinjela"
+   ],
+   [
+    "Farfalle con Caponata Di Melanzane (Vegetariano)",
+    "Macarrão Tipo \"Gravatinha\" servido à Caponata de Berinjela"
+   ]
+  ],
+  "20-21-09-gnochi-al-sugo-al-sugo-alla-salsiccia-calabrese-alla-bologne": [
+   [
+    "Gnocchi Al Sugo",
+    "Macarrão Tipo Nhoque ao Molho de Tomate"
+   ],
+   [
+    "Gnocchi Al Sugo Alla Salsiccia Calabrese",
+    "Macarrão Tipo Nhoque ao Molho de Tomate com Linguiça Calabresa"
+   ],
+   [
+    "Gnocchi Alla Bolognese",
+    "Macarrão Tipo Nhoque ao Molho de Tomate com Carne"
+   ],
+   [
+    "Gnocchi Alla Besciamella",
+    "Macarrão Tipo Nhoque ao Molho Branco"
+   ]
+  ],
+  "20-21-14-pizza-intera": [
+   [
+    "Pizza Muçarela (Inteira)",
+    "Pizza Inteira sabor Muçarela"
+   ],
+   [
+    "Pizza Calabresa (Inteira)",
+    "Pizza Inteira sabor Calabresa"
+   ],
+   [
+    "Pizza Três Queijos (Inteira)",
+    "Pizza Inteira sabor Três Queijos"
+   ],
+   [
+    "Pizza Margherita (Inteira)",
+    "Pizza Inteira sabor Margherita"
+   ]
+  ],
+  "20-21-17-fetta-di-pizza": [
+   [
+    "Pizza Muçarela (Fatia)",
+    "Fatia de Pizza sabor Muçarela"
+   ],
+   [
+    "Pizza Calabresa (Fatia)",
+    "Fatia de Pizza sabor Calabresa"
+   ],
+   [
+    "Pizza Três Queijos (Fatia)",
+    "Fatia de Pizza sabor Três Queijos"
+   ],
+   [
+    "Pizza Margherita (Fatia)",
+    "Fatia de Pizza sabor Margherita"
+   ]
+  ],
+  "20-21-19-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "20-21-20-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "20-21-21-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "22-07-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "22-08-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "22-09-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "23-10-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "23-11-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "23-12-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "23-13-cerveja-350-ml": [
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "24-11-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "24-12-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "24-13-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "24-15-cerveja-350-ml": [
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "24-16-vinho-seco-ou-suave-copo": [
+   [
+    "Vinho Seco (Copo)",
+    "200 ml – Frade"
+   ],
+   [
+    "Vinho Suave (Copo)",
+    "200 ml – Frade"
+   ]
+  ],
+  "24-17-vinho-seco-ou-suave-garrafa": [
+   [
+    "Vinho Seco (Garrafa)",
+    "Frade"
+   ],
+   [
+    "Vinho Suave (Garrafa)",
+    "Frade"
+   ]
+  ],
+  "25-17-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "25-18-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "25-19-refrigerante-350-ml": [
+   [
+    "Refrigerante (350 ml)",
+    ""
+   ]
+  ],
+  "25-20-suco-lata": [
+   [
+    "Suco de Manga (Lata)",
+    ""
+   ],
+   [
+    "Suco de Uva (Lata)",
+    ""
+   ]
+  ],
+  "25-21-suco-integral-de-uva": [
+   [
+    "Suco de Uva Integral (Copo)",
+    "200 ml"
+   ]
+  ],
+  "26-01-spaghetti-piccoli-al-pesto": [
+   [
+    "Spaghetti Al Pesto (Pequeno)",
+    "Tamanho Pequeno de Macarrão Espaguete servido com Molho Pesto preparado com Manjericão, Azeite de Oliva, Queijo e Alho"
+   ]
+  ],
+  "26-02-spaghetti-grandi-al-pesto": [
+   [
+    "Spaghetti Al Pesto (Grande)",
+    "Tamanho Grande de Macarrão Espaguete servido com Molho Pesto preparado com Manjericão, Azeite de Oliva, Queijo e Alho"
+   ]
+  ],
+  "26-03-spaghetti-piccoli-alla-bolognese": [
+   [
+    "Spaghetti Alla Bolognese (Pequeno)",
+    "Tamanho Pequeno de Macarrão Espaguete servido com Molho de Tomate e Carne"
+   ]
+  ],
+  "26-04-spaghetti-grandi-alla-bolognese": [
+   [
+    "Spaghetti Alla Bolognese (Grande)",
+    "Tamanho Grande de Macarrão Espaguete servido com Molho de Tomate e Carne"
+   ]
+  ],
+  "26-05-pizza-tradizionale-18-cm-al-formaggio-alla-salsiccia-calabre": [
+   [
+    "Pizza Tradizionale Al Formaggio (18 cm)",
+    "Pizza Tradicional – Mussarela"
+   ],
+   [
+    "Pizza Tradizionale Alla Salsiccia Calabrese (18 cm)",
+    "Pizza Tradicional – Calabresa"
+   ],
+   [
+    "Pizza Tradizionale Alla Salsiccia Calabrese e Formaggio (18 cm)",
+    "Pizza Tradicional – Calabresa com Queijo"
+   ],
+   [
+    "Pizza Tradizionale Alla Salsiccia Calabrese e Catupiry (18 cm)",
+    "Pizza Tradicional – Calabresa com Catupiry"
+   ],
+   [
+    "Pizza Tradizionale Margherita Ai Due Formaggi (18 cm)",
+    "Pizza Tradicional – Mussarela com Tomate e Manjericão e Dois Queijos"
+   ]
+  ],
+  "26-06-pizza-vegana-18-cm-margherita-vegana-alle-zucchine-alla-sals": [
+   [
+    "Pizza Vegana Margherita Vegana (18 cm)",
+    "Pizza Vegana – Mussarela Vegetariana com Tomate e Manjericão"
+   ],
+   [
+    "Pizza Vegana Alle Zucchine (18 cm)",
+    "Pizza Vegana – Abobrinha"
+   ],
+   [
+    "Pizza Vegana Alla Salsiccia Vegetale e Catupiry Vegetale (18 cm)",
+    "Pizza Vegana – Calabresa de Soja com Catupiry"
+   ]
+  ],
+  "26-07-spaghetti-vegani-piccoli-al-pesto": [
+   [
+    "Spaghetti Vegani Al Pesto (Pequeno)",
+    "Tamanho Pequeno de Macarrão Espaguete (Sêmola de Trigo com Proteína da Ervilha) servido com Molho Pesto preparado com Manjericão, Azeite de Oliva, Queijo e Alho"
+   ]
+  ],
+  "26-08-spaghetti-vegani-grandi-al-pesto": [
+   [
+    "Spaghetti Vegani Al Pesto (Grande)",
+    "Tamanho Grande de Macarrão Espaguete (Sêmola de Trigo com Proteína da Ervilha) servido com Molho Pesto preparado com Manjericão, Azeite de Oliva, Queijo e Alho"
+   ]
+  ],
+  "26-19-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "26-20-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "26-21-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    ""
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    ""
+   ],
+   [
+    "Refrigerante Pepsi (350 ml)",
+    ""
+   ],
+   [
+    "Refrigerante Fanta Laranja (350 ml)",
+    ""
+   ],
+   [
+    "Refrigerante Fanta Uva (350 ml)",
+    ""
+   ],
+   [
+    "Refrigerante Sprite (350 ml)",
+    ""
+   ]
+  ],
+  "26-22-suco-integral-de-uva-ou-laranja-copo": [
+   [
+    "Suco de Uva Integral (Copo)",
+    "200 ml"
+   ],
+   [
+    "Suco de Laranja Integral (Copo)",
+    "200 ml"
+   ]
+  ],
+  "26-23-cerveja-350-ml": [
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "26-27-vinho-tinto-seco-ou-suave-copo": [
+   [
+    "Vinho Tinto Seco (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Tinto Suave (Copo)",
+    "200 ml"
+   ]
+  ],
+  "26-28-vinho-tinto-seco-ou-suave-garrafa": [
+   [
+    "Vinho Tinto Seco (Garrafa)",
+    "700 ml"
+   ],
+   [
+    "Vinho Tinto Suave (Garrafa)",
+    "700 ml"
+   ]
+  ],
+  "27-01-frittella-di-baccala": [
+   [
+    "Frittella di Baccalà (1 unità)",
+    "Bolinho de Bacalhau Frito"
+   ]
+  ],
+  "27-07-cannoli": [
+   [
+    "Cannoli",
+    "Massa Crocante recheada com Creme"
+   ]
+  ],
+  "27-09-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "27-10-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "27-11-refrigerante-350-ml": [
+   [
+    "Refrigerante (350 ml)",
+    ""
+   ]
+  ],
+  "27-12-suco-200-ml": [
+   [
+    "Suco de Uva Tinto (Copo)",
+    "200 ml"
+   ],
+   [
+    "Suco de Uva Branco (Copo)",
+    "200 ml"
+   ]
+  ],
+  "27-16-vinho-mesa-artesanal-copo": [
+   [
+    "Vinho de Mesa Artesanal (Copo)",
+    "250 ml"
+   ]
+  ],
+  "27-17-vinho-fino-cabernet-merlot-chardonnay-copo": [
+   [
+    "Vinho Fino Cabernet (Copo)",
+    "250 ml"
+   ],
+   [
+    "Vinho Fino Merlot (Copo)",
+    "250 ml"
+   ],
+   [
+    "Vinho Fino Chardonnay (Copo)",
+    "250 ml"
+   ]
+  ],
+  "29-10-cannoli": [
+   [
+    "Cannoli",
+    "Massa Crocante recheada com Creme"
+   ]
+  ],
+  "29-13-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "29-14-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "29-15-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    ""
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    ""
+   ]
+  ],
+  "29-16-suco-200-ml": [
+   [
+    "Suco de Uva (Copo)",
+    "200 ml"
+   ]
+  ],
+  "29-17-h2o": [
+   [
+    "H2o Original",
+    ""
+   ],
+   [
+    "H2o Limoneto",
+    ""
+   ]
+  ],
+  "3-02-fogazza-alla-calabrese-e-mozzarella": [
+   [
+    "Fogazza Alla Salsiccia Calabrese e Mozzarella",
+    "Massa Frita Recheada com Linguiça Calabresa e Muçarela"
+   ]
+  ],
+  "3-04-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "3-05-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "3-07-cerveja-350-ml": [
+   [
+    "Cerveja Brahma DP Malte (350 ml)",
+    ""
+   ],
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "30-09-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "30-10-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "30-11-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "30-12-suco-sabores": [
+   [
+    "Suco (Lata)",
+    ""
+   ]
+  ],
+  "30-13-cerveja-350-ml": [
+   [
+    "Cerveja Heineken Zero (350 ml)",
+    "Sem álcool"
+   ]
+  ],
+  "30-16-vinho-tinto-seco-e-suave-branco-suave-copo": [
+   [
+    "Vinho Tinto Seco (Copo)",
+    "250 ml"
+   ],
+   [
+    "Vinho Tinto Suave (Copo)",
+    "250 ml"
+   ],
+   [
+    "Vinho Branco Suave (Copo)",
+    "250 ml"
+   ]
+  ],
+  "31-06-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "31-07-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "31-08-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Fanta Laranja (350 ml)",
+    ""
+   ],
+   [
+    "Refrigerante Soda Limonada (350 ml)",
+    ""
+   ]
+  ],
+  "31-09-vinho-tinto-ou-branco-copo": [
+   [
+    "Vinho Tinto (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Branco (Copo)",
+    "200 ml"
+   ]
+  ],
+  "31-10-vinho-tinto-ou-branco-garrafa": [
+   [
+    "Vinho Tinto (Garrafa)",
+    ""
+   ],
+   [
+    "Vinho Branco (Garrafa)",
+    ""
+   ]
+  ],
+  "32-01-bruschetta-al-pomodoro-3-unita": [
+   [
+    "Bruschetta Al Pomodoro (3 unità)",
+    "Fatias de Pão Italiano com Tomate, Muçarela e Manjericão (3 unidades)"
+   ]
+  ],
+  "32-25-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "32-26-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "32-27-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "32-32-suco-de-uva-ou-laranja-integral": [
+   [
+    "Suco de Uva Integral (Copo)",
+    "200 ml"
+   ],
+   [
+    "Suco de Laranja Integral (Copo)",
+    "200 ml"
+   ]
+  ],
+  "33-23-gelato-al-cioccolato-alla-fragola-e-alla-crema": [
+   [
+    "Gelato Al Cioccolato",
+    "Sorvete Italiano sabor Chocolate"
+   ],
+   [
+    "Gelato Alla Fragola",
+    "Sorvete Italiano sabor Morango"
+   ],
+   [
+    "Gelato Alla Crema",
+    "Sorvete Italiano sabor Creme"
+   ]
+  ],
+  "33-24-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "33-25-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "33-26-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "34-02-bruschetta-caprese-3-unita": [
+   [
+    "Bruschetta Caprese (3 unità)",
+    "Fatias de Pão Italiano com Tomate, Muçarela de Búfala, Azeite de Oliva e Manjericão (3 unidades)"
+   ]
+  ],
+  "34-03-bruschetta-alla-salsiccia-calabrese-3-unita": [
+   [
+    "Bruschetta Alla Salsiccia Calabrese (3 unità)",
+    "Fatias de Pão Italiano com Linguiça Calabresa, Cebola e Muçarela (3 unidades)"
+   ]
+  ],
+  "34-07-frittelle-di-baccala-8-unita": [
+   [
+    "Frittella di Baccalà (8 unità)",
+    "Bolinhos de Bacalhau Fritos (8 unidades)"
+   ]
+  ],
+  "34-16-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "34-17-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "34-18-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "35-17-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "35-18-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "35-19-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "35-20-cerveja-350-ml": [
+   [
+    "Cerveja Original (350 ml)",
+    ""
+   ],
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "36-15-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "36-16-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "36-17-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "36-19-cerveja-350-ml": [
+   [
+    "Cerveja Original (350 ml)",
+    ""
+   ],
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "4-07-frappe": [
+   [
+    "Frappè de Morango",
+    "Um Milkshake Ultra Cremoso batido com Sorvete de Baunilha, sabor Morango"
+   ],
+   [
+    "Frappè de Chocolate",
+    "Um Milkshake Ultra Cremoso batido com Sorvete de Baunilha, sabor Chocolate"
+   ],
+   [
+    "Frappè de Oreo",
+    "Um Milkshake Ultra Cremoso batido com Sorvete de Baunilha, sabor Oreo"
+   ],
+   [
+    "Frappè de Ninho",
+    "Um Milkshake Ultra Cremoso batido com Sorvete de Baunilha, sabor Ninho"
+   ],
+   [
+    "Frappè de Ovomaltine",
+    "Um Milkshake Ultra Cremoso batido com Sorvete de Baunilha, sabor Ovomaltine"
+   ]
+  ],
+  "4-14-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "4-15-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "4-16-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "4-17-cerveja-350-ml": [
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "4-18-vinho-seco-ou-suave-copo": [
+   [
+    "Vinho Seco (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Suave (Copo)",
+    "200 ml"
+   ]
+  ],
+  "5-13-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "5-14-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "5-15-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "5-16-cerveja-350-ml": [
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ],
+   [
+    "Cerveja Original (350 ml)",
+    ""
+   ]
+  ],
+  "5-20-vinho-seco-ou-suave-copo": [
+   [
+    "Vinho Seco (Copo)",
+    "200 ml"
+   ],
+   [
+    "Vinho Suave (Copo)",
+    "200 ml"
+   ]
+  ],
+  "5-21-vinho-seco-ou-suave-1-2-garrafa": [
+   [
+    "Vinho Seco (1/2 Garrafa)",
+    "500 ml"
+   ],
+   [
+    "Vinho Suave (1/2 Garrafa)",
+    "500 ml"
+   ]
+  ],
+  "5-22-vinho-seco-ou-suave-garrafa": [
+   [
+    "Vinho Seco (Garrafa)",
+    "1 litro"
+   ],
+   [
+    "Vinho Suave (Garrafa)",
+    "1 litro"
+   ]
+  ],
+  "6-06-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "6-07-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "6-08-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante H2o (350 ml)",
+    ""
+   ]
+  ],
+  "7-11-panino-con-salsiccia-calabrese": [
+   [
+    "Panino Alla Salsiccia Calabrese",
+    "Sanduíche de Linguiça Calabresa servido no Pão Francês"
+   ]
+  ],
+  "7-12-cannoli-alla-crema-mousse-al-cioccolato-dulce-di-latte": [
+   [
+    "Cannoli Alla Crema",
+    "Massa Crocante recheada com Creme"
+   ],
+   [
+    "Cannoli Mousse Al Cioccolato",
+    "Massa Crocante recheada com Mousse de Chocolate"
+   ],
+   [
+    "Cannoli Dolce di Latte",
+    "Massa Crocante recheada com Doce de Leite"
+   ]
+  ],
+  "7-20-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "7-21-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "7-22-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "7-23-cerveja-350-ml": [
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "8-07-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "8-08-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "8-09-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ],
+  "8-10-cerveja-350-ml": [
+   [
+    "Cerveja Original (350 ml)",
+    ""
+   ],
+   [
+    "Cerveja Heineken (350 ml)",
+    ""
+   ]
+  ],
+  "8-15-vinho-seco-ou-suave-jarra": [
+   [
+    "Vinho Seco (Jarra)",
+    "500 ml"
+   ],
+   [
+    "Vinho Suave (Jarra)",
+    "500 ml"
+   ]
+  ],
+  "8-16-vinho-seco-ou-suave": [
+   [
+    "Vinho Seco (1/2 Garrafa)",
+    "500 ml – Garrafa Pet"
+   ],
+   [
+    "Vinho Suave (1/2 Garrafa)",
+    "500 ml – Garrafa Pet"
+   ]
+  ],
+  "8-17-vinho-seco-ou-suave": [
+   [
+    "Vinho Seco (Garrafa)",
+    "1 litro – Garrafa Pet"
+   ],
+   [
+    "Vinho Suave (Garrafa)",
+    "1 litro – Garrafa Pet"
+   ]
+  ],
+  "9-02-piadina-alla-mortadella-e-formaggio": [
+   [
+    "Piadina Alla Mortadella e Formaggio Cremoso",
+    "Massa Italiana assada na Chapa recheada com Mortadela e Requeijão"
+   ],
+   [
+    "Piadina Alla Mortadella e Mozzarella",
+    "Massa Italiana assada na Chapa recheada com Mortadela e Muçarela"
+   ]
+  ],
+  "9-08-millefoglie-alla-crema-fior-di-latte": [
+   [
+    "Millefoglie Alla Crema",
+    "Massa Folhada recheada com Creme"
+   ],
+   [
+    "Millefoglie Fior di Latte",
+    "Massa Folhada recheada com Flor de Leite"
+   ]
+  ],
+  "9-10-piadina-al-cioccolato": [
+   [
+    "Piadina Al Cioccolato",
+    "Massa Italiana assada na Chapa recheada com Chocolate Tradicional"
+   ],
+   [
+    "Piadina Alla Crema di Nocciole",
+    "Massa Italiana assada na Chapa recheada com Creme de Avelã"
+   ]
+  ],
+  "9-11-cannoli-alla-crema-fior-di-latte-latte-in-polvere": [
+   [
+    "Cannoli Alla Crema",
+    "Massa Crocante recheada com Creme"
+   ],
+   [
+    "Cannoli Fior di Latte",
+    "Massa Crocante recheada com Flor de Leite"
+   ],
+   [
+    "Cannoli Latte in Polvere",
+    "Massa Crocante recheada com Leite em Pó"
+   ]
+  ],
+  "9-13-pastiera-di-grano-alla-crema-fior-di-latte": [
+   [
+    "Pastiera di Grano Alla Crema",
+    "Torta de Trigo recheada com Creme"
+   ],
+   [
+    "Pastiera di Grano Fior di Latte",
+    "Torta de Trigo recheada com Flor de Leite"
+   ]
+  ],
+  "9-14-agua": [
+   [
+    "Água Sem Gás",
+    "510 ml"
+   ]
+  ],
+  "9-15-agua": [
+   [
+    "Água Com Gás",
+    "510 ml"
+   ]
+  ],
+  "9-16-refrigerante-350-ml": [
+   [
+    "Refrigerante Coca Cola (350 ml)",
+    "Normal e Zero"
+   ],
+   [
+    "Refrigerante Guaraná (350 ml)",
+    "Normal e Zero"
+   ]
+  ]
+ },
+ "origem": {
+  "1-01-spaghetti-al-sugo": "a0e969c5586f",
+  "1-02-spaghetti-alla-calabrese": "f45bfd8481a1",
+  "1-03-porzioni-di-polenta-fritta": "6c23833af9f5",
+  "1-04-bombolone-al-cioccolato": "9cbbcb75ef47",
+  "1-05-bombolone-alla-crema": "02b571362bab",
+  "1-06-cannoli-alla-crema-mousse-al-cioccolato-nutella-fior-di-latt": "c261430555ec",
+  "1-07-crostata-al-limone": "7445c3c13576",
+  "1-08-crostata-di-ricotta": "ddd8f0d73774",
+  "1-09-crostata-di-ricotta-ai-frutti-rossi": "ede85c738506",
+  "1-10-crostata-di-fragole": "66c04961ca5f",
+  "1-11-crostata-millefoglie": "18c43f0a0ffe",
+  "1-12-crema-di-ricotta-dolce": "f5c9bbaa37c6",
+  "1-13-fonduta-di-cioccolato": "ef1276e7c97a",
+  "1-14-pan-di-spagna": "50dbb6755017",
+  "1-15-pastiera-di-formaggio": "0a8c2c777a8d",
+  "1-16-sfogliatella": "9e54b1cc6429",
+  "1-17-strudel-di-mele": "cb5452fac9d5",
+  "1-18-tiramisu": "58fe574e5355",
+  "1-19-agua": "01eb86409a5a",
+  "1-20-agua": "a2a39cea8f61",
+  "1-21-refrigerante-350-ml": "e470aded7520",
+  "1-22-cerveja-350-ml": "4119cd5ddc5a",
+  "1-23-suco-de-uva-natural-copo": "8a4b8de0431f",
+  "1-24-vinho-tinto-copo": "91bbb64484c2",
+  "1-25-vinho-quente-copo": "593e84058397",
+  "10-01-focaccia-caprese": "cde61239571b",
+  "10-02-focaccia-alla-mortadella": "c8cca4e4c09b",
+  "10-03-focaccia-de-porchetta": "7159ea8c1e8a",
+  "10-04-polenta-con-ragu-di-costine-e-pane-italiano": "538ed232f341",
+  "10-05-porzioni-porchetta-delle-marche": "d0e8a6b03ac5",
+  "10-06-agua": "01eb86409a5a",
+  "10-07-refrigerante-350-ml": "14ff9f5bc644",
+  "10-08-chopp-pilsen": "47a643917dd9",
+  "10-09-chopp-ipa": "c7b2b1cd2aa1",
+  "10-10-chopp-vinho": "385c00752854",
+  "10-11-drink-aperol-spritz": "f21b54da6472",
+  "11-01-pizza-margherita": "3786d0e47c8b",
+  "11-02-pizza-padoca": "fa5ba7bd6d27",
+  "11-03-pizza-ai-formaggi": "8b8d4e2246ce",
+  "11-04-cannoncini-alla-crema-kinder-pistacchio-malto-croccante": "c5d015cd25c7",
+  "11-05-cannoli-alla-crema-dolce-di-latte": "24a6f4247e8d",
+  "11-06-crostata-alla-nutella-e-bueno": "9a2254a83ee1",
+  "11-07-crostata-rossa-con-crema-bianca": "757cca02e2eb",
+  "11-08-crostata-tenerina-alla-nutella-e-crema-bianca": "5e53cef11d87",
+  "11-09-mattonella-al-limone": "8b75145101c2",
+  "11-10-agua": "01eb86409a5a",
+  "11-11-agua": "a2a39cea8f61",
+  "11-12-refrigerante-350-ml": "07aaa1285f27",
+  "11-13-chopp-pilsen": "f726e0bbe073",
+  "12-01-spaghetti-al-sugo": "a0e969c5586f",
+  "12-02-spaghetti-alla-salsiccia-calabrese": "fb0202f64616",
+  "12-03-gnocchi-al-sugo": "fcc24381bb68",
+  "12-04-gnocchi-alla-calabrese": "2cdb97e3e164",
+  "12-05-conchiglioni-al-sugo": "26f6f8e85473",
+  "12-06-agua": "01eb86409a5a",
+  "12-07-refrigerante-350-ml": "14ff9f5bc644",
+  "12-08-suco-de-uva-integral-copo": "bf666fbde114",
+  "12-09-vinho-tinto-seco-ou-suave-copo": "dee9a617c85d",
+  "13-01-bombolone-al-cioccolato": "9cbbcb75ef47",
+  "13-02-budino-al-cioccolato": "ed19c351d822",
+  "13-03-budino-alla-vaniglia": "a4b274148c8b",
+  "13-04-crostoli": "5b0b23b13b9e",
+  "13-05-cannoli-alla-crema-cioccolato-dolce-di-latte": "34746a1615f2",
+  "13-06-crostata-alle-mandorle": "aa512ca52240",
+  "13-07-crostata-al-limone": "65fa97e8bbe0",
+  "13-08-crostata-alla-fragola": "afdf8ac51052",
+  "13-09-crostata-alle-noci": "ad029c59b64f",
+  "13-10-crostata-di-guava": "636908fe0033",
+  "13-11-tiramisu": "b957a2fa6ce7",
+  "13-12-panna-cotta-alla-salsa-di-fragole": "1eb89d23a521",
+  "13-13-strudel-di-mele": "d73e9bee2d92",
+  "13-14-strudel-di-banana": "3b887f02b75e",
+  "13-15-strudel-di-cioccolato": "0aac56f63d2b",
+  "13-16-sfogliato-al-dulce-de-leche": "5293f55cab4a",
+  "13-17-agua": "01eb86409a5a",
+  "13-18-agua": "a2a39cea8f61",
+  "13-19-refrigerante-350-ml": "0f2a84a5a477",
+  "13-20-cerveja-350-ml": "4d1486ba8684",
+  "13-21-vinho-quente-copo": "61c1aea9fb2d",
+  "14-01-panino-alla-maiale-sfitacciato": "78e82b77e1b3",
+  "14-02-panino-alla-salsiccia-calabrese": "e4e9b5489974",
+  "14-03-trancio-di-pizza-di-sfoglia-ai-quattro-formaggi": "d5bcca4f7b57",
+  "14-04-trancio-di-pizza-di-sfoglia-alla-salsiccia-calabrese": "3c46fd370bba",
+  "14-05-trancio-di-pizza-di-sfoglia-al-prosciutto-e-formaggio": "23f42d4986e6",
+  "14-06-trancio-di-pizza-di-sfoglia-al-pollo": "320c777f7c68",
+  "14-07-agua": "01eb86409a5a",
+  "14-08-agua": "a2a39cea8f61",
+  "14-09-refrigerante-350-ml": "14ff9f5bc644",
+  "14-10-suco-del-valle": "2cb8be0534f0",
+  "14-11-cerveja-350-ml": "4d1486ba8684",
+  "15-01-fogazza-alla-mozzarella": "7ff414c58fae",
+  "15-02-fogazza-alla-calabrese-con-catupiry": "ebbc61a5be8c",
+  "15-03-fogazza-al-pollo-con-catupiry": "5f5a4babf909",
+  "15-04-fogazza-alla-carne-sfilacciata": "d407b4540a34",
+  "15-05-fogazza-alla-mortadella-e-catupiry": "e30b50a23a20",
+  "15-06-fogazza-margherita": "72c03b3188dc",
+  "15-07-fogazza-ai-cuori-di-palma-e-catupiry": "dafdd3e4c071",
+  "15-08-fogazza-al-cioccolato": "081b9b84303d",
+  "15-09-agua": "01eb86409a5a",
+  "15-10-agua": "a2a39cea8f61",
+  "15-11-refrigerante-350-ml": "14ff9f5bc644",
+  "15-12-cerveja": "8f21fc0992b3",
+  "16-01-bruschetta-al-pomodoro-3-unita": "772fcf49f3f1",
+  "16-02-bruschetta-al-gorgonzola-e-miele-3-unita": "e095fbadab36",
+  "16-03-cochiarella-1-unita": "dc126ea3ee37",
+  "16-04-panino-alla-mortadella": "6d868664eb30",
+  "16-05-panino-alla-mortadella-e-formaggio": "17135a953051",
+  "16-06-agua": "01eb86409a5a",
+  "16-07-agua": "a2a39cea8f61",
+  "16-08-refrigerante-350-ml": "14ff9f5bc644",
+  "16-09-suco": "005d4f9db162",
+  "16-10-cerveja-350-ml": "b762afd1dd23",
+  "16-11-chopp-pilsen": "10926d9fff99",
+  "16-12-vinho-suave-ou-seco-copo": "6d0132a568b4",
+  "16-13-chocolate-quente-copo": "3afb3f081b36",
+  "16-14-chocolate-quente-com-amarula-copo": "15bb2e8352ac",
+  "16-15-chocolate-quente-com-conhaque-copo": "8694ddf84602",
+  "17-01-antipasto-sardo": "756dde076c7f",
+  "17-02-polpette-con-pane-italiano": "cd4ae39eccf7",
+  "17-03-cestino-di-pane-italiano": "4f38eed70a4c",
+  "17-04-conchiglioni-al-sugo": "a1c67206934e",
+  "17-05-conchiglioni-alla-besciamella": "8483eefe26c4",
+  "17-06-spaghetti-al-sugo": "a0e969c5586f",
+  "17-07-spaghetti-alla-besciamella": "36c470b9f7cf",
+  "17-08-spaghetti-con-polpettine": "c3cb9dd6ec69",
+  "17-09-fusili-al-sugo": "4ffac26a5f50",
+  "17-10-fusili-alla-besciamella": "249fde158555",
+  "17-11-fusili-con-polpettine": "7345693bfc9b",
+  "17-12-gnochi-al-sugo": "4e717eb8f313",
+  "17-13-gnochi-con-polpettine": "4750b45f9d9f",
+  "17-14-cannoli-alla-crema-dolce-di-latte-nutella": "bc4895e8d894",
+  "17-15-sfogliatella": "9e54b1cc6429",
+  "17-16-agua": "01eb86409a5a",
+  "17-17-agua": "a2a39cea8f61",
+  "17-18-refrigerante-350-ml": "14ff9f5bc644",
+  "17-19-suco-uva-copo": "f71a8edff311",
+  "17-20-suco-uva-garrafa": "537858c16a32",
+  "17-21-cerveja-350-ml": "a35637b345be",
+  "17-22-vinho-suave-ou-seco-copo": "6d0132a568b4",
+  "17-23-vinho-seco-ou-suave-garrafa": "cac17f9750c8",
+  "18-01-antipasto-sardo": "756dde076c7f",
+  "18-02-polpette-con-pane-italiano": "cd4ae39eccf7",
+  "18-03-cestino-di-pane-italiano": "4f38eed70a4c",
+  "18-04-conchiglioni-al-sugo": "a1c67206934e",
+  "18-05-conchiglioni-alla-besciamella": "8483eefe26c4",
+  "18-06-spaghetti-al-sugo": "a0e969c5586f",
+  "18-07-spaghetti-alla-besciamella": "36c470b9f7cf",
+  "18-08-spaghetti-con-polpettine": "c3cb9dd6ec69",
+  "18-09-fusili-al-sugo": "4ffac26a5f50",
+  "18-10-fusili-alla-besciamella": "249fde158555",
+  "18-11-fusili-con-polpettine": "7345693bfc9b",
+  "18-12-gnochi-al-sugo": "4e717eb8f313",
+  "18-13-gnochi-con-polpettine": "4750b45f9d9f",
+  "18-14-cannoli-alla-crema-dolce-di-latte-nutella": "bc4895e8d894",
+  "18-15-sfogliatella": "9e54b1cc6429",
+  "18-16-agua": "01eb86409a5a",
+  "18-17-agua": "a2a39cea8f61",
+  "18-18-refrigerante-350-ml": "14ff9f5bc644",
+  "18-19-suco-uva-copo": "96c80f48f4cf",
+  "18-20-suco-uva-garrafa": "537858c16a32",
+  "18-21-cerveja-350-ml": "a35637b345be",
+  "18-22-vinho-suave-ou-seco-copo": "6d0132a568b4",
+  "18-23-vinho-seco-ou-suave-garrafa": "cac17f9750c8",
+  "19-01-caponata-di-melanzane": "c6e73b0aa551",
+  "19-02-spaghetti-al-sugo": "a0e969c5586f",
+  "19-03-spaghetti-con-polpettine": "c3cb9dd6ec69",
+  "19-04-spaghetti-alla-bolognese": "f27ad9bc3b47",
+  "19-05-spaghetti-alla-besciamella": "36c470b9f7cf",
+  "19-06-penne-al-sugo": "be47885bfffc",
+  "19-07-penne-con-polpettine": "6f1887bfe9eb",
+  "19-08-penne-alla-bolognese": "6a0e547a07d5",
+  "19-09-penne-alla-besciamella": "75a7df3057c3",
+  "19-10-gnochi-al-sugo": "4e717eb8f313",
+  "19-11-gnochi-con-polpettine": "4750b45f9d9f",
+  "19-12-gnochi-alla-bolognese": "13ff1644ffd1",
+  "19-13-gnochi-alla-besciamella": "615fba16e598",
+  "19-14-lasagne-al-formaggio": "7b8f8222f1c6",
+  "19-15-lasagne-al-prosciutto-e-formaggio": "e2813848b063",
+  "19-16-lasagne-alla-bolognese": "154b207009fd",
+  "19-17-agua": "01eb86409a5a",
+  "19-18-agua": "a2a39cea8f61",
+  "19-19-refrigerante-350-ml": "14ff9f5bc644",
+  "19-20-suco-uva-integral-copo": "0cf71f6df99f",
+  "19-21-suco-uva-integral-garrafa": "7f1da07927d0",
+  "19-22-vinho-suave-ou-seco-copo": "6d0132a568b4",
+  "19-23-vinho-seco-garrafa": "d1e1c12e1e39",
+  "19-24-chopp-claro": "4dee6e7abf98",
+  "19-25-chopp-de-vinho": "03b3c0eede18",
+  "2-01-spaghetti-al-sugo": "a0e969c5586f",
+  "2-02-spaghetti-alla-calabrese": "5b4f58eb0d48",
+  "2-03-spaghetti-alla-romanesca": "f4e6fa5096f0",
+  "2-04-spaghetti-alla-bolognese": "6bff018e287d",
+  "2-05-spaghetti-fritti-al-sugo": "de805a675e68",
+  "2-06-spaghetti-fritti-alla-calabrese": "9e110ca69722",
+  "2-07-spaghetti-fritti-alla-romanesca": "245074ae4184",
+  "2-08-spaghetti-fritti-alla-bolognese": "d1d81df918fa",
+  "2-09-agua": "01eb86409a5a",
+  "2-10-agua": "a2a39cea8f61",
+  "2-11-refrigerante-350-ml": "14ff9f5bc644",
+  "2-12-cerveja-350-ml": "93166b5e8ba2",
+  "2-13-suco-de-uva-integral-copo": "bf666fbde114",
+  "2-14-vinho-suave-ou-tinto-copo": "afa4bce62729",
+  "20-21-01-antipasto-di-sardella": "867b92e03334",
+  "20-21-02-porzioni-di-salsiccia-calabrese-con-cipolle": "723f1721358f",
+  "20-21-03-caponata-di-melanzane": "9d5e2324e1b7",
+  "20-21-04-spaghetti-penne-rigati-farfalle-al-sugo": "d1ed7f789e57",
+  "20-21-05-spaghetti-penne-rigate-farfalle-al-sugo-alla-salsiccia-calab": "7ce541b191ad",
+  "20-21-06-spaghetti-penne-rigati-farfalle-alla-bolognese": "de4a1317133d",
+  "20-21-07-spaghetti-penne-rigati-farfalle-alla-besciamella": "fa3df31590b8",
+  "20-21-08-spaghetti-penne-rigati-farfalle-con-caponata-di-melanzane-ve": "f3f3324327c3",
+  "20-21-09-gnochi-al-sugo-al-sugo-alla-salsiccia-calabrese-alla-bologne": "6a9a8299abe7",
+  "20-21-10-capretto-in-salsa-speciale": "eba82028a179",
+  "20-21-11-carne-arrosto-con-salsa-speciale": "da3cfc492999",
+  "20-21-12-polpettone-al-sugo": "080478f070a4",
+  "20-21-13-melanzane-alla-parmigiana": "cb7dabdb319c",
+  "20-21-14-pizza-intera": "06d9c6cdd959",
+  "20-21-15-panino-al-manzo-sfilacciato": "dd8aa8975cc6",
+  "20-21-16-panino-alla-salsiccia-calabrese-e-cipolle": "1a0731c86018",
+  "20-21-17-fetta-di-pizza": "a4a141dab649",
+  "20-21-18-pizza-dolce-al-tiramisu": "a64ffc7cd429",
+  "20-21-19-agua": "01eb86409a5a",
+  "20-21-20-agua": "a2a39cea8f61",
+  "20-21-21-refrigerante-350-ml": "14ff9f5bc644",
+  "20-21-22-copo-de-suco-uva": "3ebdf4592341",
+  "20-21-23-copo-vinho-tinto": "d261399944dc",
+  "20-21-24-copo-vinho-quente": "0bd444015ebf",
+  "22-01-fogazza-alla-mozzarella": "7ff414c58fae",
+  "22-02-fogazza-alla-calabrese": "6b03800309dc",
+  "22-03-fogazza-al-prosciutto-e-formaggio": "01567b456dbd",
+  "22-04-fogazza-al-pollo-con-catupiry": "5f5a4babf909",
+  "22-05-fogazza-alla-mortadella-e-formaggio": "ee43972bcf94",
+  "22-06-fogazza-al-maiale-sfilacciato": "04f76b0ca904",
+  "22-07-agua": "01eb86409a5a",
+  "22-08-agua": "a2a39cea8f61",
+  "22-09-refrigerante-350-ml": "14ff9f5bc644",
+  "22-10-vinho-quente-copo": "d6b5c849e307",
+  "22-11-vinho-quente-garrafa": "9f48693759af",
+  "22-12-chopp-claro": "2270b5e6e312",
+  "22-13-chopp-de-vinho": "2c8cafc00118",
+  "23-01-panino-al-maiale-sfilacciato": "45a487ffe9ba",
+  "23-02-panino-con-salsiccia-calabrese-e-formaggio": "48bdcea0452f",
+  "23-03-torta-tenerina": "758721843792",
+  "23-04-fragole-al-cioccolato": "0a4d0a2e6f4b",
+  "23-05-salame-di-cioccolato": "d2bd9cd22a1f",
+  "23-06-tartufo-al-cioccolato": "7b03e758e8aa",
+  "23-07-cono-farcito-al-cioccolato": "a59c458a167c",
+  "23-08-pan-di-miele-ricoperto-di-cioccolato": "2ff2b19a7983",
+  "23-09-fonduta-di-cioccolato-con-fragole-uva-e-banana": "a2bbbbff9c21",
+  "23-10-agua": "01eb86409a5a",
+  "23-11-agua": "a2a39cea8f61",
+  "23-12-refrigerante-350-ml": "14ff9f5bc644",
+  "23-13-cerveja-350-ml": "a35637b345be",
+  "23-14-chocolate-quente-copo": "3afb3f081b36",
+  "23-15-cafe": "26b10ed1f3d7",
+  "24-01-polenta-ripiena-al-sugo": "49c14cee7a11",
+  "24-02-polenta-ripiena-al-ragu-di-salsiccia-toscana": "8412a954301b",
+  "24-03-polenta-ripiena-al-ragu-di-carne-macinata": "eedc41ce282d",
+  "24-04-spaghetti-al-sugo": "a0e969c5586f",
+  "24-05-spaghetti-alla-salsiccia-toscana": "3f7949562e1d",
+  "24-06-spaghetti-alla-bolognese": "f27ad9bc3b47",
+  "24-07-cono-alla-nocciola-toscana": "4d575520271a",
+  "24-08-cono-al-cappuccino-italiano": "d2afeaec2657",
+  "24-09-cono-al-limone-siciliano": "5b46bbdc1aa7",
+  "24-10-zuccotto": "9dbbaf637cd5",
+  "24-11-agua": "01eb86409a5a",
+  "24-12-agua": "a2a39cea8f61",
+  "24-13-refrigerante-350-ml": "14ff9f5bc644",
+  "24-14-suco-uva-copo": "96c80f48f4cf",
+  "24-15-cerveja-350-ml": "a35637b345be",
+  "24-16-vinho-seco-ou-suave-copo": "96869954f601",
+  "24-17-vinho-seco-ou-suave-garrafa": "ae55e146b3ac",
+  "24-18-chopp-pilsen": "cf18e74ed0cc",
+  "24-19-chopp-ipa": "897dcb7eab1f",
+  "24-20-chopp-vinho": "5a3d6b1da44d",
+  "24-21-chopp-escuro": "72dc2b7f6126",
+  "25-01-cappelletti-di-carne-al-sugo": "5d9b627b1c61",
+  "25-02-cappelletti-di-carne-al-pesto": "d6dbdeb1ebd3",
+  "25-03-cappelletti-di-carne-alla-romanesca": "d232c2aaf1c6",
+  "25-04-cappelletti-di-pollo-al-sugo": "8e8a2447103a",
+  "25-05-cappelletti-di-pollo-al-pesto": "a022726164a2",
+  "25-06-cappelletti-di-pollo-alla-romanesca": "0c02e3f5ff81",
+  "25-07-ravioli-di-ricotta-al-sugo": "c2b25989523a",
+  "25-08-ravioli-di-ricotta-al-pesto": "ca55655f6242",
+  "25-09-ravioli-di-ricotta-alla-romanesca": "66bec542e089",
+  "25-10-ravioli-ai-quattro-formaggi-al-sugo": "ec0a58c4886d",
+  "25-11-ravioli-ai-quattro-formaggi-al-pesto": "64277e85a0ff",
+  "25-12-ravioli-ai-quattro-formaggi-alla-romanesca": "f95c6b992456",
+  "25-13-menu-completo": "f11f46551275",
+  "25-14-crostata-de-leite-ninho-e-nutella": "216e31e8fd20",
+  "25-15-panna-cotta-alla-salsa-di-fragole": "1eb89d23a521",
+  "25-16-tiramisu": "58fe574e5355",
+  "25-17-agua": "01eb86409a5a",
+  "25-18-agua": "a2a39cea8f61",
+  "25-19-refrigerante-350-ml": "f9ba31d68a45",
+  "25-20-suco-lata": "fcc72b92d41d",
+  "25-21-suco-integral-de-uva": "d96db514600b",
+  "26-01-spaghetti-piccoli-al-pesto": "0cff9a63a61f",
+  "26-02-spaghetti-grandi-al-pesto": "2a4bc081b107",
+  "26-03-spaghetti-piccoli-alla-bolognese": "3a2581b65d29",
+  "26-04-spaghetti-grandi-alla-bolognese": "83e8db9bd512",
+  "26-05-pizza-tradizionale-18-cm-al-formaggio-alla-salsiccia-calabre": "2c1ce530eeae",
+  "26-06-pizza-vegana-18-cm-margherita-vegana-alle-zucchine-alla-sals": "7ad7abdc12dc",
+  "26-07-spaghetti-vegani-piccoli-al-pesto": "44c0ea9d0724",
+  "26-08-spaghetti-vegani-grandi-al-pesto": "b3010c349d5c",
+  "26-09-panna-cotta-vegana-ai-frutti-rossi": "47ec3675db6c",
+  "26-10-panzanella-toscana": "28069058cb3e",
+  "26-11-budino-al-cioccolato": "c66f685c7aca",
+  "26-12-budino-alla-vaniglia": "bd68924321b7",
+  "26-13-panna-cotta-ai-frutti-rossi": "d0f2460895ac",
+  "26-14-pizza-dolce-alla-banana": "3da842d1eaf4",
+  "26-15-pizza-dolce-al-cioccolato": "7dec3b553e66",
+  "26-16-torta-tenerina-al-limone-siciliano": "f4f0304b0e14",
+  "26-17-torta-tenerina-al-cioccolato": "3094ee203e33",
+  "26-18-torta-tenerina-al-cioccolato-e-nocciola": "7e3a7f7245a1",
+  "26-19-agua": "01eb86409a5a",
+  "26-20-agua": "a2a39cea8f61",
+  "26-21-refrigerante-350-ml": "32c6030d101d",
+  "26-22-suco-integral-de-uva-ou-laranja-copo": "11e70e56d943",
+  "26-23-cerveja-350-ml": "a35637b345be",
+  "26-24-chopp-pilsen": "47a643917dd9",
+  "26-25-chopp-escuro": "f5d52d347af0",
+  "26-26-chopp-de-vinho": "c29d0d3d2a02",
+  "26-27-vinho-tinto-seco-ou-suave-copo": "c1b597b08a5c",
+  "26-28-vinho-tinto-seco-ou-suave-garrafa": "57cf1c72faf3",
+  "27-01-frittella-di-baccala": "7c780d55995a",
+  "27-02-frittella-di-baccala-e-formaggio": "0b700c810b6a",
+  "27-03-caciocavallo-impanato-e-fritto": "343fdaf73f9c",
+  "27-04-patate-fritte-a-bastoncino": "92764b669347",
+  "27-05-salsiccia-italiana-allo-spiedo": "6597b70f23fc",
+  "27-06-penne-al-sugo-nel-bicchiere": "6180b251de5a",
+  "27-07-cannoli": "ddb86910d783",
+  "27-08-frutta-candita": "b7c60f78f421",
+  "27-09-agua": "01eb86409a5a",
+  "27-10-agua": "a2a39cea8f61",
+  "27-11-refrigerante-350-ml": "f9ba31d68a45",
+  "27-12-suco-200-ml": "026b26539c41",
+  "27-13-chocolate-quente": "c6328c068524",
+  "27-14-chopp-claro": "0014c4b7f968",
+  "27-15-chopp-vinho": "1919c66977ba",
+  "27-16-vinho-mesa-artesanal-copo": "1a3b1487141e",
+  "27-17-vinho-fino-cabernet-merlot-chardonnay-copo": "201b984325d0",
+  "28-01-pizza-a-portafoglio-al-formaggio": "f4880abe2a4e",
+  "28-02-pizza-a-portafoglio-con-mortadella": "05b18341416b",
+  "28-03-tiramisu": "58fe574e5355",
+  "28-04-vinho-quente-copo": "593e84058397",
+  "29-01-caponata-di-melanzane": "c6e73b0aa551",
+  "29-02-sfogliati-al-sugo": "22299c6c126b",
+  "29-03-sfogliati-alla-bolognese": "576bb81fb7bb",
+  "29-04-sfogliati-ripieni-ai-funghi": "e3a7447afbc8",
+  "29-05-conchiglioni-al-sugo": "e43d57c665db",
+  "29-06-conchiglioni-alla-bolognese": "ffcada7a700b",
+  "29-07-conchiglioni-ripieni-ai-funghi": "7bf3a63f363c",
+  "29-08-zuppa-toscana": "33e1e32f6574",
+  "29-09-panino-com-girello-in-scabece": "5410750c7261",
+  "29-10-cannoli": "ddb86910d783",
+  "29-11-tiramisu": "58fe574e5355",
+  "29-12-panna-cotta-ai-frutti-rossi": "d0f2460895ac",
+  "29-13-agua": "01eb86409a5a",
+  "29-14-agua": "a2a39cea8f61",
+  "29-15-refrigerante-350-ml": "e66a4d32a831",
+  "29-16-suco-200-ml": "d17c1a03c054",
+  "29-17-h2o": "4b28600d25ee",
+  "3-01-fogazza-alla-mozzarella": "0caef5d76beb",
+  "3-02-fogazza-alla-calabrese-e-mozzarella": "2d8753d16147",
+  "3-03-fogazza-al-pollo-con-catupiry": "1d2209acb8e6",
+  "3-04-agua": "01eb86409a5a",
+  "3-05-refrigerante-350-ml": "8e24b39c55d5",
+  "3-06-suco-de-uva-integral-copo": "bf666fbde114",
+  "3-07-cerveja-350-ml": "272a8d1afc2a",
+  "3-08-vinho-suave-copo": "60d917611f5a",
+  "3-09-vinho-seco-copo": "e59b897a82f8",
+  "30-01-calzone-al-pollo-e-formaggio-cremoso": "3fce9aeab25c",
+  "30-02-calzone-margherita": "6915776bc874",
+  "30-03-calzone-ai-due-formaggi": "25259b343ba4",
+  "30-04-calzone-alla-salsiccia-calabrese-e-formaggio-cremoso": "30faef7da6b2",
+  "30-05-calzone-alla-salsiccia-calabrese": "66da7d4fb464",
+  "30-06-calzone-dolce-alla-banana-e-dulce-de-leche": "986cd81cbf6f",
+  "30-07-calzone-dolce-alla-banana-e-cioccolato": "7980e26fe7b7",
+  "30-08-calzone-dolce-al-dulce-de-leche-e-formaggio": "f5d9acce48ba",
+  "30-09-agua": "01eb86409a5a",
+  "30-10-agua": "a2a39cea8f61",
+  "30-11-refrigerante-350-ml": "14ff9f5bc644",
+  "30-12-suco-sabores": "acfb85685f9a",
+  "30-13-cerveja-350-ml": "52e865f86869",
+  "30-14-chopp-claro": "4dee6e7abf98",
+  "30-15-chopp-vinho": "385c00752854",
+  "30-16-vinho-tinto-seco-e-suave-branco-suave-copo": "7cc4d76acdad",
+  "30-17-limoncello": "aed3dc9d2df8",
+  "31-01-fogazza-alla-mozzarella": "7ff414c58fae",
+  "31-02-fogazza-alla-calabrese": "6b03800309dc",
+  "31-03-fogazza-al-pollo-con-catupiry": "5f5a4babf909",
+  "31-04-fogazza-ai-cuori-di-palma": "f0c67d5728ff",
+  "31-05-fogazza-al-cioccolato": "081b9b84303d",
+  "31-06-agua": "01eb86409a5a",
+  "31-07-agua": "a2a39cea8f61",
+  "31-08-refrigerante-350-ml": "c42f3cec968f",
+  "31-09-vinho-tinto-ou-branco-copo": "7d74672d9e12",
+  "31-10-vinho-tinto-ou-branco-garrafa": "a76076f93420",
+  "31-11-chopp-claro": "d8c1586d2530",
+  "31-12-chopp-escuro": "e119a2f53f8a",
+  "31-13-chopp-de-vinho": "fb67f34c4aea",
+  "32-01-bruschetta-al-pomodoro-3-unita": "8a8eb85ce1b3",
+  "32-02-spaghetti-al-sugo": "efaea324009a",
+  "32-03-spaghetti-alla-bolognese": "9bd1fc7d6051",
+  "32-04-spaghetti-alla-besciamella": "7a817640be9b",
+  "32-05-spaghetti-ai-peperoni": "e53fac3a8c2f",
+  "32-06-penne-al-sugo": "bad9cf667708",
+  "32-07-penne-alla-bolognese": "80fad63d031e",
+  "32-08-penne-alla-besciamella": "2fe61f57d6a8",
+  "32-09-penne-ai-peperoni": "fa2a175f3c5f",
+  "32-10-farfalle-al-sugo": "3ffa9a7b161d",
+  "32-11-farfalle-alla-bolognese": "3abdacf96a6e",
+  "32-12-farfalle-alla-besciamella": "6955638b4e63",
+  "32-13-farfalle-ai-peperoni": "7f72db1558b5",
+  "32-14-panino-al-maiale-sfilacciato": "7cbdad8ef2d2",
+  "32-15-panino-al-maiale-sfilacciato-e-fomarggio": "8fcb33637114",
+  "32-16-panino-con-costine-sfilacciate": "347e15214e87",
+  "32-17-panino-con-costine-sfilacciate-e-fomarggio": "7105a3778b15",
+  "32-18-panino-alla-salsiccia-artigianale": "e26ea4d0a9b5",
+  "32-19-panino-alla-salsiccia-artigianale": "73a1a8d746c9",
+  "32-20-cannoli-alla-crema": "acf52b24a157",
+  "32-21-cannoli-al-dulce-de-leche": "6b5a748d4d93",
+  "32-22-cannoli-alla-nutella": "d7d7b168daea",
+  "32-23-cannoli-al-pistacchio": "a80d4559ae2a",
+  "32-24-fonduta-al-cioccolato": "a3d135972d66",
+  "32-25-agua": "01eb86409a5a",
+  "32-26-agua": "a2a39cea8f61",
+  "32-27-refrigerante-350-ml": "14ff9f5bc644",
+  "32-28-chopp-pilsen": "47a643917dd9",
+  "32-29-chopp-escuro": "f5d52d347af0",
+  "32-30-chopp-ipa": "c7b2b1cd2aa1",
+  "32-31-chopp-vinho-branco": "5980333716e1",
+  "32-32-suco-de-uva-ou-laranja-integral": "2edacf68bf05",
+  "33-01-spaghetti-al-sugo": "efaea324009a",
+  "33-02-spaghetti-alla-bolognese": "9bd1fc7d6051",
+  "33-03-spaghetti-al-sugo-con-salsiccia-calabrese": "e81041b93045",
+  "33-04-penne-al-sugo": "7d8f83a5b39b",
+  "33-05-penne-alla-bolognese": "80fad63d031e",
+  "33-06-penne-al-sugo-con-salsiccia-calabrese": "7b6118b59dcd",
+  "33-07-bavette-al-sugo": "5af71c2d7bab",
+  "33-08-bavette-alla-bolognese": "3509b59f750b",
+  "33-09-bavette-al-sugo-con-salsiccia-calabrese": "e4e4bbc9cf58",
+  "33-10-panino-al-maiale-sfilacciato-e-vinaigrette": "0c2b739502fc",
+  "33-11-panino-al-maiale-sfilacciato-e-vinaigrette-e-provolone": "e7949f3a4d2d",
+  "33-12-panino-al-maiale-sfilacciato-provolone-e-cipolle-caramellate": "835b9f426e1c",
+  "33-13-panino-al-maiale-sfilacciato-mozzarella-di-bufala-rucola-e-p": "df7f2c387f7c",
+  "33-14-panino-alla-salsiccia-artigianale-e-vinaigrette": "6291cf004bc6",
+  "33-15-panino-alla-salsiccia-artigianale-e-vinaigrette-e-provolone": "2e44a7ae8ff9",
+  "33-16-panino-alla-salsiccia-artigianale-provolone-e-cipolle-carame": "adb6e3c53717",
+  "33-17-panino-alla-salsiccia-artigianale-mozzarella-di-bufala-rucol": "93b55592aec4",
+  "33-18-cannoli-alla-crema": "acf52b24a157",
+  "33-19-cannoli-al-dulce-de-leche": "6b5a748d4d93",
+  "33-20-cannoli-alla-nutella": "d7d7b168daea",
+  "33-21-cannoli-al-pistacchio": "a80d4559ae2a",
+  "33-22-cannoli-al-kinder-bueno": "cd10618f8339",
+  "33-23-gelato-al-cioccolato-alla-fragola-e-alla-crema": "3f7ce8e06f8e",
+  "33-24-agua": "01eb86409a5a",
+  "33-25-agua": "a2a39cea8f61",
+  "33-26-refrigerante-350-ml": "14ff9f5bc644",
+  "33-27-chopp-pilsen": "47a643917dd9",
+  "33-28-chopp-escuro": "f5d52d347af0",
+  "33-29-chopp-ipa": "c7b2b1cd2aa1",
+  "33-30-chopp-vinho": "385c00752854",
+  "34-01-bruschetta-tradizionale": "97a75f9f25d2",
+  "34-02-bruschetta-caprese-3-unita": "ad7155d089c9",
+  "34-03-bruschetta-alla-salsiccia-calabrese-3-unita": "1d77ea7935ce",
+  "34-04-polenta-al-sugo": "96fd93f0b44a",
+  "34-05-polenta-alla-bolognese": "e9deb01c4e9b",
+  "34-06-polenta-al-sugo-con-salsiccia-calabrese": "2f36a8f033e2",
+  "34-07-frittelle-di-baccala-8-unita": "e43b7603b89f",
+  "34-08-pizza-alla-mozzarella": "c72fe66fb378",
+  "34-09-pizza-toscana": "24cf5e27755a",
+  "34-10-pizza-ai-tre-formaggi": "8a9e6874fa31",
+  "34-11-pizza-alla-salsiccia-calabrese-cipolle-e-catupiry": "3e3b1bf1ee80",
+  "34-12-panna-cotta-ai-frutti-rossi": "d0f2460895ac",
+  "34-13-tiramisu": "58fe574e5355",
+  "34-14-fetta-di-pizza-dolce-alla-banana-e-cioccolato-bianco": "ccdc92687efd",
+  "34-15-fetta-di-pizza-dolce-al-brigadeiro": "c5a8a769665f",
+  "34-16-agua": "01eb86409a5a",
+  "34-17-agua": "a2a39cea8f61",
+  "34-18-refrigerante-350-ml": "14ff9f5bc644",
+  "34-19-chopp-pilsen": "47a643917dd9",
+  "34-20-chopp-escuro": "e1381d7247b9",
+  "34-21-chopp-ipa": "c7b2b1cd2aa1",
+  "34-22-chopp-vinho": "385c00752854",
+  "34-23-vinho-quente-copo": "593e84058397",
+  "35-01-panino-al-maiale-sfilacciato": "45a487ffe9ba",
+  "35-02-panino-alla-carne-sfilacciata": "7825505eddc7",
+  "35-03-fogazza-ai-broccoli-e-mozzarella": "881d52a69d4b",
+  "35-04-fogazza-pizza": "dd1046371c61",
+  "35-05-fogazza-al-pollo-formaggio-cremoso": "f8da8d0fc310",
+  "35-06-fogazza-alla-salsiccia-calabrese-e-mozzarella": "c79f5e406cc7",
+  "35-07-fetta-di-torta-al-kinder-bueno": "cdf8eb5f39af",
+  "35-08-fetta-di-torta-al-limone-siciliano-e-frutti-rossi": "b28beb76c7db",
+  "35-09-fetta-di-torta-al-pistacchio": "86cc00845df3",
+  "35-10-fetta-di-torta-al-latte-nido-e-crema-di-nocciole": "6b0dc806b1ee",
+  "35-11-fetta-di-torta-al-ferrero-rocher": "fc10dcfb5e0d",
+  "35-12-cono-al-cioccolato-e-pistacchio": "306179ebb777",
+  "35-13-cono-al-limone-siciliano": "5b46bbdc1aa7",
+  "35-14-cono-al-latte-e-crema-di-nocciole": "b2cf53d2e9b6",
+  "35-15-fogazza-alla-crema-di-nocciole": "ac47e1926027",
+  "35-16-fogazza-al-dulce-de-leche": "c63b5c9925da",
+  "35-17-agua": "01eb86409a5a",
+  "35-18-agua": "a2a39cea8f61",
+  "35-19-refrigerante-350-ml": "14ff9f5bc644",
+  "35-20-cerveja-350-ml": "4d1486ba8684",
+  "35-21-vinho-quente-copo": "593e84058397",
+  "35-22-chocolate-quente-alcoolico-copo": "725abb625800",
+  "36-01-panino-alla-mortadella": "6d868664eb30",
+  "36-02-panino-al-maiale-sfilacciato": "45a487ffe9ba",
+  "36-03-panino-alla-salsiccia-calabrese": "75875ae9531d",
+  "36-04-panna-cotta-ai-frutti-rossi": "d0f2460895ac",
+  "36-05-cannoli-al-dulce-de-leche": "6b5a748d4d93",
+  "36-06-cannoli-alla-nutella": "d7d7b168daea",
+  "36-07-cannoli-al-pistacchio": "a80d4559ae2a",
+  "36-08-fetta-di-torta-al-cioccolato": "d1d8ab33ce9d",
+  "36-09-fetta-di-torta-all-ananas-e-cocco": "1e0bf0f40ec8",
+  "36-10-fetta-di-torta-al-limone-siciliano": "073beabc7057",
+  "36-11-fetta-di-torta-al-frutti-rossi": "66c62bee4cac",
+  "36-12-fetta-di-torta-alla-crema-di-nocciole": "81331aa55f65",
+  "36-13-fetta-di-torta-alla-fragola": "0e3ff91c9afb",
+  "36-14-salame-di-cioccolato": "3a9a0badf259",
+  "36-15-agua": "01eb86409a5a",
+  "36-16-agua": "a2a39cea8f61",
+  "36-17-refrigerante-350-ml": "14ff9f5bc644",
+  "36-18-suco-de-uva-copo": "a4cbfa8bbd03",
+  "36-19-cerveja-350-ml": "4d1486ba8684",
+  "36-20-vinho-copo": "5bca6310cbdc",
+  "36-21-chopp-pilsen": "e9666a4c1e68",
+  "36-22-chopp-escuro": "97c1eed932e9",
+  "36-23-chopp-vinho": "385c00752854",
+  "36-24-chocolate-quente-copo": "43dfdb829cf2",
+  "36-25-chocolate-quente-com-amarula-copo": "9619d2222d16",
+  "36-26-chocolate-quente-com-conhaque-copo": "b6fc9540c8e1",
+  "4-01-crema-ai-formaggi": "975707bbd1e0",
+  "4-02-zuppa-di-cappelletti": "206e4d48753a",
+  "4-03-panino-alla-carne-pazzesca": "45f106ec0b76",
+  "4-04-crostoli": "4b82d695e377",
+  "4-05-crostata-al-cioccolato-con-gelato": "cc1f73d03cbe",
+  "4-06-salame-di-cioccolato": "d2bd9cd22a1f",
+  "4-07-frappe": "d6cf4660484a",
+  "4-08-gelato-al-fior-di-latte": "30a48fb6479d",
+  "4-09-gelato-alla-nocciolato": "14aa8e119440",
+  "4-10-gelato-alla-fragola": "310c68960356",
+  "4-11-guarnizione-alla-nocciola": "174a0de23982",
+  "4-12-guarnizione-al-dulce-de-leche": "a27cfdaa1f44",
+  "4-13-zuccherini-colorati": "ffe375b99d21",
+  "4-14-agua": "01eb86409a5a",
+  "4-15-agua": "a2a39cea8f61",
+  "4-16-refrigerante-350-ml": "14ff9f5bc644",
+  "4-17-cerveja-350-ml": "a35637b345be",
+  "4-18-vinho-seco-ou-suave-copo": "a09aa08d29e2",
+  "4-19-suco-de-uva-integral-copo": "bf666fbde114",
+  "4-20-suco-de-uva-integral-garrafa": "eeb9e61479ac",
+  "5-01-crocchette-di-baccala": "69f2166bc35a",
+  "5-02-porzioni-di-polpette-di-carne": "ca4d48735b12",
+  "5-03-orecchiette-al-sugo-rosso-con-carne": "95c0e015bfc8",
+  "5-04-orecchiette-alla-besciamella": "244ff78e51e9",
+  "5-05-orecchiette-alla-salsa-mezzo-e-mezzo": "38da895c2f0e",
+  "5-06-spaghetti-al-sugo-rosso-con-carne": "7d5eef813ac7",
+  "5-07-spaghetti-alla-besciamella": "36c470b9f7cf",
+  "5-08-spaghetti-alla-salsa-mezzo-e-mezzo": "3c1f1f16e0bb",
+  "5-09-tartufo-al-cioccolato-con-nocciola": "14803fac58ce",
+  "5-10-tartufo-al-cioccolato-bianco": "cca051a95e61",
+  "5-11-tartufo-al-cioccolato-fondente": "bebc1ab498e4",
+  "5-12-tartufo-al-pistacchio": "9ced2bcad029",
+  "5-13-agua": "01eb86409a5a",
+  "5-14-agua": "a2a39cea8f61",
+  "5-15-refrigerante-350-ml": "14ff9f5bc644",
+  "5-16-cerveja-350-ml": "05ea8573fbe2",
+  "5-17-suco-de-uva-integral-copo": "bf666fbde114",
+  "5-18-suco-de-uva-integral-1-2-garrafa": "28352deea180",
+  "5-19-suco-de-uva-integral-garrafa": "eeb9e61479ac",
+  "5-20-vinho-seco-ou-suave-copo": "a09aa08d29e2",
+  "5-21-vinho-seco-ou-suave-1-2-garrafa": "531091c77fe4",
+  "5-22-vinho-seco-ou-suave-garrafa": "cac17f9750c8",
+  "6-01-tagliatelle-al-sugo": "d4a548d70ea6",
+  "6-02-tagliatelle-alla-bolognese": "e8048c5e24e8",
+  "6-03-pollo-fritto-con-polenta": "3938c5eccb43",
+  "6-04-porzioni-di-polenta-fritta": "6c23833af9f5",
+  "6-05-panino-al-maiale-sfilacciato": "45a487ffe9ba",
+  "6-06-agua": "01eb86409a5a",
+  "6-07-agua": "a2a39cea8f61",
+  "6-08-refrigerante-350-ml": "fb557e7dc489",
+  "6-09-suco-de-uva-integral-copo": "bf666fbde114",
+  "7-01-penne-al-sugo": "be47885bfffc",
+  "7-02-penne-alla-bolognese": "6a0e547a07d5",
+  "7-03-penne-alla-calabrese": "df309bfaec0d",
+  "7-04-spaghetti-al-sugo": "a0e969c5586f",
+  "7-05-spaghetti-alla-bolognese": "f27ad9bc3b47",
+  "7-06-spaghetti-alla-calabrese": "f45bfd8481a1",
+  "7-07-polenta-ai-quattro-formaggi": "3f6041dce99e",
+  "7-08-porzioni-di-maiale-sfilacciato": "45436a19906d",
+  "7-09-porzioni-di-salsiccia-calabrese": "e9eebcfbe680",
+  "7-10-panino-al-maiale-sfilacciato": "45a487ffe9ba",
+  "7-11-panino-con-salsiccia-calabrese": "b852fd5ff40e",
+  "7-12-cannoli-alla-crema-mousse-al-cioccolato-dulce-di-latte": "18395faa9aa8",
+  "7-13-crostoli": "4b82d695e377",
+  "7-14-crostata-alle-fragole": "0c010cf4e45c",
+  "7-15-crostata-al-limone-di-sicilia": "afb870ce8174",
+  "7-16-crostata-al-frutto-della-passione-e-noci": "90773de24585",
+  "7-17-fragole-al-cioccolato": "f7c8cc11aa23",
+  "7-18-salame-di-cioccolato": "3a9a0badf259",
+  "7-19-tiramisu": "58fe574e5355",
+  "7-20-agua": "01eb86409a5a",
+  "7-21-agua": "a2a39cea8f61",
+  "7-22-refrigerante-350-ml": "14ff9f5bc644",
+  "7-23-cerveja-350-ml": "a35637b345be",
+  "7-24-suco-de-uva-integral-copo": "bf666fbde114",
+  "7-25-vinho-copo": "5bca6310cbdc",
+  "7-26-vinho-quente-copo": "593e84058397",
+  "8-01-porzioni-di-maiale-sfitacciato-affumicata": "e2b562ff0676",
+  "8-02-porzioni-di-salsiccia-calabrese": "e9eebcfbe680",
+  "8-03-porzioni-di-salsiccia-calabrese-ripiena": "098d913ff3be",
+  "8-04-panino-alla-maiale-sfitacciato-affumicata": "2fe5ff431cad",
+  "8-05-panino-alla-salsiccia-calabrese": "e4e9b5489974",
+  "8-06-panino-alla-salsiccia-calabrese-ripiena": "b672be8931c3",
+  "8-07-agua": "01eb86409a5a",
+  "8-08-agua": "a2a39cea8f61",
+  "8-09-refrigerante-350-ml": "14ff9f5bc644",
+  "8-10-cerveja-350-ml": "4d1486ba8684",
+  "8-11-suco-de-uva-integral-copo": "bf666fbde114",
+  "8-12-suco-de-uva-integral-jarra": "1ebdedbcbfaa",
+  "8-13-vinho-copo": "5bca6310cbdc",
+  "8-14-vinho-quente-copo": "593e84058397",
+  "8-15-vinho-seco-ou-suave-jarra": "a0ac8dd65d01",
+  "8-16-vinho-seco-ou-suave": "b39fde9a8275",
+  "8-17-vinho-seco-ou-suave": "1a5a42477e56",
+  "9-01-piadina-al-pollo-e-formaggio-cremoso": "307686382a5d",
+  "9-02-piadina-alla-mortadella-e-formaggio": "a46d42663b93",
+  "9-03-piadina-margherita": "b1a272e40b6f",
+  "9-04-piadina-alla-salsiccia-calabrese-e-cipolla": "9cb75939093b",
+  "9-05-piadina-ai-cuori-di-palma-e-formaggio-cremoso": "acdbb4946549",
+  "9-06-piadina-alla-rucola-pomodori-secchi-e-formaggio-cremoso": "ffe4943537f4",
+  "9-07-porzioni-di-polenta-fritta": "6c23833af9f5",
+  "9-08-millefoglie-alla-crema-fior-di-latte": "35f9cf259f60",
+  "9-09-piadina-al-cioccolato-e-fragole": "72eadf2ba48f",
+  "9-10-piadina-al-cioccolato": "d52a8414cdf4",
+  "9-11-cannoli-alla-crema-fior-di-latte-latte-in-polvere": "fcd4bf5fc5bf",
+  "9-12-sfogliatella": "9e54b1cc6429",
+  "9-13-pastiera-di-grano-alla-crema-fior-di-latte": "acbd8841b066",
+  "9-14-agua": "01eb86409a5a",
+  "9-15-agua": "a2a39cea8f61",
+  "9-16-refrigerante-350-ml": "14ff9f5bc644",
+  "9-17-suco-de-uva-copo": "dfb189db5852"
+ }
+}

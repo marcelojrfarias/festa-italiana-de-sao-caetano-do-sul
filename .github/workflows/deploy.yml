@@ -37,6 +37,11 @@ jobs:
           python3 scripts/classify_categories.py
           git diff --exit-code data/categorias-site.json
 
+      # a expansão de sabores é decidida à mão, lendo o PDF (docs/curadoria.md);
+      # isto acusa item cujo texto mudou desde a decisão
+      - name: Conferir curadoria
+        run: python3 scripts/conferir_curadoria.py
+
       - name: Gerar site
         run: python3 scripts/build_site.py
 

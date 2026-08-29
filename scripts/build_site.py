@@ -82,7 +82,15 @@ def usar(nome, tam=24, classe="icone"):
 
 
 def sprite_html():
-    simbolos = "".join(f'<symbol id="i-{k}" viewBox="0 0 24 24">{v}</symbol>'
+    # O traço vai também no <symbol>, e não só na regra .icone: assim o desenho
+    # não depende de a herança de CSS atravessar a shadow tree do <use>. Pela
+    # especificação atravessa, mas 2 em cada 3 acessos vêm de iOS e não há
+    # WebKit aqui para conferir — se falhasse, o alfinete sumia de toda linha de
+    # barraca. Custa uma vez, não mil: currentColor continua resolvendo pela cor
+    # de quem referencia.
+    traco = ('fill="none" stroke="currentColor" stroke-width="1.7" '
+             'stroke-linecap="round" stroke-linejoin="round"')
+    simbolos = "".join(f'<symbol id="i-{k}" viewBox="0 0 24 24" {traco}>{v}</symbol>'
                        for k, v in SPRITE.items())
     return f'<svg class="sprite" aria-hidden="true">{simbolos}</svg>'
 
@@ -177,13 +185,8 @@ SINONIMOS = {
     "copo vinho tinto": "Vinho Tinto (Copo)",
     "copo vinho quente": "Vinho Quente (Copo)",
     "chopp vinho": "Chopp de Vinho",
-    "cannoli nutella": "Cannoli Alla Nutella",
-    # doce de leite em três línguas
-    "cannoli dulce di latte": "Cannoli Dolce di Latte",
+    # doce de leite escrito em espanhol
     "cannoli al dulce de leche": "Cannoli Dolce di Latte",
-    # só a vírgula
-    "vinho tinto, seco ou suave (copo)": "Vinho Tinto Seco ou Suave (Copo)",
-    "vinho tinto, seco ou suave (garrafa)": "Vinho Tinto Seco ou Suave (Garrafa)",
 }
 
 
@@ -191,6 +194,16 @@ def canonizar(titulo):
     palavras = [CORRECOES.get(sem_acento(w), w) for w in titulo.split()]
     corrigido = " ".join(palavras)
     return SINONIMOS.get(sem_acento(corrigido), corrigido)
+
+
+def conferir_expansao(cardapio):
+    """Linha de expansão apontando para item que não existe mais não separa nada
+    e não avisa. Já aconteceu: id errado, prato seguiu inteiro, em silêncio."""
+    ids = {it["id"] for b in cardapio["barracas"] for it in b["itens"]}
+    orfas = sorted(set(EXPANSAO) - ids)
+    if orfas:
+        raise SystemExit("expansão sem item correspondente no cardápio: "
+                         + ", ".join(repr(o) for o in orfas))
 
 
 def conferir_sinonimos(cardapio):
@@ -239,6 +252,10 @@ def _rotulo_familia(prefixo, membros):
         w = m.split()
         palavras = palavras[:next((i for i, (a, b) in enumerate(zip(palavras, w))
                                    if sem_acento(a) != sem_acento(b)), min(len(palavras), len(w)))]
+    # No máximo uma palavra a mais. Sem o limite, os três orecchiette — todos
+    # "ao Molho" de alguma coisa — davam a família "Orecchiette ao Molho", e a
+    # fatia de pizza folhada virava um rótulo de cinco palavras.
+    palavras = palavras[:len(prefixo.split()) + 1]
     while palavras and sem_acento(palavras[-1]) in LIGACAO:
         palavras.pop()
     rotulo = " ".join(palavras)
@@ -297,6 +314,58 @@ def mapear_familias(pratos):
     return catalogo, de_titulo
 
 
+# Palavras que não carregam informação: ligação, verbo de servir, e o "sabor"
+# que o cardápio usa para anunciar o que o título já diz.
+ENCHIMENTO = {"de", "do", "da", "com", "e", "ao", "a", "o", "os", "as", "no", "na",
+              "em", "servido", "servida", "tipo", "um", "uma", "sabor", "recheado",
+              "preparado", "feito", "acompanha"}
+
+# Palavra que é só o nome em português do que o título já nomeia. "Macarrão Tipo
+# Espaguete ao Molho de Tomate" não acrescenta nada a "Spaghetti ao Molho de
+# Tomate". Já "gravatinha" e "talharim" acrescentam — dizem o formato de uma
+# massa cujo nome italiano não entrega —, então não entram aqui.
+EQUIVALENTES = {
+    "spaghetti": {"espaguete", "macarrao"}, "penne": {"macarrao"},
+    "fusilli": {"macarrao"}, "conchiglioni": {"macarrao", "conchiglione"},
+    "orecchiette": {"macarrao"}, "ravioli": {"macarrao"},
+    "cappelletti": {"macarrao"}, "nhoque": {"macarrao"}, "lasanha": {"macarrao"},
+    "farfalle": {"macarrao"}, "tagliatelle": {"macarrao"}, "bavette": {"macarrao"},
+    "polenta": {"polenta"}, "gelato": set(), "pizza": {"pizza"},
+}
+
+
+def _raiz(palavra):
+    p = sem_acento(palavra)
+    for sufixo in ("os", "as", "es", "s"):
+        if len(p) > 4 and p.endswith(sufixo):
+            return p[:-len(sufixo)]
+    return p
+
+
+def _conteudo(texto):
+    vazias = {_raiz(x) for x in ENCHIMENTO}
+    return {r for r in (_raiz(w) for w in re.findall(r"[\wÀ-ÿ']+", texto))
+            if r not in vazias and len(r) > 2}
+
+
+def _descricao_util(descricao, titulo, italiano=""):
+    """A descrição só aparece se disser algo que os dois nomes não dizem.
+
+    "Fatia de Torta de Chocolate" descrita como "Fatia de Torta sabor Chocolate"
+    é uma terceira linha repetindo a primeira. Menos é mais: 37 cards ficam sem
+    descrição, e nenhum perde informação.
+
+    O índice de busca é montado das descrições cruas, antes deste corte — quem
+    procura "espaguete" continua achando o spaghetti.
+    """
+    if not descricao:
+        return ""
+    conhecido = _conteudo(titulo + " " + italiano)
+    for palavra in list(conhecido):
+        conhecido |= EQUIVALENTES.get(palavra, set())
+    return "" if not (_conteudo(descricao) - conhecido) else descricao
+
+
 def agrupar_pratos(cardapio, categorias):
     """Um prato = um título. 645 itens viram ~365 pratos com faixa de preço.
 
@@ -304,16 +373,20 @@ def agrupar_pratos(cardapio, categorias):
     responde "onde tem tiramisù e por quanto" sem obrigar a varrer a lista.
     """
     atrib = categorias["atribuicoes"]
+    conferir_expansao(cardapio)
     conferir_sinonimos(cardapio)
     grupos = {}
     for barraca in cardapio["barracas"]:
         for item in barraca["itens"]:
           for titulo_original, desc_expandida in expandir_titulo(item):
-            titulo_expandido = canonizar(titulo_original)
+            titulo_italiano = canonizar(titulo_original)
+            # dois nomes italianos que querem dizer a mesma coisa viram um card
+            titulo_expandido = NOMES_PT.get(titulo_italiano, titulo_italiano)
             chave = sem_acento(titulo_expandido)
             g = grupos.setdefault(chave, {
                 "titulo": titulo_expandido, "cats": collections.Counter(),
                 "ofertas": [], "descricoes": [], "grafias": set(),
+                "italianos": collections.Counter(),
                 # o PDF lista sabores e formatos de massa num título só, separados
                 # por "/"; o extrator já os separou e o gerador ignorava o campo
             })
@@ -326,20 +399,26 @@ def agrupar_pratos(cardapio, categorias):
             # quem lê "Gnochi" na placa da barraca digita "Gnochi". O card
             # mostra a grafia certa, mas a busca precisa aceitar a impressa.
             g["grafias"].add(titulo_original)
+            if titulo_italiano != titulo_expandido:
+                g["italianos"][titulo_italiano] += 1
 
     pratos = []
     for g in grupos.values():
         precos = [o["preco"] for o in g["ofertas"]]
         g["ofertas"].sort(key=lambda o: o["preco"])
+        italiano = g["italianos"].most_common(1)[0][0] if g["italianos"] else ""
         pratos.append({
             "titulo": g["titulo"],
+            "italiano": italiano,
             "categoria": g["cats"].most_common(1)[0][0],
             "ofertas": g["ofertas"],
             "min": min(precos), "max": max(precos),
-            "descricao": collections.Counter(g["descricoes"]).most_common(1)[0][0],
+            "descricao": _descricao_util(
+                collections.Counter(g["descricoes"]).most_common(1)[0][0],
+                g["titulo"], italiano),
             # sorted(): a ordem de iteração de um set de strings muda entre
             # processos (PYTHONHASHSEED), e sem isso o build não é reprodutível
-            "busca": sem_acento(" ".join(sorted(g["grafias"] | {g["titulo"]}))
+            "busca": sem_acento(" ".join(sorted(g["grafias"] | {g["titulo"]} | set(g["italianos"])))
                                  + " " + " ".join(sorted(set(g["descricoes"])))),
         })
     pratos.sort(key=lambda p: sem_acento(p["titulo"]))
@@ -374,87 +453,34 @@ def bucket_preco(v):
     return "ate10" if v <= 10 else "11a20" if v <= 20 else "21a30" if v <= 30 else "31mais"
 
 
-PREPOSICOES = {"al", "alla", "ai", "alle", "con", "in"}
+# Como cada item impresso vira um ou mais pratos na tela. A decisão é dado, não
+# regra: está em data/expansao.json, e a regra que a produziu, em prosa, está em
+# docs/curadoria.md. O cardápio é uma lista fechada de 645 itens escrita por 35
+# entidades; a decisão foi tomada item a item, lendo o PDF.
+#
+# Houve uma tentativa de deduzir isso do texto — 214 linhas de expressão regular
+# para 149 itens, e cada rodada revelava uma forma nova de enumerar. O custo
+# maior não era o esforço: regra errada produz prato errado em silêncio. Cinco
+# massas passaram meses dizendo "Espaguete, Penne ou Gravatinha" no card da
+# farfalle, e as pizzas de sabor ficaram inteiras sem ninguém notar.
+EXPANSAO = json.loads((DADOS / "expansao.json").read_text(encoding="utf-8"))["itens"]
 
-# Casos em que a regra de expansão produz nome ruim. Conferidos à mão contra os
-# 17 itens com variação; hoje só um precisa. A regra deriva o prefixo da
-# primeira preposição do primeiro segmento, e aqui não há preposição nenhuma —
-# "Merlot" e "Chardonnay" sairiam soltos, sem a palavra "Vinho".
-EXPANSAO_MANUAL = {
-    "27-17-vinho-fino-cabernet-merlot-chardonnay-copo": [
-        "Vinho Fino Cabernet (Copo)",
-        "Vinho Fino Merlot (Copo)",
-        "Vinho Fino Chardonnay (Copo)",
-    ],
-}
-
-
-def descricao_por_variacao(descricao, n):
-    """Reparte a descrição entre as n variações, quando ela as enumera.
-
-    "Massa Crocante recheada com Creme, Doce de Leite ou Nutella" descreve as
-    três variações de "Cannoli Alla Crema / Dolce di Latte / Nutella", na mesma
-    ordem. Sem repartir, os três pratos expandidos herdam a descrição inteira e
-    "Cannoli Alla Crema" alega ter Doce de Leite e Nutella dentro.
-
-    Só reparte quando a conta fecha: a enumeração precisa ter exatamente n itens
-    e vir depois de um "com". Nas descrições de massa a enumeração está no meio
-    da frase ("Macarrão Tipo Espaguete, Penne ou Gravatinha ao Molho de Tomate")
-    e a função devolve None, mantendo a descrição original.
-    """
-    if " ou " not in descricao:
-        return None
-    cabeca, ultimo = descricao.rsplit(" ou ", 1)
-    partes = [x.strip() for x in cabeca.split(",")]
-    if " com " not in partes[0]:
-        return None
-    prefixo, primeiro = partes[0].rsplit(" com ", 1)
-    itens = [primeiro] + partes[1:] + [ultimo]
-    if len(itens) != n:
-        return None
-    return [f"{prefixo} com {x}" for x in itens]
+# O nome do prato em português. O italiano não some: vira campo próprio no
+# card, com bandeira, porque é o nome que está na placa da barraca e é por
+# ele que a pessoa vai pedir. O que ele não pode ser é a única porta de
+# entrada — quem procura "cabrito" não digita "capretto".
+NOMES_PT = json.loads((DADOS / "nomes-pt.json").read_text(encoding="utf-8"))["nomes"]
 
 
 def expandir_titulo(item):
-    """Um item por sabor ou formato de massa.
+    """Os pratos que saem de um item do cardápio.
 
-    O PDF junta variações num título só, separadas por "/", em dois formatos:
-
-      sabor   "Cannoli Alla Crema / Nutella / Fior di Latte"
-              -> o primeiro segmento traz o prato; os demais são só o recheio,
-                 e precisam receber o nome do prato de volta
-
-      formato "Spaghetti / Penne Rigati / Farfalle Al Sugo"
-              -> os segmentos são formatos e o molho vem grudado no último;
-                 cada formato precisa receber o molho
-
-    O que separa os dois é o tamanho: no formato de massa o primeiro segmento
-    tem menos palavras que o último, porque o último carrega o molho.
+    Sem linha na tabela, o item vale por si — é o caso de 496 dos 645.
     """
-    # "recheada com Creme – sabores" está assim no PDF: a barraca não listou
-    # quais. O traço pendurado não informa nada.
-    desc = re.sub(r"\s*[–-]\s*sabores\s*$", "", item["descricao"])
-
-    if item["id"] in EXPANSAO_MANUAL:
-        return [(t, desc) for t in EXPANSAO_MANUAL[item["id"]]]
-    v = item.get("variacoes") or []
-    if len(v) < 2:
-        return [(item["titulo"], desc)]
-
-    primeiro, ultimo = v[0].split(), v[-1].split()
-    if len(primeiro) < len(ultimo):
-        sufixo = " ".join(ultimo[1:])
-        titulos = [f"{x} {sufixo}" for x in v[:-1]] + [f"{ultimo[0]} {sufixo}"]
-    else:
-        base = ""
-        for i, palavra in enumerate(primeiro):
-            if palavra.lower() in PREPOSICOES:
-                base = " ".join(primeiro[:i])
-                break
-        titulos = [v[0]] + [f"{base} {x}".strip() for x in v[1:]]
-
-    descs = descricao_por_variacao(desc, len(titulos))
-    return list(zip(titulos, descs if descs else [desc] * len(titulos)))
+    linhas = EXPANSAO.get(item["id"])
+    if linhas:
+        return [(t, d) for t, d in linhas]
+    return [(item["titulo"], item["descricao"] or "")]
 
 
 def render_prato(p, familia_de=None):
@@ -475,6 +501,11 @@ def render_prato(p, familia_de=None):
         f'<span class="oferta__preco">{e(moeda(o["preco"]))}</span>'
         f'<span class="oferta__pin">{usar("pin", 15)}</span></a></li>'
         for o in p["ofertas"])
+    # a bandeira é decorativa; o nome já se lê. aria-hidden evita o leitor de
+    # tela anunciar "bandeira da Itália" antes de cada prato
+    italiano = (f'<p class="prato__italiano"><span aria-hidden="true">🇮🇹</span> '
+                f'{e(p["italiano"])}</p>') if p["italiano"] else ""
+    desc = f'<p class="prato__desc">{e(p["descricao"])}</p>' if p["descricao"] else ""
     n = len(p["ofertas"])
     # Com uma barraca só não há o que expandir, mas "onde encontro isto" é a
     # pergunta de quem está de pé na festa — então mostra direto. 302 dos 365
@@ -499,7 +530,7 @@ def render_prato(p, familia_de=None):
         f'data-ord-nome="{p["ord_nome"]}">'
         f'<div class="prato__topo"><h3 class="prato__titulo">{e(p["titulo"])}</h3>'
         f'<span class="prato__faixa">{e(faixa_preco(p))}</span></div>'
-        f'<p class="prato__desc">{e(p["descricao"])}</p>'
+        f'{italiano}{desc}'
         f'{onde}<ul class="ofertas">{ofertas}</ul></article>')
 
 
@@ -935,6 +966,12 @@ main { padding: var(--e4) var(--e4) 0; }
   font-size: 15px; font-weight: 700; color: var(--tinta); white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
+/* o nome italiano fica entre o título e a descrição, com peso e cor
+   intermediários: presente, mas sem competir com o nome que se lê */
+.prato__italiano {
+  margin: 3px 0 0; font-size: 14px; font-weight: 600; color: var(--tinta-fraca);
+  display: flex; align-items: baseline; gap: 6px;
+}
 .prato__desc { margin: var(--e1) 0 0; font-size: 14px; color: var(--tinta-fraca); }
 .prato__titulo, .prato__desc, .card__nome, .oferta__nome, .trilha__titulo {
   overflow-wrap: break-word;
@@ -1089,6 +1126,18 @@ JS = r"""(function () {
     return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   }
 
+  /* Cada palavra buscada tem de aparecer, em qualquer ordem e em qualquer
+     posição. Comparar a frase inteira como um pedaço só fazia "batata frita"
+     não achar "Batatas Fritas em Palito", e é assim que a pessoa digita —
+     é a descrição em português que torna achável o prato de nome italiano. */
+  function combina(texto, q) {
+    var termos = q.split(/\s+/);
+    for (var i = 0; i < termos.length; i++) {
+      if (termos[i] && texto.indexOf(termos[i]) === -1) return false;
+    }
+    return true;
+  }
+
   function lerURL() {
     var p = new URLSearchParams(location.search);
     estado.modo = p.get('modo') || (p.get('barraca') ? 'barraca' : p.get('cat') ? 'categoria' : 'categoria');
@@ -1142,7 +1191,7 @@ JS = r"""(function () {
           el.dataset.precos.indexOf(' ' + estado.preco + ' ') === -1) ok = false;
       if (ok && estado.fam && estado.fam !== 'todos' &&
           el.dataset.fam !== estado.fam) ok = false;
-      if (ok && q && el.dataset.busca.indexOf(q) === -1) ok = false;
+      if (ok && q && !combina(el.dataset.busca, q)) ok = false;
       el.hidden = !ok;
       if (ok) visiveis++;
     });
@@ -1471,7 +1520,9 @@ JS_MAPA = r"""
     // corresponder ao que a tela mostra.
     var q = semAcento(st.q.trim()), vistas = {}, n = 0;
     pratos.forEach(function (el) {
-      if (q && el.dataset.busca.indexOf(q) === -1) return;
+      if (q && q.split(/\s+/).some(function (t) {
+        return t && el.dataset.busca.indexOf(t) === -1;
+      })) return;
       el.dataset.barracas.trim().split(/\s+/).forEach(function (b) {
         if (!vistas[b]) { vistas[b] = 1; n++; }
       });
@@ -1605,10 +1656,6 @@ def otimizar_assets():
 
 def main():
     cardapio, categorias, evento = carregar()
-    ids = {i["id"] for b in cardapio["barracas"] for i in b["itens"]}
-    orfas = set(EXPANSAO_MANUAL) - ids
-    if orfas:
-        raise SystemExit(f"EXPANSAO_MANUAL aponta para id inexistente: {sorted(orfas)}")
     mapa, fontes_mapa = ler_mapa()
     pratos = agrupar_pratos(cardapio, categorias)
     conferir_juncao(cardapio, mapa)
